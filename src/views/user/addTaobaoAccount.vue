@@ -124,14 +124,14 @@
             </li>
             <li class="mui-table-view-cell no-padding">
               <div class="mui-input-row bgwhite">
-                <label>最近订单号</label>
+                <label>淘宝订单号：</label>
                 <x-input
                   type="text"
                   name="xx_city"
                   v-model.trim="userInfo.tb_order_sign"
                   class="mui-input-clear"
                   maxlength="18"
-                  placeholder="输入最近订单号"
+                  placeholder="填写最近一笔淘宝订单号"
                   data-input-clear="11"
                   text-align="right"
                 />
@@ -308,7 +308,7 @@ export default {
         return this.$vux.toast.text("青输入详细地址");
       }
       if (!this.userInfo.tb_order_sign) {
-        return this.$vux.toast.text("输入最近订单号");
+        return this.$vux.toast.text("输入最近淘宝订单号");
       }
        if (this.images[0].length === 0) {
         return this.$vux.toast.text("请输入淘气值截图");

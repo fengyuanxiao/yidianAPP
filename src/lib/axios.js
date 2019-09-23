@@ -68,7 +68,7 @@ axios.interceptors.request.use(
     // }
     // console.log(process.env.NODE_ENV, 'axios')
     //http://www.paiming001.com
-    rootUrl = 'http://example.paiming001.com'
+    rootUrl = 'http://www.paiming001.com'
 
     config.url = rootUrl + config.url
     config.cancelToken = new axios.CancelToken(cancel => {
