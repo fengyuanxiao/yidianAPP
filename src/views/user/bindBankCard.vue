@@ -254,7 +254,7 @@ export default {
     async uploadPhoto(e, ind) {
       const url = await this.$utils.tools.base64Img(e);
       if (url === "big") {
-        this.$vux.toast.text("图片不能超过5M");
+        this.$vux.toast.text("图片不能超过10M");
       } else {
         this.$set(this.images, ind, url);
       }

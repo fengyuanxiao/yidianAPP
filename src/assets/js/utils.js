@@ -116,8 +116,9 @@ export default {
       if (!files.length) {
         return;
       }
-      let isLt5M = files[0].size < 5242880;
-      if (!isLt5M) {
+       // 5M :5242880 10M:10485760,单位为B
+       let isLt10M = files[0].size < 10485760;
+      if (!isLt10M) {
         // this.$message.error('上传图片大小不能超过 10MB');
         return 'big';
       }
