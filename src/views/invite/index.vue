@@ -3,7 +3,7 @@
     <user-header :title="'收徒转佣金'" class="invitebg"></user-header>
     <div>
       <img src="@/assets/img/invitetitle.png" class="inviteTitle" />
-      <img class="top-img" src="@/assets/img/invitation_banner.png" alt="topImg" />
+      <img class="top-img banner-img" src="@/assets/img/invitation_banner.png" alt="topImg" />
       <div class="inviteUrl cricleBox">
         <div class="iurl">
           <div class="urltext">
@@ -190,7 +190,7 @@ export default {
   padding: 0 10px;
   .invitebg {
     #headerBox {
-      background: #ff594c;
+      background: #1890FF;
     }
   }
   .inviteTitle {
@@ -198,8 +198,7 @@ export default {
     width: 100%;
     height: auto;
     border-radius: 0 0 15px 15px;
-    margin-bottom: 20px;
-    box-shadow: 5px 5px 10px #cccccc;
+    margin-bottom: 10px;
   }
   .inviteUrl {
     background: #fff;
@@ -207,18 +206,18 @@ export default {
     .iurl {
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ff594c;
+      border: 1px solid #1890FF;
       display: flex;
       align-items: center;
       .urltext {
         width: 120px;
-        border-right: 1px solid #ff594c;
+        border-right: 1px solid #1890FF;
         padding-right: 10px;
         margin-right: 10px;
         text-align: center;
         h2 {
           font-weight: normal;
-          color: #ff594c;
+          color: #1890FF;
         }
       }
       .urlurl {
@@ -233,7 +232,7 @@ export default {
     margin: 20px auto;
     border-radius: 20px;
     box-shadow: 5px 5px 10px #cccccc;
-    background: #ff594c !important;
+    background: #1890FF !important;
   }
   .cricleBox {
     border-radius: 15px;
@@ -243,7 +242,7 @@ export default {
   }
   .invitepeople {
     h2 {
-      color: #ff594c;
+      color: #1890FF;
       text-align: center;
       font-size: 16px;
       padding-bottom: 10px;
@@ -267,8 +266,8 @@ export default {
     table,
     tr,
     td {
-      border: 1px solid #ff594c;
-      background: #fff4f3;
+      border: 1px solid #1890FF;
+      background: #F4FAFF;
       color: #000;
       border-collapse: collapse;
     }
@@ -278,8 +277,11 @@ export default {
     display: block;
     width: 100%;
     height: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 15px;
+  }
+  .banner-img{
+    margin-bottom: 20px;
   }
   .links-list {
     padding: 2.5rem 1rem;
