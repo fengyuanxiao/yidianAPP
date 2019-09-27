@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import lrz from 'lrz';
 import {
   ToastPlugin,
   ConfirmPlugin
@@ -116,15 +117,17 @@ export default {
       if (!files.length) {
         return;
       }
-       // 5M :5242880 10M:10485760,单位为B
-       let isLt10M = files[0].size < 10485760;
-      if (!isLt10M) {
+      let isLt = files[0].size < 1048576 * 10;
+      if (!isLt) {
         // this.$message.error('上传图片大小不能超过 10MB');
         return 'big';
       }
-      const url = await this.createImage(files[0]);
+      const rst = await lrz(files[0], {
+        quality: 0.1
+      })
+      //  await this.createImage(files[0]);
       // console.log(url, '--url---')
-      return url
+      return rst.base64
     },
     createImage(file) {
       return new Promise(function (resolve, reject) {

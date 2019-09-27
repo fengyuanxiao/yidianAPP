@@ -1,8 +1,52 @@
 <template>
   <div class="menuBoxBottom invite">
+    <user-header :title="'收徒转佣金'" class="invitebg"></user-header>
     <div>
-      <img class="top-img" src="@/assets/img/share1.png" alt="topImg" />
-      <div class="links-list">
+      <img src="@/assets/img/invitetitle.png" class="inviteTitle" />
+      <img class="top-img" src="@/assets/img/invitation_banner.png" alt="topImg" />
+      <div class="inviteUrl cricleBox">
+        <div class="iurl">
+          <div class="urltext">
+            <h2>邀请链接</h2>
+            <p>(点击收徒复制)</p>
+          </div>
+          <div class="urlurl">{{$url}}#/h5/register?code={{invite.code}}</div>
+        </div>
+        <x-button
+          type="primary"
+          :data-clipboard-text="$url+'#/h5/register?code='+invite.code"
+          @click.native="copyShare"
+          class="invitebtn copy"
+        >立即收徒</x-button>
+      </div>
+      <div class="inviteUrl invitepeople cricleBox">
+        <h2>奖励明细</h2>
+        <table>
+          <tr>
+            <td>累计奖励</td>
+            <td>{{ invite.total_prize||'0' }}元</td>
+          </tr>
+          <tr>
+            <td>我的徒弟人数</td>
+            <td>{{ invite.use_num }}个</td>
+          </tr>
+          <tr>
+            <td>我的徒孙人数</td>
+            <td>{{ invite.second_use_num }}个</td>
+          </tr>
+        </table>
+      </div>
+      <img src="@/assets/img/inviteinfo.png" class="top-img" />
+      <div class="inviteUrl invitepeople cricleBox">
+        <h2>奖励说明</h2>
+        <div>
+          <p>1、徒弟注册完成首单，您将还能获得1~5元现金红包</p>
+          <p>2、徒弟每完成一单任务后，您最低能获得10%的佣金提成</p>
+          <p>3、徒孙每完成一单任务后，您最低能获得5%的佣金提成</p>
+        </div>
+        <img src="@/assets/img/invitation_relationship.png" class="top-img" />
+      </div>
+      <!-- <div class="links-list">
         <div class="links-list-top">
           <img
             src="@/assets/img/share2.png"
@@ -16,9 +60,9 @@
           你的专属邀请码：
           <span>{{ invite.code }}</span>
           <button>点击复制</button>
-        </div>-->
-        <!-- <x-input disabled style="width: 100%, fontSize: 1rem" :value="invite.share_link" /> -->
-        <div class>
+      </div>-->
+      <!-- <x-input disabled style="width: 100%, fontSize: 1rem" :value="invite.share_link" /> -->
+      <!-- <div class>
           <p
             style="font-size: 1rem; font-weight: bold; color: rgb(102, 102, 102); text-align: center;"
           >买手邀请其他买手奖励</p>
@@ -57,7 +101,7 @@
             <span>{{ invite.second_active_num }}个</span>
           </li>
         </ul>
-      </div>
+      </div>-->
     </div>
     <!-- 菜单 -->
     <tabbar-menu></tabbar-menu>
@@ -103,7 +147,7 @@ export default {
             window.plus.nativeUI.toast("分享成功");
           },
           function(e) {
-            window.plus.nativeUI.toast("分享失败");
+            this.copy();
           }
         );
         // window.plusShare(message, function(res) {
@@ -115,13 +159,13 @@ export default {
         //   }
         // });
       } catch (e) {
-        this.$vux.toast.text("catch分享失败");
+        this.copy();
       }
     },
     copy() {
       var clipboard = new Clipboard(".copy");
       clipboard.on("success", e => {
-        this.$vux.toast.text("复制成功,分享给好友");
+        this.$vux.toast.text("系统分享失败，可直接粘贴分享给好友");
         // 释放内存
         clipboard.destroy();
       });
@@ -142,12 +186,100 @@ export default {
 </script>
 <style lang="less">
 .invite {
-  background: #fb2;
+  background: #f5f5f5;
+  padding: 0 10px;
+  .invitebg {
+    #headerBox {
+      background: #ff594c;
+    }
+  }
+  .inviteTitle {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 10px #cccccc;
+  }
+  .inviteUrl {
+    background: #fff;
+    padding: 15px;
+    .iurl {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ff594c;
+      display: flex;
+      align-items: center;
+      .urltext {
+        width: 120px;
+        border-right: 1px solid #ff594c;
+        padding-right: 10px;
+        margin-right: 10px;
+        text-align: center;
+        h2 {
+          font-weight: normal;
+          color: #ff594c;
+        }
+      }
+      .urlurl {
+        width: 200px;
+        flex: 1;
+        word-break: break-all;
+      }
+    }
+  }
+  .invitebtn {
+    width: 200px;
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px #cccccc;
+    background: #ff594c !important;
+  }
+  .cricleBox {
+    border-radius: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    box-shadow: 5px 5px 10px #cccccc;
+  }
+  .invitepeople {
+    h2 {
+      color: #ff594c;
+      text-align: center;
+      font-size: 16px;
+      padding-bottom: 10px;
+    }
+    p{
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 28px;
+      padding: 5px 0;
+    }
+    table {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    td {
+      width: 50%;
+      padding: 10px 0;
+      font-size: 15px;
+      text-align: center;
+    }
+    table,
+    tr,
+    td {
+      border: 1px solid #ff594c;
+      background: #fff4f3;
+      color: #000;
+      border-collapse: collapse;
+    }
+  }
 
   .top-img {
     display: block;
     width: 100%;
-    padding-bottom: 1.8rem;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 15px;
   }
   .links-list {
     padding: 2.5rem 1rem;
@@ -195,15 +327,6 @@ export default {
     border: none;
     border-radius: 7px;
     margin-bottom: 1rem;
-  }
-  .links-list > ul {
-    background-color: #fff;
-  }
-  .links-list > ul > li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.8rem 0.5rem;
-    border-bottom: 1px solid #d7d7d7;
   }
 }
 </style>

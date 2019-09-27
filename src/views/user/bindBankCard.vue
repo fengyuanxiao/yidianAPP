@@ -285,9 +285,11 @@ export default {
       if (this.userInfo.bankTel === "") {
         return this.$vux.toast.text("请输入预留手机号");
       }
+      const saveParams = Object.assign(this.userInfo, { images: this.images });
+      console.log(saveParams, "---saveParams----");
       const reuslt = await this.axios.post(
         "/api/index/bankcardcommit",
-        Object.assign(this.userInfo, { images: this.images })
+        saveParams
       );
       this.$vux.toast.show({
         text: "提交成功，等待审核",
