@@ -25,7 +25,8 @@ FastClick.prototype.focus = function(targetElement) {
 FastClick.attach(document.body)
 Vue.prototype.axios = axios
 Vue.prototype.$utils = utils
-Vue.prototype.$url = 'http://example.paiming001.com/'
+Vue.prototype.$url = 'http://www.paiming001.com/'
+Vue.prototype.$shareurl = 'http://app.yidianzhengqian.com/'
 Vue.config.productionTip = false
 import {
     ConfirmPlugin

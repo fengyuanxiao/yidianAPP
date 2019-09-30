@@ -10,11 +10,11 @@
             <h2>邀请链接</h2>
             <p>(点击收徒复制)</p>
           </div>
-          <div class="urlurl">{{$url}}#/h5/register?code={{invite.code}}</div>
+          <div class="urlurl">{{$shareurl}}#/h5/register?code={{invite.code}}</div>
         </div>
         <x-button
           type="primary"
-          :data-clipboard-text="$url+'#/h5/register?code='+invite.code"
+          :data-clipboard-text="$shareurl+'#/h5/register?code='+invite.code"
           @click.native="copyShare"
           class="invitebtn copy"
         >立即收徒</x-button>
