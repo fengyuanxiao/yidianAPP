@@ -97,7 +97,7 @@
       <div class="buzou-title">
         <span style="color:#63bb95">第四步 订单信息核对</span>
       </div>
-      <p>应垫付金额:100元(请按实际垫付金额填写，实际相差超50元请取消任务)</p>
+      <p>应垫付金额:{{orderInfo.need_principal}}元(请按实际垫付金额填写，实际相差超50元请取消任务)</p>
 
       <p
         v-if="orderInfo.platform===1"
@@ -187,6 +187,12 @@ export default {
     this.initArr(parseInt(this.orderInfo.pic_uploads_num || 1));
   },
   methods: {
+     async getOrderInfo() {
+      const result = await this.axios.post("/api/task/operateTask", {
+        order_id: this.$route.params.id //订单ID
+      });
+      this.orderInfo = result.data.taskDetail || {};
+    },
     // 提交任务
     async subTask() {
       if (this.isEmptyArr().length !== this.chat_pay_content.length) {
