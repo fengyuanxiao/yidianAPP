@@ -37,11 +37,24 @@
   color: #0156B1;
 }
 
-.detailss>p {
+.detailss> p {
   margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: red;
 }
+.detailss> p>span {
+  color: red;
+  display: inline;
+}
+.detailss .con_tilte{
+  color: #000;
+  font-weight: bold;
+}
+.detailss .con_color{
+  color: #7F7F7F;
+  font-size: 0.4px;
+  text-indent: -5px;
+  margin-left: 5px;
+}
+
 
 .buzou-title {
   display: flex;
