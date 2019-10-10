@@ -133,8 +133,8 @@ export default {
       const dominurl = "http://app.yidianzhengqian.com/";
       var message = {
         type: "web",
-        title: "一点挣钱", //应用名字
-        content: `我是${this.userInfo.invite_code}，我在一点挣钱等你！ `,
+        title: "您有一个现金红包待领取", 
+        content: "我正在参与一点挣钱的佣金任务，大量佣金等你来拿，真的有效。注册就送红包，赶紧一起来领！！！",
         href: dominurl + "#/h5/register?code=" + this.userInfo.invite_code, //分享出去后，点击跳转地址
         thumbs: [dominurl + "static/img/xhxlogo.png"] //分享缩略图
       };

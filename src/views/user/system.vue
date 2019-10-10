@@ -2,7 +2,7 @@
   <div class="system">
     <user-header :title="'设置'"></user-header>
     <group>
-      <cell :title="'当前版本（1.0.0）'">
+      <cell :title="'当前版本（'+$baseConfig.version+'）'">
         <img slot="icon" src="@/assets/img/icon/set4.png" />
       </cell>
       <cell :title="'关于一点挣钱'" is-link @click.native="$vux.toast.text('敬请期待')">

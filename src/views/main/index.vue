@@ -316,7 +316,6 @@ export default {
         this.companyAccount[3],
         this.changeKey(result6.data)
       );
-      console.log(this.companyAccount, "---this.companyAccount---");
     },
     // 转换key和value
     changeKey(data) {
