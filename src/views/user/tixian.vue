@@ -51,11 +51,11 @@
           <group title>
             <x-input
               title="手机号码"
-              v-model.trim.trim="userInfo.mobile"
               type="tel"
-              placeholder="请输入手机号码"
+              v-model.trim.trim="userCenterInfo.mobile"
+              :disabled="true"
             >
-              <!-- <span class="font-icon" slot="label"></span> -->
+              <!--  <span class="font-icon" slot="label"></span> -->
             </x-input>
           </group>
           <group title>
@@ -139,7 +139,7 @@ export default {
         await this.axios.post("/api/user/sendcode", {
           sid: this.code_capt.sid,
           tuCode: this.userInfo.captcha,
-          phoneNum: this.userInfo.mobile
+          phoneNum: this.userCenterInfo.mobile,
         });
         this.getCodeTime();
         this.$vux.toast.show({
@@ -164,6 +164,7 @@ export default {
     async getInfo() {
       const result = await this.axios.post("/api/index/cash");
       this.userCenterInfo = result.data;
+      console.log()
     },
     async tixian() {
       if (this.userCenterInfo.is_black == 1) {
