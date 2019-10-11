@@ -5,7 +5,7 @@
       <Collapse style="background:#fff;margin:10px 0; ">
         <Panel>
           微信客服
-          <p slot="content">加微信haofl90919</p>
+          <p slot="content">加微信zhizi062587</p>
         </Panel>
         <Panel>
           QQ客服
