@@ -131,15 +131,12 @@ export default {
     copyShare() {
       //分享内容，开发者可自定义
       const dominurl = "http://app.yidianzhengqian.com/";
-      const shareHref=dominurl + "#/h5/register?code=" + this.userInfo.invite_code;
-      const thumbsUrl=dominurl+"static/img/xhxlogo.png";
       var message = {
         type: "web",
-        title: "一点挣钱",
-        content: `您有一个现金红包待领取`,
-        href:"我正在参与一点挣钱的佣金任务，大量佣金等你来拿，真的有效。注册就送红包，赶紧一起来领！！！"+shareHref , //分享出去后，点击跳转地址
-        thumbs: [thumbsUrl], //分享缩略图
-       
+        title: "一点挣钱", //应用名字
+        content: `您有一个现金红包待领取  我正在参与一点挣钱的佣金任务，大量佣金等你来拿，真的有效。注册就送红包，赶紧一起来领！！！`,
+        href: dominurl + "#/h5/register?code=" + this.userInfo.invite_code, //分享出去后，点击跳转地址
+        thumbs: [dominurl + "static/img/xhxlogo.png"] //分享缩略图
       };
       //调起分享
       try {
