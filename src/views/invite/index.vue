@@ -132,7 +132,7 @@ export default {
       //分享内容，开发者可自定义
       const dominurl = "http://app.yidianzhengqian.com/";
       const shareHref=dominurl + "#/h5/register?code=" + this.userInfo.invite_code;
-      const thumbsUrl="http://example.yidianzhengqian.com/static/img/xhxlogo.png";
+      const thumbsUrl=dominurl+"static/img/xhxlogo.png";
       var message = {
         type: "web",
         title: "一点挣钱",
