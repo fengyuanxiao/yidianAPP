@@ -345,7 +345,6 @@ export default {
       this.taskInfo = result.data.task_list || [];
       this.no_task_list = result.data.no_task_list || [];
       this.address_info = result.data.address_info;
-      console.log(this.taskInfo, "---this.taskInfo--");
     },
     getPhoneUuid() {
       let unique_code = localStorage.getItem("unique_code");

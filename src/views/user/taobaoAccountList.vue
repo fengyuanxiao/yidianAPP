@@ -47,7 +47,7 @@ export default {
       let result = await this.axios.post("/api/index/bind_list", {
         bind_type: "1"
       });
-      console.log(result);
+      
       this.taobaoList = result.data;
       if (this.taobaoList.status == 0) {
         this.isCertified = "未绑定";

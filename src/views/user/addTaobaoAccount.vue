@@ -2,31 +2,11 @@
   <div class="addTaobaoAccount">
     <user-header :title="'淘宝账户信息'"></user-header>
     <div class="addUser">
-      <div class="warning">
-        <div class="bgwhite bindJdStyle" style="border-bottom:2px solid #e0e0e0;">
-          <img style="width:15px;" src="@/assets/img/icon/warning.png" alt />&nbsp;注意事项
-        </div>
-        <div class="pad5 bgwhite" style="border-bottom:4px solid #e0e0e0;">
-          <p>
-            <span style="float:left;">1、</span>
-            <span
-              style="float:left;word-break: break-all;width:90%;"
-            >绑定的淘宝账号必须实名认证，一人一号账号等级最低2心，注册时间满半年且半个内有购买记录。京东账号京享值要求1000份以上。</span>
-          </p>
-          <p style="clear:both;">
-            <span style="float:left;">2、</span>
-            <span
-              style="float:left;word-break: break-all;width:90%;"
-            >每个买号要求绑定不同收货信息且唯一（填写的信息必须真实有效，可以联系上本人或亲戚朋友）。</span>
-          </p>
-          <div style="clear:both;"></div>
-          <p></p>
-        </div>
-      </div>
       <div class="userInfoForm">
-        <div>
+        <!-- 账号信息 -->
+        <div class="accountInfo">
           <h2
-            style="font-size:15px;color:black;padding-left:10px;border-bottom:1px solid #e0e0e0;dispaly:block;height:35px;line-height:35px;"
+            style="font-size:20px;color:#444;text-align:center;border-bottom:1px solid #e0e0e0;dispaly:block;height:60px;line-height:60px;width: 90%;margin-left: 20px;margin-bottom:10px;"
           >账号信息</h2>
           <ul class="mui-table-view mui-noulbefore">
             <li class="mui-table-view-cell no-padding">
@@ -39,8 +19,20 @@
                   class="mui-input-clear"
                   placeholder="请输入淘宝用户名"
                   data-input-clear="1"
-                  text-align="right"
+                  style="width:150px;display:inline-block"
                 />
+                <div style="display:inline-block;
+                            float: right;
+                            position: relative;
+                            top: 11px;
+                            right: 0px;
+                            width: 70px;
+                            height: 30px;
+                            background: #1890FF;
+                            border-radius: 5px;
+                            line-height: 30px;
+                            text-align: center;
+                            color:white">验证信息</div>
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
             </li>
@@ -54,16 +46,53 @@
                   class="mui-input-clear"
                   placeholder="请输入支付宝姓名"
                   data-input-clear="2"
-                  text-align="right"
                 />
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
             </li>
+            <li class="mui-table-view-cell no-padding">
+              <div class="mui-input-row bgwhite">
+                <label style="white-space:nowrap">淘宝订单号</label>
+                <x-input
+                  type="text"
+                  name="xx_city"
+                  v-model.trim="userInfo.tb_order_sign"
+                  class="mui-input-clear"
+                  maxlength="18"
+                  placeholder="请输入淘宝订单号"
+                  data-input-clear="11"
+                  style="width:150px;display:inline-block"
+                />
+                <div v-for="(item) in newup"
+                    :key="item.value"
+                    style="float: right;
+                          display:inline-block;
+                          position: relative;
+                          top: 11px;
+                          right: 0px;
+                          width: 70px;
+                          height: 30px;
+                          background: #1890FF;
+                          border-radius: 5px;
+                          line-height: 30px;
+                          text-align: center;">
+                  <a style="color:white;"
+                    class="example"
+                    href="javascript:void(0);"
+                    @click="item.showExample=true"
+                  >查看示例</a>
+                </div>
+                <span class="mui-icon mui-icon-clear mui-hidden"></span>
+              </div>
+            </li>
           </ul>
+          
         </div>
+
+        <!-- 收货地址 -->
         <div class="marginTop5">
           <h2
-            style="padding-left:10px;font-size:15px;color:black;border-top:1px solid #e0e0e0;display:block;height:35px;line-height:35px;"
+            style="font-size:20px;color:#444;text-align:center;border-bottom:1px solid #e0e0e0;dispaly:block;height:60px;line-height:60px;width: 90%;margin-left: 20px;margin-bottom:10px;"
           >收货地址</h2>
           <ul class="mui-table-view mui-noulbefore">
             <li class="mui-table-view-cell no-padding">
@@ -76,7 +105,6 @@
                   class="mui-input-clear"
                   placeholder="请输入收货人姓名"
                   data-input-clear="3"
-                  text-align="right"
                 />
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
@@ -92,7 +120,6 @@
                   placeholder="请输入收货人手机号码"
                   maxlength="11"
                   data-input-clear="4"
-                  text-align="right"
                 />
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
@@ -117,59 +144,51 @@
                   class="mui-input-clear"
                   placeholder="输入详细地址，具体到门牌号"
                   data-input-clear="11"
-                  text-align="right"
-                />
-                <span class="mui-icon mui-icon-clear mui-hidden"></span>
-              </div>
-            </li>
-            <li class="mui-table-view-cell no-padding">
-              <div class="mui-input-row bgwhite">
-                <label>最近订单号</label>
-                <x-input
-                  type="text"
-                  name="xx_city"
-                  v-model.trim="userInfo.tb_order_sign"
-                  class="mui-input-clear"
-                  maxlength="18"
-                  placeholder="输入最近订单号"
-                  data-input-clear="11"
-                  text-align="right"
                 />
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
             </li>
           </ul>
         </div>
-        <div>
-          <p class="pad10" style="color:#323232;">
-            <span>上传图片（点击可更换图片)</span>
-          </p>
+
+        <!-- 验证信息 -->
+        <div class="ValidateInfo">
+          <h2
+            style="font-size:20px;color:#444;text-align:center;border-bottom:1px solid #e0e0e0;dispaly:block;height:60px;line-height:60px;width: 90%;margin:0px 0px 25px 20px;"
+          >验证信息</h2>
           <div class="mui-row">
             <div
-              class="mui-col-xs-4"
-              style="text-align:center"
+              class="mui-col-xs-4 "
+              style="text-align:right;margin-left:-75px"
               v-for="(item,ind) in uploadPhotoes"
               :key="item.value"
             >
+            <!-- 示例图片 -->
+            <p>
+              <a
+                class="example"
+                href="javascript:void(0);"
+                @click="item.showExample=true"
+              >
+                <img :src="item.exampleImg" style="max-width:50%" />
+                <p style="padding-right: 14px;">{{item.exampleFont}}</p>
+              </a>
+            </p>
+            <!-- 上传截图 -->
               <div class="z_photo z_photo_pic_1">
                 <div class="z_add_img" data-show_tip="1">
                   <img :src="images[ind]||'/static/img/upload.png'" />
                 </div>
               </div>
               <p class="no-margin">{{item.title}}</p>
-              <p>
-                <a
-                  class="example"
-                  href="javascript:void(0);"
-                  @click="item.showExample=true"
-                >查看截图示例>></a>
-              </p>
+              
               <x-dialog v-model.trim="item.showExample" class="dialog-demo">
+                <!-- 示例图片 -->
                 <div class="img-box">
                   <img :src="item.exampleImg" style="max-width:100%" />
                 </div>
                 <div @click="item.showExample=false">
-                  <span class="vux-close">X</span>
+                  <img class="vux-close" src="@/assets/img/taobao/close_btn.png" alt />
                 </div>
               </x-dialog>
             </div>
@@ -180,6 +199,7 @@
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
+              style="top:-210px;left: 10px;"
             />
             <input
               @change="uploadPhoto($event,1)"
@@ -187,7 +207,7 @@
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
-              style="left:50%;"
+              style="top:-210px;left: 30px;"
             />
             <input
               @change="uploadPhoto($event,2)"
@@ -195,7 +215,7 @@
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
-              style="top:140px;left:0"
+              style="top:-210px;left:20px;"
             />
           </div>
         </div>
@@ -204,6 +224,23 @@
         </div>
       </div>
     </div>
+    <!-- 弹窗开始 -->
+      <x-dialog v-model.trim="showPop" class="dialog-demo demoDialog">
+        <div class="img-box showBg">
+          <div class="attentionTip">
+            <p><span style="color:red">淘宝账号：</span>绑定的淘宝账号<span style="color:red;display:inline">需满六个月信誉2星以上且实名认证</span>，且要与本平台绑定的身份证相同；且半个月内有购买记录，无降权打标记录等；</p>
+            <p><span style="color:red">淘宝订单号：</span>请登录绑定的淘宝账号复制任意一笔订单粘贴到输入框即可；</p>
+            <p><span style="color:red">收货地址：</span>每个买号要求绑定不同收货信息且唯一 （填写的信息<span style="color:red">必须真实有效</span>，可以联系上本人或亲 戚朋友）；</p>
+            <p><span style="color:red">验证信息：</span>请上传相对应的截图验证账号信息，上 传的图片需正确且<span style="color:red">不允许遮挡</span>，遮挡或填写的信息 不确认将会审核失败</p>
+            <div class="spr_line"></div>
+          </div>
+        </div>
+        <div @click="Mincount<=0?showPop=false : showPop=true">
+          <x-button type="primary" style="border-radius:5px;background:#FF2741;" min>{{this.Mincount >0 ?"了解("+this.Mincount+")" : "了解"}}</x-button>
+        </div>
+      </x-dialog>
+    <!-- 弹窗结束 -->
+
   </div>
 </template>
 <script>
@@ -222,24 +259,31 @@ export default {
       },
       addressData: ChinaAddressV4Data,
       images: ["","", ""],
+      newup:null,
+      showPop: true,
+      Mincount:5,
+      timer: null,
       uploadPhotoes: [
         {
           value: 0,
-          title: "淘气值截图",
+          title: "请上传淘气值截图",
           showExample: false,
-          exampleImg: require("@/assets/img/taobao/taoqizhi.jpg")
+          exampleImg: require("@/assets/img/taobao/taoqizhi.png"),
+          exampleFont:"淘气值示例图"
         },
         {
           value: 1,
-          title: "支付宝认证截图",
+          title: "请上传支付宝截图",
           showExample: false,
-          exampleImg: require("@/assets/img/taobao/myzhifubao.png")
+          exampleImg: require("@/assets/img/taobao/myzhifubao.png"),
+          exampleFont:"支付宝示例图"
         },
         {
           value: 2,
-          title: "淘宝订单截图",
+          title: "请上传淘宝订单截图",
           showExample: false,
-          exampleImg: require("@/assets/img/taobao/dingdan.jpg")
+          exampleImg: require("@/assets/img/taobao/dingdan.png"),
+          exampleFont:"淘宝订单示例图"
         }
       ]
     };
@@ -248,9 +292,19 @@ export default {
     XAddress
   },
   mounted() {
+    this.getCodeTime();
     if (this.$route.query && this.$route.query.id) {
       this.getDetail();
     }
+    // 查看示例
+    let newup = this.uploadPhotoes.filter(item=> {
+        return item.value==2
+    })
+    this.newup=newup
+
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   methods: {
     // 触发对应的上传
@@ -335,39 +389,69 @@ export default {
       setTimeout(_ => {
         this.$router.back();
       }, 1500);
-    }
+    },
+    // 短信倒计时
+    async getCodeTime() {
+      this.timer = setInterval(_ => {
+        if (this.Mincount > 0) {
+          this.Mincount--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);
+        
+    },
   }
 };
 </script>
 <style lang="less">
 .addTaobaoAccount {
   .addUser {
-    background-color: #fff;
+    background-color: #F5F5F5;
     padding: 10px;
-    .warning {
-      p {
-        font-size: 13px;
-        margin-top: 0;
-        margin: 5px 0;
-        color: #8f8f94;
-      }
-      .bgwhite {
-        background: #ffffff !important;
-      }
-      .bindJdStyle {
-        height: 40px;
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 40px;
-        margin-bottom: 5px;
-        color: black;
-        padding-left: 0px;
-      }
-    }
     .userInfoForm {
+      .accountInfo{
+        width:100%;
+        height:245px;
+        background:rgba(255,255,255,1);
+        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        border-radius:15px;
+        margin-top: 5px;
+      }
+      .marginTop5{
+        width:100%;
+        height:296px;
+        background:rgba(255,255,255,1);
+        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        border-radius:15px;
+        margin-top:15px;
+      }
+      .ValidateInfo{
+        width:100%;
+        height:555px;
+        background:rgba(255,255,255,1);
+        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        border-radius:15px;
+        margin-top:15px;
+      }
+      .vux-popup-picker-select{
+        border:1px solid rgba(229,229,229,1);
+        border-radius:5px;
+        height: 36px;
+        margin-left: 0px;
+        text-align:left !important;
+        padding-left: 10px;
+        line-height: 36px;
+      }
+      .weui-input{
+        border:1px solid rgba(229,229,229,1);
+        border-radius: 20px;
+        padding: 10px 10px !important;
+        height: 34px;
+      }
+      
       .weui-dialog {
-        height: 80%;
-        top: 30px;
+        height: 73%;
         overflow: scroll;
         z-index: 999999;
       }
@@ -381,35 +465,41 @@ export default {
         }
       }
       .vux-close {
-        padding-top: 3px;
-        font-size: 14px;
-        color: #000;
+        margin-top: 40px;
+        width: 50px;
+        height: 50px;
       }
-
       .weui-cell {
         padding: 0;
         display: flex;
         align-items: center;
         font-size: 13px;
       }
+      .weui-cell:before{
+        border-top: none;
+      }
       .vux-popup-picker-placeholder {
         font-size: 13px;
         padding-right: 5px;
+        color:#777;
+      }
+      .weui-cell__ft{
+        padding-right: 1px;
       }
       .weui-cell_access .weui-cell__ft:after {
         content: " ";
         display: inline-block;
-        height: 6px;
-        width: 6px;
-        border-width: 2px 2px 0 0;
-        border-color: #c8c8cd;
+        height: 9px;
+        width: 9px;
+        border-width: 1px 1px 0 0;
+        border-color: #1890FF;
         border-style: solid;
         -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
         transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
         position: absolute;
         top: 50%;
-        margin-top: -4px;
-        right: 2px;
+        margin-top: -3px;
+        right: 15px;
       }
       .example {
         font-size: 12px;
@@ -422,6 +512,8 @@ export default {
         padding-left: 0;
         list-style: none;
         background-color: #fff;
+        margin-left: 20px;
+        width: 90%;
       }
       .mui-noulbefore.mui-table-view:before,
       .mui-noulbefore.mui-table-view:after,
@@ -450,8 +542,8 @@ export default {
       .mui-table-view-cell {
         position: relative;
         overflow: hidden;
-        height: 41px;
-        line-height: 41px;
+        height: 50px;
+        line-height: 50px;
         -webkit-touch-callout: none;
       }
       .mui-table-view-cell:after {
@@ -459,7 +551,6 @@ export default {
         right: 0;
         bottom: 0;
         left: 0px;
-        height: 1px;
         content: "";
         -webkit-transform: scaleY(0.5);
         transform: scaleY(0.5);
@@ -475,12 +566,12 @@ export default {
       }
       .mui-input-row label {
         text-align: left;
-        line-height: 21px;
+        line-height: 30px;
         float: left;
-        padding: 10px;
+        padding: 10px 0;
         padding-right: 16px;
-        width: 32%;
-        font-size: 13px;
+        width: 26.5%;
+        font-size: 15px;
         color: #323232;
       }
       .mui-input-row input {
@@ -559,7 +650,7 @@ export default {
       a {
         background: transparent;
         text-decoration: none;
-        color: #00a1fe;
+        color:#444;
       }
       .mui-row {
         height: auto;
@@ -575,11 +666,12 @@ export default {
         float: left;
       }
       .kyc-passin {
-        position: absolute !important;
+        position: relative !important;
         top: 0;
         left: 0;
-        height: 90px;
+        height: 190px;
         opacity: 0;
+        width: 30%!important;
         &:last-child {
           left: 50%;
         }
@@ -617,13 +709,16 @@ export default {
       .z_photo {
         overflow: auto;
         clear: both;
-        width: 100%;
+        width: 60%;
         background-size: cover;
         padding: 3px 10px;
         overflow: hidden;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         background-color: #ffffff;
+        position: relative;
+        left: 90px;
+        margin-top:10px;
       }
       .z_file {
         background: url(/static/img/upload.png) no-repeat;
@@ -637,18 +732,35 @@ export default {
         vertical-align: top;
       }
       .z_photo img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height:190px;
       }
       img {
         border: 0;
       }
       .no-margin {
         margin: 0 !important;
-        font-size: 13px;
-        color: #8f8f94;
+        font-size: 12px;
+        color: #444;
       }
     }
+  }
+  .dialog-demo .weui-dialog {
+      height: 65%;
+  }
+  .attentionTip{
+    margin-bottom:0;
+    text-align: left;
+    height: 100%;
+    overflow: auto;
+    padding: 10px 15px;
+    line-height: 22px;
+  }
+  .spr_line{
+      height: 1px;
+      background: #E5E5E5;
+      width: 100%;
+      margin-top: 15px;
   }
 }
 </style>
