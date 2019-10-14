@@ -19,14 +19,14 @@
                   class="mui-input-clear"
                   placeholder="请输入淘宝用户名"
                   data-input-clear="1"
-                  style="width:150px;display:inline-block"
+                  style="width:50%;display:inline-block"
                 />
                 <div style="display:inline-block;
                             float: right;
-                            position: relative;
-                            top: 11px;
-                            right: 0px;
-                            width: 70px;
+                            margin-top: 10px;
+                            flex:1;
+                            padding: 0 5px;
+                            font-size: 12px;
                             height: 30px;
                             background: #1890FF;
                             border-radius: 5px;
@@ -61,16 +61,16 @@
                   maxlength="18"
                   placeholder="请输入淘宝订单号"
                   data-input-clear="11"
-                  style="width:150px;display:inline-block"
+                  style="width:50%;display:inline-block"
                 />
                 <div v-for="(item) in newup"
                     :key="item.value"
                     style="float: right;
                           display:inline-block;
-                          position: relative;
-                          top: 11px;
-                          right: 0px;
-                          width: 70px;
+                          margin-top: 10px;
+                          flex:1;
+                          padding: 0 5px;
+                          font-size: 12px;
                           height: 30px;
                           background: #1890FF;
                           border-radius: 5px;
@@ -407,14 +407,14 @@ export default {
 <style lang="less">
 .addTaobaoAccount {
   .addUser {
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     padding: 10px;
     .userInfoForm {
       .accountInfo{
         width:100%;
         height:245px;
         background:rgba(255,255,255,1);
-        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        box-shadow: 5px 5px 10px #cccccc;
         border-radius:15px;
         margin-top: 5px;
       }
@@ -422,7 +422,7 @@ export default {
         width:100%;
         height:296px;
         background:rgba(255,255,255,1);
-        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        box-shadow: 5px 5px 10px #cccccc;
         border-radius:15px;
         margin-top:15px;
       }
@@ -430,7 +430,7 @@ export default {
         width:100%;
         height:555px;
         background:rgba(255,255,255,1);
-        box-shadow:0px 8px 12px 0px rgba(236,236,236,1);
+        box-shadow: 5px 5px 10px #cccccc;
         border-radius:15px;
         margin-top:15px;
       }
@@ -438,10 +438,11 @@ export default {
         border:1px solid rgba(229,229,229,1);
         border-radius:5px;
         height: 36px;
-        margin-left: 0px;
+        margin-left: 3px;
         text-align:left !important;
         padding-left: 10px;
         line-height: 36px;
+        width: 99%;
       }
       .weui-input{
         border:1px solid rgba(229,229,229,1);
@@ -465,9 +466,9 @@ export default {
         }
       }
       .vux-close {
-        margin-top: 40px;
-        width: 50px;
-        height: 50px;
+        margin-top: 30px;
+        width: 40px;
+        height: 40px;
       }
       .weui-cell {
         padding: 0;
@@ -552,6 +553,7 @@ export default {
         bottom: 0;
         left: 0px;
         content: "";
+        height:0px !important;
         -webkit-transform: scaleY(0.5);
         transform: scaleY(0.5);
         background-color: #e1e1e1;
@@ -669,7 +671,7 @@ export default {
         position: relative !important;
         top: 0;
         left: 0;
-        height: 190px;
+        height: 190px !important;
         opacity: 0;
         width: 30%!important;
         &:last-child {
@@ -709,7 +711,7 @@ export default {
       .z_photo {
         overflow: auto;
         clear: both;
-        width: 60%;
+        width: 60% !important;
         background-size: cover;
         padding: 3px 10px;
         overflow: hidden;
@@ -733,7 +735,7 @@ export default {
       }
       .z_photo img {
         width: 100px;
-        height:190px;
+        height:190px !important;
       }
       img {
         border: 0;
@@ -747,6 +749,7 @@ export default {
   }
   .dialog-demo .weui-dialog {
       height: 65%;
+      width: 85%;
   }
   .attentionTip{
     margin-bottom:0;
