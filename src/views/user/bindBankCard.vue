@@ -295,8 +295,14 @@ export default {
         text: "提交成功，等待审核",
         type: "success"
       });
+
+      // 绑定淘宝页面验证是否绑定身份证
       setTimeout(_ => {
-        this.$router.back();
+        if(this.$route.query.id == 0){
+          this.$router.push('/h5/user/certification?id=1')
+        }else{
+          this.$router.back();
+        }
       }, 1500);
     }
   }

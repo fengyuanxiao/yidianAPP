@@ -19,9 +19,9 @@
                   class="mui-input-clear"
                   placeholder="请输入淘宝用户名"
                   data-input-clear="1"
-                  style="width:50%;display:inline-block"
                 />
-                <div style="display:inline-block;
+                <!--  style="width:50%;display:inline-block" -->
+                <!-- <div style="display:inline-block;
                             float: right;
                             margin-top: 10px;
                             flex:1;
@@ -32,7 +32,7 @@
                             border-radius: 5px;
                             line-height: 30px;
                             text-align: center;
-                            color:white">验证信息</div>
+                            color:white">验证信息</div> -->
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
             </li>
@@ -159,7 +159,7 @@
           <div class="mui-row">
             <div
               class="mui-col-xs-4 "
-              style="text-align:right;margin-left:-75px"
+              style="text-align:right;margin-left:-75px;height:450px"
               v-for="(item,ind) in uploadPhotoes"
               :key="item.value"
             >
@@ -179,10 +179,9 @@
                 <div class="z_add_img" data-show_tip="1">
                   <img :src="images[ind]||'/static/img/upload.png'" />
                 </div>
+                <p class="no-margin">{{item.title}}</p>
               </div>
-              <p class="no-margin">{{item.title}}</p>
-              
-              <x-dialog v-model.trim="item.showExample" class="dialog-demo">
+              <x-dialog v-model.trim="item.showExample" class="dialogDemo">
                 <!-- 示例图片 -->
                 <div class="img-box">
                   <img :src="item.exampleImg" style="max-width:100%" />
@@ -199,24 +198,27 @@
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
-              style="top:-210px;left: 10px;"
+              style="top: -220px;left: 5%;"
             />
+            <!-- style="top: 220px;left: 5%;" -->
             <input
               @change="uploadPhoto($event,1)"
               ref="tu1"
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
-              style="top:-210px;left: 30px;"
+              style="top: -220px;left: 5%;"
             />
+            <!-- style="top: 220px;left: 35%;" -->
             <input
               @change="uploadPhoto($event,2)"
               ref="tu2"
               type="file"
               accept="image/*"
               class="mui-col-xs-4 kyc-passin"
-              style="top:-210px;left:20px;"
+              style="top: -220px;left: 9%;"
             />
+            <!-- style="top: 220px;left: 69%;" -->
           </div>
         </div>
         <div class="mui-submite" style="margin:40px 10px">
@@ -224,7 +226,7 @@
         </div>
       </div>
     </div>
-    <!-- 弹窗开始 -->
+    <!-- 注意事项弹窗 -->
       <x-dialog v-model.trim="showPop" class="dialog-demo demoDialog">
         <div class="img-box showBg">
           <div class="attentionTip">
@@ -239,8 +241,37 @@
           <x-button type="primary" style="border-radius:5px;background:#FF2741;" min>{{this.Mincount >0 ?"了解("+this.Mincount+")" : "了解"}}</x-button>
         </div>
       </x-dialog>
-    <!-- 弹窗结束 -->
-
+      <!-- 积分弹窗 -->
+     <!-- <x-dialog v-model.trim="showPoint" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding: 20px 10px 15px;font-size: 15px;color: black;">{{this.newPoint >=80 ?'请耐心等待审核，快速审核请加QQ:2324286706' :"该账号为可疑账号，请更换账号重新提交！如有疑问请加官方QQ：2324286706"}}</p>
+        </div>
+        <div @click="showPoint=false" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog> -->
+    <!-- 银行卡弹窗 -->
+     <x-dialog v-model.trim="showBank" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 18px;color: black;">未绑定银行卡</p>
+        </div>
+        <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div>
+        <!-- <div @click="showBank=false" style="margin:20px 20px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >确定</div>
+        <div style="margin-bottom:20px 0px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >取消</div> -->
+      </x-dialog>
+    <!-- 身份证弹窗 -->
+     <x-dialog v-model.trim="showID" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 18px;color: black;">未绑定身份证</p>
+        </div>
+        <div @click="$router.push('/h5/user/certification')" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div>
+        <!-- <div @click="showID=false" style="margin:20px 20px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >确定</div>
+        <div style="margin-bottom:20px 0px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >取消</div> -->
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -257,10 +288,18 @@ export default {
         address: "",
         tb_order_sign: ""
       },
+      getAccount:{
+        Account: "",
+      },
       addressData: ChinaAddressV4Data,
       images: ["","", ""],
       newup:null,
-      showPop: true,
+      showPop: false,
+      showPoint:false,
+      showBank:false,
+      showID:false,
+      bankStatus:null,
+      realnameStatus:0,
       Mincount:5,
       timer: null,
       uploadPhotoes: [
@@ -315,7 +354,6 @@ export default {
       } else {
         this.$set(this.images, ind, url);
       }
-      // console.log(this.images);
     },
     // 获取详情
     async getDetail() {
@@ -338,6 +376,9 @@ export default {
         this.$url + temp.alipay_img_url,
         this.$url + temp.shopping_img_url
       ];
+      this.getAccount={
+        Account: temp.nickname,
+      }
     },
     async bandTaobao() {
       if (this.userInfo.Account === "") {
@@ -359,10 +400,10 @@ export default {
         return this.$vux.toast.text("请选择城市");
       }
       if (this.userInfo.address === "") {
-        return this.$vux.toast.text("青输入详细地址");
+        return this.$vux.toast.text("请输入详细地址");
       }
       if (!this.userInfo.tb_order_sign) {
-        return this.$vux.toast.text("输入最近订单号");
+        return this.$vux.toast.text("请输入最近订单号");
       }
        if (this.images[0].length === 0) {
         return this.$vux.toast.text("请输入淘气值截图");
@@ -373,22 +414,55 @@ export default {
       if (this.images[2].length === 0) {
         return this.$vux.toast.text("请输入淘宝订单截图");
       }
+
       const reuslt = await this.axios.post(
         this.$route.query.id
           ? "/api/index/updatetb_bind"
           : "/api/index/tbOperate",
-        Object.assign(this.userInfo, {
-          images: this.images,
-          AlipayName: this.userInfo.alipay_name
-        })
+          this.getAccount
+          // Object.assign(this.getAccount
+          // , {
+        // Object.assign(this.userInfo, {
+        //   images: this.images,
+        //   AlipayName: this.userInfo.alipay_name
+        // }
+        // )
       );
       this.$vux.toast.show({
         text: "提交成功，等待审核",
         type: "success"
       });
+      // let showPoint=reuslt.data.point
+      // this.newPoint=showPoint
+      let bank_status=reuslt.data.bank_status
+      let realname_status=reuslt.data.realname_status
+      this.bankStatus=bank_status
+      this.realnameStatus=realname_status
+      if (reuslt.data.point>=80) {
+        this.$vux.toast.show({
+          text: "请耐心等待审核，快速审核请加QQ:2324286706"
+        });
+        // return this.$vux.toast.text("请耐心等待审核，快速审核请加QQ:2324286706");
+      }else{
+        this.$vux.toast.show({
+          text: "该账号为可疑账号，请更换账号重新提交！如有疑问请加官方QQ：2324286706"
+        });
+        // return this.$vux.toast.text("该账号为可疑账号，请更换账号重新提交！如有疑问请加官方QQ：2324286706");
+      }
+
       setTimeout(_ => {
-        this.$router.back();
-      }, 1500);
+        if (reuslt.data.bank_status===0) {
+          this.showBank=true
+        }else{
+          this.showBank=false
+        }
+        if (reuslt.data.bank_status===1 && reuslt.data.realname_status===0) {
+          this.showID=true
+        }else{
+          this.showID=false
+        }
+      }, 2000);
+
     },
     // 短信倒计时
     async getCodeTime() {
@@ -438,11 +512,11 @@ export default {
         border:1px solid rgba(229,229,229,1);
         border-radius:5px;
         height: 36px;
-        margin-left: 3px;
+        margin-left: 0px !important;
         text-align:left !important;
         padding-left: 10px;
         line-height: 36px;
-        width: 99%;
+        width: 100%;
       }
       .weui-input{
         border:1px solid rgba(229,229,229,1);
@@ -500,7 +574,7 @@ export default {
         position: absolute;
         top: 50%;
         margin-top: -3px;
-        right: 15px;
+        right: 15px !important;
       }
       .example {
         font-size: 12px;
@@ -570,11 +644,12 @@ export default {
         text-align: left;
         line-height: 30px;
         float: left;
-        padding: 10px 0;
+        padding: 10px 0 !important;
         padding-right: 16px;
-        width: 26.5%;
+        width: 80px !important;
         font-size: 15px;
         color: #323232;
+            margin-right: 5px;
       }
       .mui-input-row input {
         padding-right: 10px;
@@ -711,16 +786,16 @@ export default {
       .z_photo {
         overflow: auto;
         clear: both;
-        width: 60% !important;
+        width: 63% !important;
         background-size: cover;
         padding: 3px 10px;
         overflow: hidden;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         background-color: #ffffff;
-        position: relative;
-        left: 90px;
-        margin-top:10px;
+        position: absolute;
+        left: 40%;
+        top: 225px;
       }
       .z_file {
         background: url(/static/img/upload.png) no-repeat;
@@ -750,6 +825,9 @@ export default {
   .dialog-demo .weui-dialog {
       height: 65%;
       width: 85%;
+  }
+  .dialog_demo{
+    height: auto !important;
   }
   .attentionTip{
     margin-bottom:0;

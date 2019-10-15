@@ -10,7 +10,7 @@
           @click="$router.push('/h5/user/system')"
         />
         <flexbox>
-          <flexbox-item>
+          <flexbox-item> 
             <div class="flex-demo">
               <img class="userHeaderImg" src="@/assets/img/xhxlogo.png" alt />
             </div>
@@ -29,10 +29,12 @@
         </flexbox>
       </div>
       <div class="userAccountInfo">
-        <grid :show-vertical-dividers="false">
-          <grid-item class="countBox" label="可提现总余额" style="padding-bottom:5px;">
-            <strong slot="icon" style="font-size:36px;">{{userCenterInfo.total_commission||0.00}}元</strong>
-          </grid-item>
+        <grid :show-vertical-dividers="false" >
+          <div @click="$router.push('/h5/user/tixian')">
+            <grid-item class="countBox" label="可提现总余额" style="padding-bottom:5px;" >
+              <strong slot="icon" style="font-size:36px;">{{userCenterInfo.total_commission||0.00}}元</strong>
+            </grid-item>
+          </div>
         </grid>
         <grid :show-vertical-dividers="false">
           <grid-item label="本金余额">

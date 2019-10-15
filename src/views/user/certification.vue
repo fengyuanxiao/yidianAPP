@@ -135,7 +135,11 @@ export default {
         type: "success"
       });
       setTimeout(_ => {
-        this.$router.back();
+        if(this.$route.query.id==1){
+          this.$router.push('/h5/user/main')
+        }else{
+          this.$router.back();
+        }
       }, 1500);
     }
   }

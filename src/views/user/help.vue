@@ -5,12 +5,12 @@
       <Collapse style="background:#fff;margin:10px 0; ">
         <Panel>
           微信客服
-          <p slot="content">加微信zhizi062587</p>
+          <p slot="content">加微信zhizi062587或Haiyuemj</p>
         </Panel>
         <Panel>
           QQ客服
-          <p slot="content">加QQ2190943565或3043421371</p>
-        </Panel>
+          <p slot="content">QQ3057016578和QQ2324286706</p>
+        </Panel> 
       </Collapse>
       <p style="padding:0.4rem 0.5rem;font-size: 1.1rem ">常见问题</p>
       <Collapse style="background:#fff;">

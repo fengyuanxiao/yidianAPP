@@ -23,7 +23,7 @@
               </p>
               <p>
                 商品单件成交价格：
-                <span class="make-num">{{orderInfo.itemprice}}元</span>
+                <span class="make-num">{{orderInfo.need_principal}}元</span>
               </p>
               <p>
                 下单件数：
