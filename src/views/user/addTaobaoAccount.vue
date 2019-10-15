@@ -177,7 +177,7 @@
             <!-- 上传截图 -->
               <div class="z_photo z_photo_pic_1">
                 <div class="z_add_img" data-show_tip="1">
-                  <img :src="images[ind]||'/static/img/upload.png'" />
+                  <img :src="images[ind]||'/static/img/uploadImg.png'" />
                 </div>
                 <p class="no-margin">{{item.title}}</p>
               </div>
@@ -798,7 +798,7 @@ export default {
         top: 225px;
       }
       .z_file {
-        background: url(/static/img/upload.png) no-repeat;
+        background: url(/static/img/uploadImg.png) no-repeat;
         background-size: 100% 100%;
         width: 60px;
         height: 60px;
