@@ -159,7 +159,7 @@
           <div class="mui-row">
             <div
               class="mui-col-xs-4 "
-              style="text-align:right;margin-left: 10px;height: 500px; width: 30%;"
+              style="text-align:right;margin-left: 8px;height: 500px; width: 30%;"
               v-for="(item,ind) in uploadPhotoes"
               :key="item.value"
             >
@@ -201,6 +201,7 @@
               class="mui-col-xs-4 kyc-passin"
               style="top: 260px;left: 2%;"
             />
+            <!-- style="top: -260px;left: 2%;" -->
             <input
               @change="uploadPhoto($event,1)"
               ref="tu1"
@@ -209,6 +210,7 @@
               class="mui-col-xs-4 kyc-passin"
               style="top: 260px;left: 35%"
             />
+            <!-- style="top: -260px;left: 5%" -->
             <input
               @change="uploadPhoto($event,2)"
               ref="tu2"
@@ -217,6 +219,7 @@
               class="mui-col-xs-4 kyc-passin"
               style="top: 260px;left: 69%;"
             />
+            <!-- style="top: -260px;left: 9%;" -->
           </div>
         </div>
         <div class="mui-submite" style="margin:40px 10px">
@@ -298,21 +301,21 @@ export default {
       uploadPhotoes: [
         {
           value: 0,
-          title: "请上传淘气值截图",
+          title: "上传淘气值截图",
           showExample: false,
           exampleImg: require("@/assets/img/taobao/taoqizhi.png"),
           exampleFont:"淘气值示例图"
         },
         {
           value: 1,
-          title: "请上传支付宝截图",
+          title: "上传支付宝截图",
           showExample: false,
           exampleImg: require("@/assets/img/taobao/myzhifubao.png"),
           exampleFont:"支付宝示例图"
         },
         {
           value: 2,
-          title: "请上传淘宝订单截图",
+          title: "上传淘宝订单截图",
           showExample: false,
           exampleImg: require("@/assets/img/taobao/dingdan.png"),
           exampleFont:"淘宝订单示例图"
@@ -396,7 +399,7 @@ export default {
         return this.$vux.toast.text("请输入详细地址");
       }
       if (!this.userInfo.tb_order_sign) {
-        return this.$vux.toast.text("请输入最近订单号");
+        return this.$vux.toast.text("请输入淘宝订单号");
       }
        if (this.images[0].length === 0) {
         return this.$vux.toast.text("请输入淘气值截图");
@@ -407,59 +410,72 @@ export default {
       if (this.images[2].length === 0) {
         return this.$vux.toast.text("请输入淘宝订单截图");
       }
-
-      const reuslt1 = await this.axios.post(
-        this.$route.query.id
-          ? "/api/index/updatetb_bind"
-          : "/api/index/tbOperate",
-
-        Object.assign(this.getAccount, {
-          images: this.images,
-          AlipayName: this.userInfo.alipay_name
-        }
-        )
-      );
-
-       if (reuslt1.data.point>=80 || reuslt1.data.point==0) {
-         const reuslt = await this.axios.post(
-          this.$route.query.id
-            ? "/api/index/updatetb_bind"
-            : "/api/index/tbOperate",
-
+      // 是否是重新提交的绑定
+      if(this.$route.query.id){
+          const reuslt1 = await this.axios.post(
+            "/api/index/updatetb_bind",
           Object.assign(this.userInfo, {
-            Account:this.getAccount.Account,
             images: this.images,
             AlipayName: this.userInfo.alipay_name
-            }
-            )
-          );
+          }
+          )
+        );
           this.$vux.toast.show({
-            text: "提交成功，等待审核",
-            type: "success"
-          });
-          let realname_status=reuslt.data.realname_status
-          this.realnameStatus=realname_status
-
-          // 弹框
-          setTimeout(_ => {
-            if (reuslt.data.bank_status===0) {
-              this.showBank=true
-            }else{
-              this.showBank=false
-            }
-            if (reuslt.data.bank_status===1 && reuslt.data.realname_status===0) {
-              this.showID=true
-            }else{
-              this.showID=false
-            }
-            if (reuslt.data.bank_status===1 && reuslt.data.realname_status===1) {
-              this.$router.back();
-            }
-          }, 2000);
-
+              text: "提交成功，等待审核",
+              type: "success"
+            });
+             setTimeout(_ => {
+                this.$router.back();
+            }, 2000);
       }else{
-          this.showPoint=true
-      }
+           const reuslt1 = await this.axios.post(
+           "/api/index/tbOperate",
+          Object.assign(this.getAccount, {
+            images: this.images,
+            AlipayName: this.userInfo.alipay_name
+          }
+          )
+        );
+
+        if (reuslt1.data.point>=80 ) {
+          const reuslt = await this.axios.post(
+            "/api/index/tbOperate",
+            Object.assign(this.userInfo, {
+              Account:this.getAccount.Account,
+              images: this.images,
+              AlipayName: this.userInfo.alipay_name
+              }
+              )
+            );
+            this.$vux.toast.show({
+              text: "提交成功，等待审核",
+              type: "success"
+            });
+            let realname_status=reuslt.data.realname_status
+            this.realnameStatus=realname_status
+
+            // 弹框
+            setTimeout(_ => {
+              if (reuslt.data.bank_status===0) {
+                this.showBank=true
+              }else{
+                this.showBank=false
+              }
+              if (reuslt.data.bank_status===1 && reuslt.data.realname_status===0) {
+                this.showID=true
+              }else{
+                this.showID=false
+              }
+              if (reuslt.data.bank_status===1 && reuslt.data.realname_status===1) {
+                this.$router.back();
+              }
+            }, 2000);
+
+        }else{
+            this.showPoint=true
+        }
+
+      }    
       
     },
     // 短信倒计时
