@@ -50,9 +50,12 @@
 }
 .detailss .con_color{
   color: #7F7F7F;
-  font-size: 0.4px;
+  font-size: 13px;
   text-indent: -5px;
   margin-left: 5px;
+}
+.demoDialog .weui-dialog {
+  width: 85%;
 }
 
 

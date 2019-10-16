@@ -197,23 +197,22 @@
     </template>
     <x-dialog v-model.trim="isShowInfo" class="demoDialog">
       <div class="img-box showBg">
-
         <div
           v-if="orderInfo"
           class="task-plan detailss"
           style="margin-bottom:0;text-align: left;height: 100%;overflow: auto;padding: 10px 15px;"
         >
-          <p>一点挣钱中接手任务的账号和{{orderInfo.platformname}}上实际下单的账号必须一致，下单不可代付，如果发现直接封号</p>
-          <p>要求至少和商家客服有4个问题互动，不得一次性复制4个问题给客服，如果客服不在线，等待时间超过10分钟可以留言“先下单了，如果有什么问题可以电话联系”然后直接下单</p>
-          <p>严禁和卖家旺旺聊天提“刷单”“信誉”“一点挣钱任务”等敏感词</p>
-          <p>{{orderInfo.platformname}}上实际下单的地址必须和一点挣钱接任务的{{orderInfo.platformname}}账号绑定的地址一致，如收货信息有变更请先更改信息后再接任务</p>
-          <p>一点挣钱所有订单不允许使用淘宝客,返利红包 积分等优惠方式下单，出现将会从本金里面扣除返利佣金，两次以上永久封号</p>
-          <p>不允许使用信用卡，花呗等任何信用类方式付款，不允许使用集分宝，淘金币，天猫积分等积分抵扣付款金额，否则将会从本金扣除购物金额的1%的手续费或与积分对应的金额，一点挣钱的任务不参与好评返现，如果商家在任务中有要求使用店铺优惠券的可按商家要求领取抵扣的优惠券，返款只返实际支付的金额</p>
-          <p>一定要等到快递真实签收后才能确认收货并按照任务的评价要求给予5分好评</p>
+          <p class="con_tilte">一点挣钱中接手任务的账号和{{orderInfo.platformname}}上实际下单的账号必须一致，下单<span style="color:red">不可代付</span>，如果发现直接封号</p>
+          <p class="con_color"><span>•</span> 要求至少和商家客服有4个问题互动，不得一次性复制4个问题给客服，如果客服不在线，等待时间超过10分钟可以留言“先下单了，如果有什么问题可以电话联系”然后直接下单</p>
+          <p class="con_color"><span>•</span> 严禁和卖家旺旺聊天提<span style="color:red">“刷单”、“信誉”、“一点挣钱任务”</span>等敏感词</p>
+          <p class="con_color"><span>•</span> 淘宝上实际下单的地址必须和一点挣钱接任务的<span style="color:red">淘宝账号绑定的地址一致</span>，如收货信息有变更请先更改信息后再接任务</p>
+          <p class="con_color"><span>•</span> 一点挣钱所有订单<span style="color:red">不允许使用淘宝客、返利红包、积分等</span>优惠方式下单，出现将会从本金里面扣除返利佣金，两次以上永久封号</p>
+          <p class="con_color"><span>•</span> 不允许使用<span style="color:red">信用卡、花呗等任何信用类</span>方式付款，不允许使用<span style="color:red">集分宝、淘金币、天猫积分等</span>积分抵扣付款金额，否则将会从本金扣除购物金额的1%的手续费或与积分对应的金额</p>
+          <p class="con_color"><span>•</span> 一点挣钱的任务不参与好评返现，如果商家在任务中有要求使用店铺优惠券的可按商家要求领取抵扣的优惠券，返款只返实际支付的金额，一定要快递真实签收后才能确认收货并按照任务的评价要求给予5星好评</p>
         </div>
       </div>
       <div @click="isShowInfo=false">
-        <x-button type="primary" style="border-radius:0;" min>知道了</x-button>
+        <x-button type="primary" style="border-radius:5px;background:#FF2741" min>知道了</x-button>
       </div>
     </x-dialog>
     <!-- {/* 第一步货比三家的图片示例 */} -->

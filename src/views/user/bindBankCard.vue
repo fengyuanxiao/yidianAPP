@@ -258,7 +258,6 @@ export default {
       } else {
         this.$set(this.images, ind, url);
       }
-      // console.log(this.images);
     },
     async bandCard() {
       if (this.userInfo.realName === "") {
@@ -300,6 +299,8 @@ export default {
       setTimeout(_ => {
         if(this.$route.query.id == 0){
           this.$router.push('/h5/user/certification?id=1')
+        }else if(this.$route.query.id == 1){
+          this.$router.push('/h5/user/main')
         }else{
           this.$router.back();
         }
