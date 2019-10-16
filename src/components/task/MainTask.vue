@@ -5,7 +5,7 @@
         <img :src="task.goodspic" alt />
       </flexbox-item>
       <flexbox-item :span="6">
-        <p>{{task.platform}}{{task.task_type_text}}</p>
+        <p>{{task.new_type ==1 ? '垫付任务' :task.new_type ==2?'回访任务' :'图文任务'}}</p>
         <p class="price">佣金：￥{{task.commission}}</p>
         <p style="color: #999999">垫付：{{task.itemprice}}元</p>
         <p class="count">

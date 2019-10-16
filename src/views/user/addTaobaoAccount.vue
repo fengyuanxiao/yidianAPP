@@ -229,7 +229,10 @@
     </div>
     <!-- 注意事项弹窗 -->
       <x-dialog v-model.trim="showPop" class="dialog-demo demoDialog">
-        <div class="img-box showBg">
+        <!-- <div class="img-box showBg"> -->
+        <div class="img-box" style="background: rgba(0, 0, 0, 0.6);">
+
+          <img src="~@/assets/img/warn.png" alt="">
           <div class="attentionTip">
             <p><span style="color:red">淘宝账号：</span>绑定的淘宝账号<span style="color:red;display:inline">需满六个月信誉2星以上且实名认证</span>，且要与本平台绑定的身份证相同；且半个月内有购买记录，无降权打标记录等；</p>
             <p><span style="color:red">淘宝订单号：</span>请登录绑定的淘宝账号复制任意一笔订单粘贴到输入框即可；</p>
@@ -437,7 +440,7 @@ export default {
           )
         );
 
-        if (reuslt1.data.point>=80 ) {
+        if (reuslt1.data.point>=80 || reuslt1.data.point ==0) {
           const reuslt = await this.axios.post(
             "/api/index/tbOperate",
             Object.assign(this.userInfo, {
@@ -855,6 +858,7 @@ export default {
     overflow: auto;
     padding: 10px 15px;
     line-height: 22px;
+    margin-top: -500px;
   }
   .spr_line{
       height: 1px;
