@@ -38,8 +38,9 @@
                   v-if="!hideInfo"
                   @click.native="getTask()"
                   :disabled="isTimeout"
-                >{{isTimeout?'任务已过期':'待操作'}}</x-button>
+                >{{(isTimeout && task.is_muti_keyword==0) ||(isKeyTimeout && task.is_muti_keyword==1 )?'任务已过期' :'待操作'}}</x-button>
               </template>
+              <!-- {{isTimeout?'任务已过期':'待操作'}} -->
               <template v-else>
                 <x-button
                   type="primary"
@@ -69,8 +70,9 @@
               <x-button type="primary" v-if="type==='finish'" :disabled="true">已完成</x-button>
             </template>
           </flexbox-item>
+          <!-- task.limittime -->
         </flexbox>
-        <p v-if="!isTimeout && (task.order_status==0)" style="color:#f00;">请在{{task.limittime}}前操作</p>
+        <p v-if="!isTimeout && (task.order_status==0)" style="color:#f00;">{{task.is_muti_keyword==1 && task.status_check_time !=0 ?'请在'+ isOrderTimeout+'前操作' : task.is_muti_keyword==1 && task.status_check_time ==0? "" : '请在'+task.limittime+'前操作'}}</p>
       </flexbox-item>
     </flexbox>
   </div>
@@ -98,12 +100,36 @@ export default {
     },
     isTimeout() {
       return dateFormat(new Date(), "MM-DD HH:mm:ss") > this.task.limittime;
-    }
+    },
+    // 多关键词超时
+    isKeyTimeout() {
+      if(this.task.status_check_time !=0){
+          let checkTime= dateFormat(new Date(this.task.status_check_time*1000), "YYYY-MM-DD HH:mm:ss")
+          var time = new Date(checkTime.replace("-","/"));
+          let hours=2
+          let endTime=time.setHours(time.getHours() + hours);
+          let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
+
+      return dateFormat(new Date(), "MM-DD HH:mm:ss") > endTimes;
+      }
+    },
+    // 多关键词订单过期时间
+    isOrderTimeout() {
+      if(this.task.status_check_time !=0){
+      let checkTime= dateFormat(new Date(this.task.status_check_time*1000), "YYYY-MM-DD HH:mm:ss")
+          var time = new Date(checkTime.replace("-","/"));
+          let hours=2
+          let endTime=time.setHours(time.getHours() + hours);
+          let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
+      return endTimes;
+      }
+    },
   },
   methods: {
     async getTask() {
       this.$router.push("/h5/order/dianfu/detail/" + this.task.order_id);
-    }
+    },
+    
   }
 };
 </script>
