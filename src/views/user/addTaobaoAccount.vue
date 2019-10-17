@@ -417,19 +417,33 @@ export default {
       if(this.$route.query.id){
           const reuslt1 = await this.axios.post(
             "/api/index/updatetb_bind",
-          Object.assign(this.userInfo, {
+          Object.assign(this.getAccount, {
+            Account:this.getAccount.Account,
             images: this.images,
-            AlipayName: this.userInfo.alipay_name
           }
           )
         );
+        if (reuslt1.data.point>=80 || reuslt1.data.point ==0) {
+          const reuslt = await this.axios.post(
+            "/api/index/updatetb_bind",
+            Object.assign(this.userInfo, {
+              Account:this.getAccount.Account,
+              images: this.images,
+              AlipayName: this.userInfo.alipay_name
+              }
+              )
+            );
           this.$vux.toast.show({
               text: "提交成功，等待审核",
               type: "success"
             });
-             setTimeout(_ => {
-                this.$router.back();
-            }, 2000);
+            setTimeout(_ => {
+              this.$router.back();
+          }, 2000);
+        }else{
+          this.showPoint=true
+        }
+        // 首次提交验证分数
       }else{
            const reuslt1 = await this.axios.post(
            "/api/index/tbOperate",
