@@ -858,7 +858,7 @@ export default {
     overflow: auto;
     padding: 10px 15px;
     line-height: 22px;
-    margin-top: -500px;
+    margin-top: -470px;
   }
   .spr_line{
       height: 1px;

@@ -9,6 +9,7 @@
           <p>
             <img class="tpic" :src="task.taskitem_pic" alt />
             <span>{{task.user_taobao}}</span>
+            <span style="display: inline-block;color: #fe905f;margin-right: 6px;font-weight: bold;float: right;margin-top: 5px;">订单号：{{task.order_id}}</span>
           </p>
           <p style="margin-top:10px;">接单时间：{{task.addtime}}</p>
         </div>
@@ -18,7 +19,8 @@
             <p>{{task.platform}}{{task.task_type_text}}</p>
             <p class="price">￥{{task.commission}}</p>
             <p style="color: #999999">垫付{{task.need_principal}}元{{task.refundtext}}</p>
-            <p v-if="task.order_status==0 && isTimeout && !hideInfo">该任务已过期</p>
+            <p v-if="task.order_status==0 && ((isTimeout&&task.is_muti_keyword==0) || (isKeyTimeout&&task.is_muti_keyword==1)) && !hideInfo">该任务已过期</p>
+
             <!-- <p class="count">
           <span>共{{task.common_orderitem_num}}单</span>
           <span>剩{{task.residue_order}}单</span>
@@ -37,10 +39,9 @@
                   type="primary"
                   v-if="!hideInfo"
                   @click.native="getTask()"
-                  :disabled="isTimeout"
+                  :disabled="((isTimeout && task.is_muti_keyword==0) ||(isKeyTimeout && task.is_muti_keyword==1 ))"
                 >{{(isTimeout && task.is_muti_keyword==0) ||(isKeyTimeout && task.is_muti_keyword==1 )?'任务已过期' :'待操作'}}</x-button>
               </template>
-              <!-- {{isTimeout?'任务已过期':'待操作'}} -->
               <template v-else>
                 <x-button
                   type="primary"
@@ -72,7 +73,7 @@
           </flexbox-item>
           <!-- task.limittime -->
         </flexbox>
-        <p v-if="!isTimeout && (task.order_status==0)" style="color:#f00;">{{task.is_muti_keyword==1 && task.status_check_time !=0 ?'请在'+ isOrderTimeout+'前操作' : task.is_muti_keyword==1 && task.status_check_time ==0? "" : '请在'+task.limittime+'前操作'}}</p>
+        <p v-if="(!isTimeout|| !isKeyTimeout) && (task.order_status==0)" style="color:#f00;">{{task.is_muti_keyword==1 && task.status_check_time !=0 ?'请在'+ isOrderTimeout+'前操作' : task.is_muti_keyword==1 && task.status_check_time ==0? "" : '请在'+task.limittime+'前操作'}}</p>
       </flexbox-item>
     </flexbox>
   </div>
