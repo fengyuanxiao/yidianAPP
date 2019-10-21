@@ -1,5 +1,5 @@
 module.exports = {
-  version: '1.1.7',
-  axiosurl: 'http://www.paiming001.com',
-  imgurl: 'http://www.paiming001.com/'
+  version: '1.1.8',
+  axiosurl: 'http://example.paiming001.com',
+  imgurl: 'http://example.paiming001.com/'
 }

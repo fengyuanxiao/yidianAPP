@@ -17,7 +17,43 @@
         <x-button type="primary" :disabled="no_task==='1'" @click.native="getTask()">领取任务</x-button>
       </flexbox-item>
     </flexbox>
-  </div>
+
+    <!-- 银行卡弹窗 -->
+     <x-dialog v-model.trim="showBank" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div>
+      </x-dialog>
+    <!-- 身份证弹窗 -->
+     <x-dialog v-model.trim="showID" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="$router.push('/h5/user/certification?id=1')" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div>
+      </x-dialog>
+    <!-- 身份证和银行卡审核弹窗 -->
+     <x-dialog v-model.trim="showTip" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="showTip=false" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
+    <!-- 审核通过后跳转邀请弹窗 -->
+     <x-dialog v-model.trim="showInviteTip" class="dialog_demo">
+        <div class="img-box showBg">
+          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="$router.push('/h5/invite')" style="margin:20px 20px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >确定</div>
+        <div @click="showInviteTip=false" style="margin-bottom:20px 0px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >取消</div>
+      </x-dialog>
+  </div> 
 </template>
 <script>
 import { Flexbox, FlexboxItem } from "vux";
@@ -38,7 +74,13 @@ export default {
   data() {
     return {
       unique_code: "",
-      user_address_book: ""
+      user_address_book: "",
+      showBank:false,
+      showID:false,
+      showTip:false,
+      showInviteTip:false,
+      realnameStatus:null,
+      showMsg:''
     };
   },
   components: {
@@ -69,11 +111,35 @@ export default {
         unique_code: this.unique_code,
         address_info: this.address_info
       });
-      this.$vux.toast.show({
-        type: "success",
-        text: "领取成功"
-      });
-      this.$router.push("/h5/order/dianfu/detail/" + result.data.order_id);
+// console.log(resule.status,'3')
+      if(result.data.count ==1){
+          let bank_status=result.data.bank_status
+          let realname_status=result.data.realname_status
+          this.realnameStatus=realname_status
+          let showMsg=result.msg
+          this.showMsg=showMsg
+          if(bank_status ==0){
+              this.showBank=true
+          }
+          if((bank_status ==1 || bank_status ==2) && realname_status==0){
+              this.showID=true
+          }
+          if((bank_status ==2 && realname_status ==2)|| (bank_status ==1 && realname_status ==2)||(bank_status ==2 && realname_status ==1) ){
+              this.showTip=true
+          }
+          
+      }else if(result.data.inviter=1 ){
+          if(bank_status ==1 && realname_status==1){
+              this.showInviteTip=true
+            }
+      }else{
+          this.$vux.toast.show({
+            type: "success",
+            text: "领取成功"
+          });
+          this.$router.push("/h5/order/dianfu/detail/" + result.data.order_id);
+      }
+          
     },
     // 抢问答任务的单子
     async getGrabquestask() {

@@ -94,7 +94,12 @@ axios.interceptors.response.use(
     // adapted to mockjs with {array:[...]} but not [...]
     let data = null
     hideLoading()
+    console.log(xhr.data,'444')
+    console.log(xhr.data.mobile,'222')
     if (xhr.data.status === true || xhr.data.status === 1) {
+      return xhr.data
+      // 区分grabTask接口
+    }else if(xhr.data.status === false && xhr.data.data.count==1){
       return xhr.data
     } else if (xhr.data.status === '_0001') {
       utils.cookies.delAllCookie()
@@ -105,7 +110,7 @@ axios.interceptors.response.use(
       return Promise.reject(xhr)
     } else {
       Vue.$vux.toast.text(xhr.data.msg || '服务器响应失败，请检测网络')
-      return Promise.reject(xhr)
+      // return Promise.reject(xhr)
     }
   },
   function (error) {
