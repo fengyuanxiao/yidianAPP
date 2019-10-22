@@ -67,10 +67,17 @@
       <!-- {{item.status ==3 ?'审核失败' :item.status ==2 ? '审核中' :''}} -->
       <swiper v-model.trim="choose.ind" height="60px" :show-dots="false">
         <swiper-item v-for="(item, index) in companyAccount" :key="index">
-          <div class="bandAccountInfo" style="margin-top:25px" v-if="item.bandList.status ==1">
-            {{console.log(item.bandList,'aaa')}}
+          <div class="bandAccountInfo" style="margin-top:25px" v-if="(numStatus ==0 || item.bandList.length ==0)">
             请先绑定【{{choose.name}}】账号: 
             <router-link :to="item.url" style="color:#f00;">立即绑定</router-link>
+          </div>
+          <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==2">
+            当前账号: {{nickName}}
+            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核中</a>
+          </div>
+          <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==3">
+            当前账号: {{nickName}}
+            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核失败</a>
           </div>
           <div v-else class="bandAccountInfo">
             <group>
@@ -150,6 +157,8 @@ export default {
     return {
       address_info: false,
       taskInfo: [],
+      numStatus:2,
+      nickName:"",
       no_task_list: [],
       timer: null,
       choose: {
@@ -201,7 +210,11 @@ export default {
           id: "pdd",
           url: "/h5/user/addPddAccount"
         },
-        { bind_type: 6, bandList: [], id: "wph", url: "/h5/user/addVphAccount" }
+        { bind_type: 6, 
+          bandList: [],
+          id: "wph", 
+          url: "/h5/user/addVphAccount" 
+        }
       ],
       blackList: [],
       swiperItemIndex: 1,
@@ -290,6 +303,10 @@ export default {
         // status_type: "1",
         bind_type: "1"
       });
+      let status=result1.data[0].status
+      this.numStatus=status
+      let nickname=result1.data[0].nickname
+      this.nickName=nickname
       const result2 = await this.axios.post("/api/index/bind_list", {
         status_type: "1",
         bind_type: "2"
@@ -330,15 +347,13 @@ export default {
         }
         tempArr.push({
           key: val.id,
-          value:val.status ==3 ? val.nickname+'审核失败' : val.status ==2 ? val.nickname+'审核中' : val.nickname ,
+          value:val.nickname ,
           is_default: val.is_default,
-          status:val.status
         });
       });
       
       obj.bandList = tempArr;
       return obj;
-      // +val.status ==3 ?'审核失败' :val.status ==2 ? '审核中' :''
     },
     // 获取任务
     async getTaskList() {
