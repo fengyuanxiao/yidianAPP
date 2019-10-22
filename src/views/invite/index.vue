@@ -1,6 +1,6 @@
 <template>
   <div class="menuBoxBottom invite">
-    <user-header :title="'收徒转佣金'" class="invitebg"></user-header>
+    <user-header :title="'收徒赚佣金'" class="invitebg"></user-header>
     <div>
       <img src="@/assets/img/invitetitle.png" class="inviteTitle" />
       <img class="top-img banner-img" src="@/assets/img/invitation_banner.png" alt="topImg" />

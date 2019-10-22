@@ -64,15 +64,17 @@
           :key="index"
         >{{item.name}}</tab-item>
       </tab>
+      <!-- {{item.status ==3 ?'审核失败' :item.status ==2 ? '审核中' :''}} -->
       <swiper v-model.trim="choose.ind" height="60px" :show-dots="false">
         <swiper-item v-for="(item, index) in companyAccount" :key="index">
-          <div class="bandAccountInfo" style="margin-top:25px" v-if="item.bandList.length==0">
-            请先绑定【{{choose.name}}】账号:
+          <div class="bandAccountInfo" style="margin-top:25px" v-if="item.bandList.status ==1">
+            {{console.log(item.bandList,'aaa')}}
+            请先绑定【{{choose.name}}】账号: 
             <router-link :to="item.url" style="color:#f00;">立即绑定</router-link>
           </div>
           <div v-else class="bandAccountInfo">
             <group>
-              <popup-radio
+            <popup-radio
                 title="当前账号(点击切换)"
                 :options="item.bandList"
                 v-model.trim="item.id"
@@ -285,7 +287,7 @@ export default {
     // 获取绑定的账号信息
     async getBandAccount() {
       const result1 = await this.axios.post("/api/index/bind_list", {
-        status_type: "1",
+        // status_type: "1",
         bind_type: "1"
       });
       const result2 = await this.axios.post("/api/index/bind_list", {
@@ -328,12 +330,15 @@ export default {
         }
         tempArr.push({
           key: val.id,
-          value: val.nickname,
-          is_default: val.is_default
+          value:val.status ==3 ? val.nickname+'审核失败' : val.status ==2 ? val.nickname+'审核中' : val.nickname ,
+          is_default: val.is_default,
+          status:val.status
         });
       });
+      
       obj.bandList = tempArr;
       return obj;
+      // +val.status ==3 ?'审核失败' :val.status ==2 ? '审核中' :''
     },
     // 获取任务
     async getTaskList() {
