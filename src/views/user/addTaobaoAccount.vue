@@ -247,6 +247,9 @@
       </x-dialog>
       <!-- 积分弹窗 -->
      <x-dialog v-model.trim="showPoint" class="dialog_demo">
+        <group title>
+          <p style="font-size: 24px;font-weight: 600;color:rgba(0,0,0,1);">提示</p>
+        </group>
         <div class="img-box showBg">
           <p style="padding: 20px 10px 15px;font-size: 15px;color: black;">该账号为可疑账号，请更换账号重新提交！如有疑问请加官方QQ：2324286706</p>
         </div>
@@ -256,6 +259,9 @@
       </x-dialog>
     <!-- 银行卡弹窗 -->
      <x-dialog v-model.trim="showBank" class="dialog_demo">
+        <group title>
+          <p style="font-size: 24px;font-weight: 600;color:rgba(0,0,0,1);">提示</p>
+        </group>
         <div class="img-box showBg">
           <p style="padding-top:20px;font-size: 18px;color: black;">未绑定银行卡</p>
         </div>
@@ -265,6 +271,9 @@
       </x-dialog>
     <!-- 身份证弹窗 -->
      <x-dialog v-model.trim="showID" class="dialog_demo">
+        <group title>
+          <p style="font-size: 24px;font-weight: 600;color:rgba(0,0,0,1);">提示</p>
+        </group>
         <div class="img-box showBg">
           <p style="padding-top:20px;font-size: 18px;color: black;">未绑定身份证</p>
         </div>
@@ -542,6 +551,7 @@ export default {
         margin-top:15px;
         border: 1px solid #ddd;
       }
+      
       .vux-popup-picker-select{
         border:1px solid rgba(229,229,229,1);
         border-radius:5px;
@@ -558,7 +568,6 @@ export default {
         padding: 10px 10px !important;
         height: 34px;
       }
-      
       .weui-dialog {
         height: 73%;
         overflow: scroll;
