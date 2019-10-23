@@ -34,7 +34,7 @@
         type="primary"
         style="margin:1rem 0;padding:0"
         @click.native="withdrawMoney"
-        :disabled="userCenterInfo.bank_status!=1"
+        :disabled="(userCenterInfo.bank_status!=1 || userCenterInfo.realname_status !=1)"
       >立即提现</x-button>
       <div class="cash-footer">
         <p>1.银行卡提现每天只能一次</p>
@@ -199,7 +199,7 @@ export default {
         this.showBank=true
       }
       if ((this.userCenterInfo.bank_status==1 || this.userCenterInfo.bank_status==2) && this.userCenterInfo.realname_status==0) {
-          this.showBank=true
+          this.showID=true
         }else{
           this.showID=false
       }

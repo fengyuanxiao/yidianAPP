@@ -82,16 +82,9 @@ export default {
       } else if (this.userInfo.password === "") {
         this.$vux.toast.text("请输入密码");
       } else {
-        console.log(this.remember,'111')
         this.changeRem(this.remember)
-        console.log('222')
         let result = await this.axios.post("/api/user/login", this.userInfo);
-        console.log('333')
-        console.log(result,'kkkk')
-        console.log(result.status,'vvv')
         if (result && result.status) {
-          console.log(result,'666')
-           console.log(result.status,'777')
           this.$utils.cookies.setCookie(
             "userInfo",
             JSON.stringify(result.user_info)

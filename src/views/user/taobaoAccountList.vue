@@ -18,7 +18,9 @@
           <p>收货地址：{{item.receiver_address}}</p>
           <p>联系电话：{{item.receiver_mobile}}</p>
           <p>联系人：{{item.receiver}}</p>
+          <p style="display:inline-block;color:#FF0000">{{item.status==3 ?'驳回原因：'+item.remark :''}}</p>        
         </div>
+        
         <!-- <div slot="footer" class="cardFooter">
           <p>可接单数：今日{{item.status}}单</p>
         </div>-->

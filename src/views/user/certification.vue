@@ -85,6 +85,18 @@
         </div>
       </div>
     </div>
+    <!-- 身份证提交成功弹窗 -->
+     <x-dialog v-model.trim="showIDTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="font-size: 18px;color: black;padding: 25px 0px 15px;">已经提交成功！请添加客服微信（Haiyuemj） 快速审核~！</p>
+        </div>
+        <div  @click="showIDPop()" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -96,6 +108,7 @@ export default {
         cardno: ""
       },
       images: ["", ""],
+      showIDTip:false,
       uploadPhotoes: [
         { value: 1, title: "上传身份证正面图" },
         { value: 2, title: "上传身份证反面图" }
@@ -111,7 +124,6 @@ export default {
       } else {
         this.$set(this.images, ind, url);
       }
-      // console.log(this.images);
     },
     async certification() {
       if (this.userInfo.realName === "") {
@@ -130,23 +142,28 @@ export default {
         "/api/index/realnamecommit",
         Object.assign(this.userInfo, { images: this.images })
       );
-      this.$vux.toast.show({
-        text: "提交成功，等待审核",
-        type: "success"
-      });
-      setTimeout(_ => {
-        if(this.$route.query.id==1){
-          this.$router.push('/h5/user/main')
-        }else{
-          this.$router.back();
-        }
-      }, 1500);
+      this.showIDTip=true
+    },
+    async showIDPop() {
+      this.showIDTip=false
+        setTimeout(_ => {
+          if(this.$route.query.id==1){
+            this.$router.push('/h5/user/main')
+            }else{
+              this.$router.back();
+            }
+          }, 1500);
     }
   }
 };
 </script>
 <style lang="less">
 .certification {
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
+  }
   .weui-input {
     text-align: right;
   }

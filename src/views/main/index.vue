@@ -72,12 +72,25 @@
             <router-link :to="item.url" style="color:#f00;">立即绑定</router-link>
           </div>
           <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==2">
-            当前账号: {{nickName}}
-            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核中</a>
+            当前账号: 
+            <div style="color: #1890ff;display: inline-block;float: right;">
+              {{nickName}}
+              <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;margin-left: 10px;">审核中</a>
+            </div>
           </div>
           <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==3">
-            当前账号: {{nickName}}
-            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核失败</a>
+            当前账号:
+            <div style="color: #1890ff;display: inline-block;float: right;">
+              {{nickName}}
+              <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;margin-left: 10px;">审核未通过</a>
+            </div>
+          </div>
+          <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==4">
+            当前账号:
+            <div style="color: #1890ff;display: inline-block;float: right;">
+              {{nickName}}
+              <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;margin-left: 10px;">已冻结</a>
+            </div>
           </div>
           <div v-else class="bandAccountInfo">
             <group>
@@ -464,7 +477,7 @@ export default {
     padding: 5px;
     .bandAccountInfo {
       margin: 15px 10px;
-      color: #1890ff;
+      color: #999;
       .weui-cell {
         padding: 0;
       }

@@ -18,28 +18,46 @@
       </flexbox-item>
     </flexbox>
 
+    <!-- 买号弹窗 -->
+     <x-dialog v-model.trim="showBuyNum" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="showBuyNum=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/addTaobaoAccount')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
+      </x-dialog>
     <!-- 银行卡弹窗 -->
      <x-dialog v-model.trim="showBank" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
         <div class="img-box showBg">
-          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
         </div>
-        <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="margin: 30px 0 10px 0;">
-          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
-        </div>
+        <div @click="showBank=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
       </x-dialog>
     <!-- 身份证弹窗 -->
      <x-dialog v-model.trim="showID" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
         <div class="img-box showBg">
-          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
         </div>
-        <div @click="$router.push('/h5/user/certification?id=1')" style="margin: 30px 0 10px 0;">
-          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
-        </div>
+        <div @click="showID=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/certification?id=1')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去认证</div>
       </x-dialog>
     <!-- 身份证和银行卡审核弹窗 -->
      <x-dialog v-model.trim="showTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
         <div class="img-box showBg">
-          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
         </div>
         <div @click="showTip=false" style="margin: 30px 0 10px 0;">
           <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
@@ -47,11 +65,14 @@
       </x-dialog>
     <!-- 审核通过后跳转邀请弹窗 -->
      <x-dialog v-model.trim="showInviteTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
         <div class="img-box showBg">
-          <p style="padding-top:20px;font-size: 17px;color: black;">{{showMsg}}</p>
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
         </div>
-        <div @click="$router.push('/h5/invite')" style="margin:20px 20px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >确定</div>
-        <div @click="showInviteTip=false" style="margin-bottom:20px 0px 20px 0;height: 35px;line-height: 35px;color: white;font-size: 16px;display: inline-block;width:40%;border-radius:5px;background:#1890ff;width:30%;" >取消</div>
+        <div @click="showInviteTip=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/invite')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >确定</div>
       </x-dialog>
   </div> 
 </template>
@@ -79,7 +100,9 @@ export default {
       showID:false,
       showTip:false,
       showInviteTip:false,
+      showBuyNum:false,
       realnameStatus:null,
+      bankStatus:null,
       showMsg:''
     };
   },
@@ -111,25 +134,26 @@ export default {
         unique_code: this.unique_code,
         address_info: this.address_info
       });
-// console.log(resule.status,'3')
-      if(result.data.count ==1){
-          let bank_status=result.data.bank_status
-          let realname_status=result.data.realname_status
-          this.realnameStatus=realname_status
-          let showMsg=result.msg
-          this.showMsg=showMsg
-          if(bank_status ==0){
+      
+      let realname_status=result.data.realname_status
+      this.realnameStatus=realname_status
+      this.showMsg=result.msg
+
+      if(result.data.code==1 && result.status== false){
+        this.showBuyNum=true
+      }else if(result.data.count ==1 && result.status== false){
+          if(result.data.bank_status ==0){
               this.showBank=true
           }
-          if((bank_status ==1 || bank_status ==2) && realname_status==0){
+          if((result.data.bank_status ==1 || result.data.bank_status ==2) && realname_status==0){
               this.showID=true
           }
-          if((bank_status ==2 && realname_status ==2)|| (bank_status ==1 && realname_status ==2)||(bank_status ==2 && realname_status ==1) ){
+          if((result.data.bank_status ==2 && realname_status ==2)|| (result.data.bank_status ==1 && realname_status ==2)||(result.data.bank_status ==2 && realname_status ==1) ){
               this.showTip=true
           }
           
-      }else if(result.data.inviter=1 ){
-          if(bank_status ==1 && realname_status==1){
+      }else if(result.data.inviter==1 && result.status== false){
+          if(result.data.bank_status ==1 && realname_status==1){
               this.showInviteTip=true
             }
       }else{
@@ -138,8 +162,7 @@ export default {
             text: "领取成功"
           });
           this.$router.push("/h5/order/dianfu/detail/" + result.data.order_id);
-      }
-          
+      }  
     },
     // 抢问答任务的单子
     async getGrabquestask() {
@@ -201,6 +224,14 @@ export default {
   .weui-btn_primary {
     padding: 0;
     font-size: 14px;
+  }
+  .weui-dialog{
+    border-radius: 10px !important;
+  }
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
   }
 }
 </style>
