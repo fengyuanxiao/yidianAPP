@@ -82,6 +82,34 @@
         </div>
       </x-dialog>
     </div>
+    <!-- 银行卡弹窗 -->
+     <x-dialog v-model.trim="showBank" class="dialog_demo">
+       <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 0px 15px;font-size: 18px;color: black;">您未绑定提现银行卡，请绑定！</p>
+        </div>
+        <div @click="showBank=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
+        <!-- <div @click="$router.push('/h5/user/bindBankCard?id=' + realnameStatus)" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div> -->
+      </x-dialog>
+    <!-- 身份证弹窗 -->
+     <x-dialog v-model.trim="showID" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="font-size: 18px;color: black;padding: 25px 0px 15px;">您未实名认证，请实名认证！</p>
+        </div>
+        <div @click="showID=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/certification?id=1')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去认证</div>
+        <!-- <div @click="$router.push('/h5/user/certification?id=1')" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
+        </div> -->
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -95,6 +123,9 @@ export default {
   },
   data() {
     return {
+      showID:false,
+      showBank:false,
+      realnameStatus:null,
       count: 60,
       dxcode: "验证码",
       code_capt: {},
@@ -163,7 +194,15 @@ export default {
     async getInfo() {
       const result = await this.axios.post("/api/index/cash");
       this.userCenterInfo = result.data;
-      console.log()
+      this.realnameStatus=this.userCenterInfo.realname_status
+      if(this.userCenterInfo.bank_status==0){
+        this.showBank=true
+      }
+      if ((this.userCenterInfo.bank_status==1 || this.userCenterInfo.bank_status==2) && this.userCenterInfo.realname_status==0) {
+          this.showBank=true
+        }else{
+          this.showID=false
+      }
     },
     async tixian() {
       if (this.userCenterInfo.is_black == 1) {
@@ -239,6 +278,14 @@ export default {
     padding-left: 20px !important;
     border: 1px solid #d9d9d9;
     border-radius: 5px;
+  }
+  .weui-dialog{
+    border-radius: 10px !important;
+  }
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
   }
 }
 </style>

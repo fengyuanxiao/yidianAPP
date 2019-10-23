@@ -64,15 +64,24 @@
           :key="index"
         >{{item.name}}</tab-item>
       </tab>
+      <!-- {{item.status ==3 ?'审核失败' :item.status ==2 ? '审核中' :''}} -->
       <swiper v-model.trim="choose.ind" height="60px" :show-dots="false">
         <swiper-item v-for="(item, index) in companyAccount" :key="index">
-          <div class="bandAccountInfo" style="margin-top:25px" v-if="item.bandList.length==0">
-            请先绑定【{{choose.name}}】账号:
+          <div class="bandAccountInfo" style="margin-top:25px" v-if="(numStatus ==0 || item.bandList.length ==0)">
+            请先绑定【{{choose.name}}】账号: 
             <router-link :to="item.url" style="color:#f00;">立即绑定</router-link>
+          </div>
+          <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==2">
+            当前账号: {{nickName}}
+            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核中</a>
+          </div>
+          <div class="bandAccountInfo" style="margin-top:25px" v-else-if="numStatus ==3">
+            当前账号: {{nickName}}
+            <a @click="$router.push('/h5/user/taobaoAccountList')" style="color:#f00;">审核失败</a>
           </div>
           <div v-else class="bandAccountInfo">
             <group>
-              <popup-radio
+            <popup-radio
                 title="当前账号(点击切换)"
                 :options="item.bandList"
                 v-model.trim="item.id"
@@ -148,6 +157,8 @@ export default {
     return {
       address_info: false,
       taskInfo: [],
+      numStatus:2,
+      nickName:"",
       no_task_list: [],
       timer: null,
       choose: {
@@ -199,7 +210,11 @@ export default {
           id: "pdd",
           url: "/h5/user/addPddAccount"
         },
-        { bind_type: 6, bandList: [], id: "wph", url: "/h5/user/addVphAccount" }
+        { bind_type: 6, 
+          bandList: [],
+          id: "wph", 
+          url: "/h5/user/addVphAccount" 
+        }
       ],
       blackList: [],
       swiperItemIndex: 1,
@@ -285,9 +300,13 @@ export default {
     // 获取绑定的账号信息
     async getBandAccount() {
       const result1 = await this.axios.post("/api/index/bind_list", {
-        status_type: "1",
+        // status_type: "1",
         bind_type: "1"
       });
+      let status=result1.data[0].status
+      this.numStatus=status
+      let nickname=result1.data[0].nickname
+      this.nickName=nickname
       const result2 = await this.axios.post("/api/index/bind_list", {
         status_type: "1",
         bind_type: "2"
@@ -328,10 +347,11 @@ export default {
         }
         tempArr.push({
           key: val.id,
-          value: val.nickname,
-          is_default: val.is_default
+          value:val.nickname ,
+          is_default: val.is_default,
         });
       });
+      
       obj.bandList = tempArr;
       return obj;
     },
