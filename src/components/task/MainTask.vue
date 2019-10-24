@@ -18,7 +18,7 @@
       </flexbox-item>
     </flexbox>
 
-    <!-- 买号弹窗 -->
+    <!-- 买号未通过弹窗 -->
      <x-dialog v-model.trim="showBuyNum" class="dialog_demo">
         <group title>
           <p class="showAttention">提示</p>
@@ -27,6 +27,17 @@
           <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
         </div>
         <div @click="showBuyNum=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/taobaoAccountList')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
+      </x-dialog>
+    <!-- 买号未绑定弹窗 -->
+     <x-dialog v-model.trim="showUnbound" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="showUnbound=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
         <div @click="$router.push('/h5/user/addTaobaoAccount')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
       </x-dialog>
     <!-- 银行卡弹窗 -->
@@ -51,7 +62,7 @@
         <div @click="showID=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
         <div @click="$router.push('/h5/user/certification?id=1')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去认证</div>
       </x-dialog>
-    <!-- 身份证和银行卡审核弹窗 -->
+    <!-- 买号审核中或有问题和身份证和银行卡审核弹窗 -->
      <x-dialog v-model.trim="showTip" class="dialog_demo">
         <group title>
           <p class="showAttention">提示</p>
@@ -101,6 +112,7 @@ export default {
       showTip:false,
       showInviteTip:false,
       showBuyNum:false,
+      showUnbound:false,
       realnameStatus:null,
       bankStatus:null,
       showMsg:''
@@ -140,6 +152,10 @@ export default {
       this.showMsg=result.msg
 
       if(result.data.code==1 && result.status== false){
+        this.showUnbound=true
+      }else if((result.data.code==2 || result.data.code==4) && result.status== false){
+        this.showTip=true
+      }else if(result.data.code==3 && result.status== false){
         this.showBuyNum=true
       }else if(result.data.count ==1 && result.status== false){
           if(result.data.bank_status ==0){

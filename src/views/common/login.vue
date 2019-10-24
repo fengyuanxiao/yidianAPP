@@ -25,6 +25,18 @@
       </div>
       <!-- <x-button @click.native="$router.push('/h5/register')" class="loginbtn">免费注册</x-button> -->
     </div>
+    <!-- 版本号弹窗 -->
+     <x-dialog v-model.trim="showTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
+        </div>
+        <div @click="goDown()" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -36,9 +48,11 @@ export default {
   data() {
     return {
       remember:false,
+      showTip:false,
+      showMsg:"",
       userInfo: {
         mobile: "",
-        password: ""
+        password: "",
       },
       error: false,
       ico: {
@@ -69,6 +83,15 @@ export default {
     }
   },
   methods: {
+    goDown() {
+      try{
+        plus.runtime.openURL("https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg")
+      }catch (e) {
+      }
+       
+      // window.location.href ="https://fir.im/mpgd"
+        // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
+    },
     changeRem(val){
       if(val){
          this.$utils.storage.set('remember',JSON.stringify(this.userInfo))
@@ -83,8 +106,18 @@ export default {
         this.$vux.toast.text("请输入密码");
       } else {
         this.changeRem(this.remember)
-        let result = await this.axios.post("/api/user/login", this.userInfo);
-        if (result && result.status) {
+        let result = await this.axios.post(
+          "/api/user/login",
+          Object.assign(this.userInfo, {
+            app_version:this.$baseConfig.version,
+          }
+        )
+        );
+        this.showMsg=result.msg
+        if(result.data.code ==4){
+          this.showTip=true
+        }else{
+          if (result && result.status) {
           this.$utils.cookies.setCookie(
             "userInfo",
             JSON.stringify(result.user_info)
@@ -93,11 +126,19 @@ export default {
           this.$router.replace("/h5/main");
         }
       }
+        
+      }
+       
     }
   }
 };
 </script>
 <style lang="less" scoped>
 .loginBox {
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
+  }
 }
 </style>

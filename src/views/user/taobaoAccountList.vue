@@ -8,17 +8,17 @@
           <span class="storeName">{{item.nickname}}</span>
           <div class="hearderRight">
             <a class="update" v-if="item.status==3">重新編輯</a>
-            <span class="state" v-if="item.status==1">已审核</span>
-            <span class="state" v-if="item.status==2">审核中</span>
-            <span class="state" v-if="item.status==3">未通过</span>
-            <span class="state" v-if="item.status==4">已冻结</span>
+            <span class="state" v-if="item.status==1" style="color: rgb(255, 0, 0);">已审核</span>
+            <span class="state" v-if="item.status==2" style="color: rgb(255, 0, 0);">审核中</span>
+            <span class="state" v-if="item.status==3" style="color: rgb(255, 0, 0);">未通过</span>
+            <span class="state" v-if="item.status==4" style="color: rgb(255, 0, 0);">已冻结</span>
           </div>
         </div>
         <div slot="content" class="cardContent">
           <p>收货地址：{{item.receiver_address}}</p>
           <p>联系电话：{{item.receiver_mobile}}</p>
           <p>联系人：{{item.receiver}}</p>
-          <p style="display:inline-block;color:#FF0000">{{item.status==3 ?'驳回原因：'+item.remark :''}}</p>        
+          <p style="color:#FF0000">{{item.status==3 ?'驳回原因：'+item.remark :''}}</p>        
         </div>
         
         <!-- <div slot="footer" class="cardFooter">
