@@ -23,8 +23,10 @@
         <span>|</span>
         <router-link to="/h5/register" class="go">免费注册</router-link>
       </div>
+      
       <!-- <x-button @click.native="$router.push('/h5/register')" class="loginbtn">免费注册</x-button> -->
     </div>
+    <span style="position: absolute;bottom: 1%;right: 4%;">版本号 {{this.$baseConfig.version}}</span>
     <!-- 版本号弹窗 -->
      <x-dialog v-model.trim="showTip" class="dialog_demo">
         <group title>
