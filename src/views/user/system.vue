@@ -47,8 +47,7 @@ export default {
     getCache() {
       try {
         plus.cache.calculate(size => {
-          this.sizeCache =
-            parseFloat(this.sizeCache / (1024 * 1024)).toFixed(2) + "M";
+          this.sizeCache =parseFloat(this.sizeCache / (1024 * 1024)).toFixed(2) + "M";
         });
       } catch (e) {}
     },

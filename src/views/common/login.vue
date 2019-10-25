@@ -90,9 +90,9 @@ export default {
         plus.runtime.openURL("https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg")
       }catch (e) {
       }
-       
-      // window.location.href ="https://fir.im/mpgd"
-        // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
+      // 测试下载地址：https://fir.im/j1g5
+      //线上下载地址： "https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg"
+      // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
     },
     changeRem(val){
       if(val){
@@ -118,19 +118,36 @@ export default {
         this.showMsg=result.msg
         if(result.data.code ==4){
           this.showTip=true
+        }else if(result.data.code ==5){
+           try {
+              plus.cache.clear(() => {
+                console.log('success')
+              });
+            } catch (e) {
+              console.log('fail')
+            }
+            setTimeout(_ => {
+                if (result && result.status) {
+                this.$utils.cookies.setCookie(
+                  "userInfo",
+                  JSON.stringify(result.user_info)
+                );
+                this.$utils.cookies.setCookie("token", result.token);
+                this.$router.replace("/h5/main");
+              }
+            }, 1500);
+          
         }else{
-          if (result && result.status) {
-          this.$utils.cookies.setCookie(
-            "userInfo",
-            JSON.stringify(result.user_info)
-          );
-          this.$utils.cookies.setCookie("token", result.token);
-          this.$router.replace("/h5/main");
+            if (result && result.status) {
+              this.$utils.cookies.setCookie(
+                "userInfo",
+                JSON.stringify(result.user_info)
+              );
+              this.$utils.cookies.setCookie("token", result.token);
+              this.$router.replace("/h5/main");
+            }
         }
-      }
-        
-      }
-       
+      }  
     }
   }
 };
