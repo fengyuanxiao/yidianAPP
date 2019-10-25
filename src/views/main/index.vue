@@ -137,6 +137,18 @@
     </div>
     <!-- 菜单 -->
     <tabbar-menu></tabbar-menu>
+    <!-- 版本号弹窗 -->
+    <x-dialog v-model.trim="showTip" class="dialog_demo">
+      <group title>
+        <p class="showAttention">提示</p>
+      </group>
+      <div class="img-box showBg">
+        <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">{{showMsg}}</p>
+      </div>
+      <div @click="goDown()" style="margin: 30px 0 10px 0;">
+        <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+      </div>
+    </x-dialog>
   </div>
 </template>
 
@@ -168,8 +180,10 @@ export default {
   data() {
     return {
       address_info: false,
+      showTip:false,
       newup:null,
       statusNum:null,
+      showMsg:"",
       nickName:"",
       taskInfo: [],
       nickName:"",
@@ -252,6 +266,7 @@ export default {
     if (!token) {
       this.$router.replace("/h5/login");
     } else {
+      await this.clearCache();
       await this.getBandAccount();
       this.choose = this.company[0];
       
@@ -271,6 +286,15 @@ export default {
     }
   },
   methods: {
+     goDown() {
+      try{
+        plus.runtime.openURL("https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg")
+      }catch (e) {
+      }
+      // 测试：https://fir.im/j1g5
+      //线上： "https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg"
+      // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
+    },
     // 修改默认绑定
     async changeBandAccount(item) {
       if (item.id === item.defaultKey) return false;
@@ -320,6 +344,26 @@ export default {
     async getGonggaoInfo() {
       const result = await this.axios.post("/api/help/noticeList");
       this.tongzhiInfo = result.data || [];
+    },
+    async clearCache(){
+      const results=await this.axios.post("/api/app/dif_version", {
+        app_version:this.$baseConfig.version,
+      });
+      let  showMsg=results.msg
+      this.showMsg=showMsg
+      if(results.data.code ==4){
+        this.showTip=true
+      }else if(results.data.code ==5){
+        try {
+          plus.cache.clear(() => {
+            console.log('success')
+            // this.$vux.toast.text("缓存清除成功");
+          });
+        } catch (e) {
+          console.log('fail')
+          // this.$vux.toast.text("请从客户端打开");
+        }    
+      }
     },
     // 获取绑定的账号信息
     async getBandAccount() {
@@ -404,6 +448,11 @@ export default {
   img {
     width: 100%;
     height: 100%;
+  }
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
   }
   .ulBox {
     overflow: hidden;
