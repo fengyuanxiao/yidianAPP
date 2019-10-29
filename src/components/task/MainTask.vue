@@ -115,7 +115,8 @@ export default {
       showUnbound:false,
       realnameStatus:null,
       bankStatus:null,
-      showMsg:''
+      showMsg:'',
+      address_status:null,
     };
   },
   components: {
@@ -123,7 +124,7 @@ export default {
     FlexboxItem
   },
   mounted() {
-    this.getPhoneUuid();
+    // this.getPhoneUuid();
   },
   methods: {
     async getTask() {
@@ -140,6 +141,8 @@ export default {
     // 抢垫付任务的单子
     async getGrabTask() {
       // 获取缓存通讯录
+      this.user_address_book = localStorage.getItem("user_address_book");
+      this.unique_code = localStorage.getItem("unique_code");
       const result = await this.axios.post("/api/task/grabTask", {
         task_id: this.task.task_id,
         address_book: this.user_address_book || "",
@@ -150,35 +153,40 @@ export default {
       let realname_status=result.data.realname_status
       this.realnameStatus=realname_status
       this.showMsg=result.msg
-
-      if(result.data.code==1 && result.status== false){
-        this.showUnbound=true
-      }else if((result.data.code==2 || result.data.code==4) && result.status== false){
-        this.showTip=true
-      }else if(result.data.code==3 && result.status== false){
-        this.showBuyNum=true
-      }else if(result.data.count ==1 && result.status== false){
-          if(result.data.bank_status ==0){
-              this.showBank=true
-          }
-          if((result.data.bank_status ==1 || result.data.bank_status ==2) && realname_status==0){
-              this.showID=true
-          }
-          if((result.data.bank_status ==2 && realname_status ==2)|| (result.data.bank_status ==1 && realname_status ==2)||(result.data.bank_status ==2 && realname_status ==1) ){
-              this.showTip=true
-          }
-          
-      }else if(result.data.inviter==1 && result.status== false){
-          if(result.data.bank_status ==1 && realname_status==1){
-              this.showInviteTip=true
-            }
+      this.address_status=result.data.address_status
+      if(this.address_status==0){
+            this.getPhoneUuid();
       }else{
-          this.$vux.toast.show({
-            type: "success",
-            text: "领取成功"
-          });
-          this.$router.push("/h5/order/dianfu/detail/" + result.data.order_id);
-      }  
+            if(result.data.code==1 && result.status== false){
+            this.showUnbound=true
+          }else if((result.data.code==2 || result.data.code==4) && result.status== false){
+            this.showTip=true
+          }else if(result.data.code==3 && result.status== false){
+            this.showBuyNum=true
+          }else if(result.data.count ==1 && result.status== false){
+              if(result.data.bank_status ==0){
+                  this.showBank=true
+              }
+              if((result.data.bank_status ==1 || result.data.bank_status ==2) && realname_status==0){
+                  this.showID=true
+              }
+              if((result.data.bank_status ==2 && realname_status ==2)|| (result.data.bank_status ==1 && realname_status ==2)||(result.data.bank_status ==2 && realname_status ==1) ){
+                  this.showTip=true
+              }
+              
+          }else if(result.data.inviter==1 && result.status== false){
+              if(result.data.bank_status ==1 && realname_status==1){
+                  this.showInviteTip=true
+                }
+          }else{
+              this.$vux.toast.show({
+                type: "success",
+                text: "领取成功"
+              });
+              this.$router.push("/h5/order/dianfu/detail/" + result.data.order_id);
+          }  
+      }
+      
     },
     // 抢问答任务的单子
     async getGrabquestask() {

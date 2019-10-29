@@ -180,6 +180,8 @@ export default {
   data() {
     return {
       address_info: false,
+      unique_code: "",
+      user_address_book:"",
       showTip:false,
       newup:null,
       statusNum:null,
@@ -248,7 +250,7 @@ export default {
       swiperItemIndex: 1,
       baseList: [],
       tongzhiInfo: [],
-      bandAccount: {}
+      bandAccount: {},
     };
   },
   computed: {
@@ -267,6 +269,7 @@ export default {
       this.$router.replace("/h5/login");
     } else {
       await this.clearCache();
+      this.getPhoneUuid()
       await this.getBandAccount();
       this.choose = this.company[0];
       
@@ -282,17 +285,16 @@ export default {
       this.nickName=this.newup[0].nickname
       this.statusNum=this.newup[0].status
       }    
-
     }
   },
   methods: {
      goDown() {
       try{
-        plus.runtime.openURL("https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg")
+        plus.runtime.openURL("https://fir.im/na73")
       }catch (e) {
       }
       // 测试：https://fir.im/j1g5
-      //线上： "https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg"
+      //线上： "https://fir.im/na73"
       // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
     },
     // 修改默认绑定
@@ -422,23 +424,31 @@ export default {
     },
     // 获取任务
     async getTaskList() {
+      this.unique_code = localStorage.getItem("unique_code");
       const result = await this.axios.post("/api/task/tasklist", {
-        user_unique_code: this.getPhoneUuid(),
+        user_unique_code: this.unique_code,
         task_type: this.search.task_type,
         platform_type: this.search.platform_type
       });
       this.taskInfo = result.data.task_list || [];
       this.no_task_list = result.data.no_task_list || [];
-      this.address_info = result.data.address_info;
+      this.address_info = result.data.address_info; 
     },
+     // 获取用户的通讯录和uuid
     getPhoneUuid() {
-      let unique_code = localStorage.getItem("unique_code");
-      if (!unique_code) {
-        this.$utils.tools.getUnique_code();
-        unique_code = localStorage.getItem("unique_code");
+      this.user_address_book = localStorage.getItem("user_address_book");
+      if (!this.user_address_book) {
+        this.$utils.tools.getPhoneList();
+        this.user_address_book = localStorage.getItem("user_address_book");
       }
-      return unique_code;
+      this.unique_code = localStorage.getItem("unique_code");
+      if (!this.unique_code) {
+        this.$utils.tools.getUnique_code();
+        this.unique_code = localStorage.getItem("unique_code");
+      }
+      
     }
+   
   }
 };
 </script>

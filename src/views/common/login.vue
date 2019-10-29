@@ -87,11 +87,11 @@ export default {
   methods: {
     goDown() {
       try{
-        plus.runtime.openURL("https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg")
+        plus.runtime.openURL("https://fir.im/na73")
       }catch (e) {
       }
       // 测试下载地址：https://fir.im/j1g5
-      //线上下载地址： "https://fir.im/na73?tdsourcetag=s_pcqq_aiomsg"
+      //线上下载地址： "https://fir.im/na73"
       // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
     },
     changeRem(val){

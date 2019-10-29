@@ -50,12 +50,14 @@ axios.cancelAll = function () {
     delete requests[index]
   })
 }
+
 // 添加请求拦截器
 axios.interceptors.request.use(
   config => {
     showLoading('加载中...')
     let token = utils.cookies.getCookie('token')
     config.headers.AppAuthorization = token
+    
     config.data = qs.stringify(config.data)
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
     config.timeout = 500000
@@ -77,6 +79,7 @@ axios.interceptors.request.use(
       })
     })
     return config
+    
   },
   function (error) {
     try {
@@ -97,7 +100,7 @@ axios.interceptors.response.use(
     if (xhr.data.status === true || xhr.data.status === 1) {
       return xhr.data
       // 区分grabTask接口
-    }else if(xhr.data.status === false && (xhr.data.data.count==1 || xhr.data.data.inviter ==1 || xhr.data.data.code ==1 || xhr.data.data.code ==2 || xhr.data.data.code ==3 || xhr.data.data.code ==4)){
+    }else if(xhr.data.status === false && (xhr.data.data.count==1 || xhr.data.data.inviter ==1 || xhr.data.data.code ==1 || xhr.data.data.code ==2 || xhr.data.data.code ==3 || xhr.data.data.code ==4 || xhr.data.data.address_status ==0)){
       return xhr.data
     } else if (xhr.data.status === '_0001') {
       utils.cookies.delAllCookie()
