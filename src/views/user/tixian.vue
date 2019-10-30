@@ -110,8 +110,8 @@
           <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>去绑定</x-button>
         </div> -->
       </x-dialog>
-    <!-- 身份证弹窗 -->
-     <x-dialog v-model.trim="showPop" class="dialog_demo">
+      <!-- 审核弹窗 -->
+      <x-dialog v-model.trim="showPop" class="dialog_demo">
         <group title>
           <p class="showAttention">提示</p>
         </group>
@@ -119,6 +119,18 @@
           <p style="font-size: 18px;color: black;padding: 25px 0px 15px;">您的银行卡或身份证正在审核，请耐心等待！</p>
         </div>
         <div @click="showPop=false" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
+      <!-- 未通过弹窗 -->
+      <x-dialog v-model.trim="showTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="font-size: 18px;color: black;padding: 25px 0px 15px;">您的银行卡或身份证未通过，请重新提交！</p>
+        </div>
+        <div @click="showTip=false" style="margin: 30px 0 10px 0;">
           <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
         </div>
       </x-dialog>
@@ -135,6 +147,7 @@ export default {
   },
   data() {
     return {
+      showTip:false,
       showID:false,
       showPop:false,
       showBank:false,
@@ -211,13 +224,16 @@ export default {
       if(this.userCenterInfo.bank_status==0){
         this.showBank=true
       }
-      if ((this.userCenterInfo.bank_status==1 || this.userCenterInfo.bank_status==2) && this.userCenterInfo.realname_status==0) {
+      if ((this.userCenterInfo.bank_status==1 || this.userCenterInfo.bank_status==2 || this.userCenterInfo.bank_status==3) && this.userCenterInfo.realname_status==0) {
           this.showID=true
         }else{
           this.showID=false
       }
-      if((this.userCenterInfo.realname_status==2 && this.userCenterInfo.bank_status==1) || (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==1)|| (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==2)){
+      if((this.userCenterInfo.bank_status==1 && this.userCenterInfo.realname_status==2) || (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==1)|| (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==2) || (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==3)){
           this.showPop=true 
+      }
+      if((this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==2) ||(this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==3) ||(this.userCenterInfo.bank_status==1 && this.userCenterInfo.realname_status==3) || (this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==3) || (this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==1)){
+          this.showTip=true
       }
     },
     async tixian() {

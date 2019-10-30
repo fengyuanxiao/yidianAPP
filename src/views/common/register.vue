@@ -5,7 +5,7 @@
     </div>
     <div class="loginForm">
       <group title>
-        <x-input title="手机号码" v-model.trim.trim="userInfo.phoneNum" type="tel" placeholder="请输入您的手机号">
+        <x-input @on-blur="showText" title="手机号码" v-model.trim.trim="userInfo.phoneNum" type="tel" placeholder="请输入您申请银行卡时所预留手机号">
           <!-- <span class="font-icon" slot="label"></span> -->
         </x-input>
       </group>
@@ -130,6 +130,9 @@ export default {
     goDown() {
       window.location.href ="https://fir.im/mpgd"
         // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
+    },
+    async showText(){
+      this.$vux.toast.text("请输入您申请银行卡时所预留手机号");
     },
     async getCodeUrl() {
       let result = await this.axios.get("/api/user/getcaptcha");

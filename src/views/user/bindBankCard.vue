@@ -32,8 +32,39 @@
           <x-input
             title="姓名"
             v-model.trim="userInfo.realName"
-            placeholder="请输入姓名"
+            placeholder="请输入办卡姓名"
             placeholder-align="right"
+          >
+            <!-- <span class="font-suo" slot="label"></span> -->
+          </x-input>
+        </group>
+        <group title>
+          <x-input
+            title="手机号"
+            v-model.trim="userInfo.bankTel"
+            placeholder="请输入办卡预留手机号"
+            placeholder-align="right"
+          >
+            <!-- <span class="font-suo" slot="label"></span> -->
+          </x-input>
+        </group>
+        <group title>
+          <x-input
+            title="身份证号"
+            v-model.trim="userInfo.cardid"
+            placeholder="请输入办卡身份证号"
+            placeholder-align="right"
+          >
+            <!-- <span class="font-suo" slot="label"></span> -->
+          </x-input>
+        </group>
+        <group title>
+          <x-input
+            title="银行卡号"
+            v-model.trim="userInfo.BankCode"
+            placeholder="请输入银行卡号"
+            placeholder-align="right"
+            @on-blur="showBankName"
           >
             <!-- <span class="font-suo" slot="label"></span> -->
           </x-input>
@@ -48,6 +79,7 @@
             :options="bankNameList"
           ></selector>
         </group>
+         
         <group title>
           <!-- <selector
             placeholder="请选择开户行"
@@ -74,16 +106,7 @@
             <!-- <span class="font-suo" slot="label"></span> -->
           </x-input>
         </group>
-        <group title>
-          <x-input
-            title="银行卡号"
-            v-model.trim="userInfo.BankCode"
-            placeholder="请输入银行卡号"
-            placeholder-align="right"
-          >
-            <!-- <span class="font-suo" slot="label"></span> -->
-          </x-input>
-        </group>
+       
         <div>
           <p class="pad10">
             <span>银行卡截图（点击可更换图片)</span>
@@ -132,16 +155,7 @@
             />
           </div>
         </div>
-        <group title>
-          <x-input
-            title="银行开户预留手机"
-            v-model.trim="userInfo.bankTel"
-            placeholder="请输入银行开户预留手机"
-            placeholder-align="right"
-          >
-            <!-- <span class="font-suo" slot="label"></span> -->
-          </x-input>
-        </group>
+        
         <div class="mui-submite" style="margin:40px 10px">
           <x-button type="primary" @click.native="bandCard" style="border-radius:30px;">确认绑定</x-button>
         </div>
@@ -151,71 +165,74 @@
 </template>
 <script>
 import { Selector, XAddress, ChinaAddressV4Data } from "vux";
+import axios from 'axios'
 export default {
   data() {
     return {
+      newup:null,
       userInfo: {
         realName: "",
         Bank: "",
         provinces: [],
         ZhiHangName: "",
         BankCode: "",
-        bankTel: ""
+        bankTel: "",
+        cardid:"",
       },
       images: ["", ""],
       addressData: ChinaAddressV4Data,
       bankNameList: [
         {
           value: "中国农业银行",
-          key: "中国农业银行"
+          key: "ABC"
         },
         {
           value: "中国银行",
-          key: "中国银行"
+          key: "BOC"
         },
         {
           value: "招商银行",
-          key: "招商银行"
+          key: "CMB"
         },
         {
           value: "交通银行",
-          key: "交通银行"
+          key: "COMM"
         },
         {
           value: "中国工商银行",
-          key: "中国工商银行"
+          key: "ICBC"
         },
         {
           value: "中国邮政储蓄银行",
-          key: "中国邮政储蓄银行"
+          key: "PSBC"
         },
         {
           value: "上海浦东发展银行",
-          key: "上海浦东发展银行"
+          key: "SPDB"
         },
         {
           value: "平安银行",
-          key: "平安银行"
+          key: "SPABANK"
         },
         {
           value: "中国建设银行",
-          key: "中国建设银行"
+          key: "CCB"
         },
         {
-          value: "民生银行",
-          key: "民生银行"
+          value: "中国民生银行",
+          key: "CMBC"
         },
         {
           value: "中信银行",
-          key: "中信银行"
+          key: "CITIC"
         },
         {
-          value: "光大银行",
-          key: "光大银行"
+          value: "中国光大银行",
+          key: "CEB"
         },
         {
           value: "兴业银行",
-          key: "兴业银行"
+          key: "CIB"
         },
         {
           value: "广发银行",
@@ -223,19 +240,19 @@ export default {
         },
         {
           value: "华夏银行",
-          key: "华夏银行"
+          key: "HXBANK"
         },
         {
           value: "上海银行",
-          key: "上海银行"
+          key: "SHBANK"
         },
         {
           value: "北京银行",
-          key: "北京银行"
+          key: "BJBANK"
         },
         {
           value: "渤海银行",
-          key: "渤海银行"
+          key: "BOHAIB"
         }
       ],
       openBankList: [],
@@ -259,11 +276,17 @@ export default {
         this.$set(this.images, ind, url);
       }
     },
+    // 银行卡归属银行接口
+    async showBankName(){
+    let result1=await this.axios.get('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo='+this.userInfo.BankCode+'&cardBinCheck=true')
+    this.userInfo.Bank=result1.bank
+    },
+    // 提交
     async bandCard() {
       if (this.userInfo.realName === "") {
         return this.$vux.toast.text("请输入姓名");
       }
-      if (this.userInfo.Bank === "") {
+      if (this.newup === "") {
         return this.$vux.toast.text("请选择银行");
       }
       if (this.userInfo.provinces.length === 0) {
@@ -284,8 +307,15 @@ export default {
       if (this.userInfo.bankTel === "") {
         return this.$vux.toast.text("请输入预留手机号");
       }
-      const saveParams = Object.assign(this.userInfo, { images: this.images });
-      console.log(saveParams, "---saveParams----");
+      if (this.userInfo.cardid === "") {
+        return this.$vux.toast.text("请输入身份证号");
+      }
+       let newup =this.bankNameList.filter(item=> {
+          return item.key==this.userInfo.Bank
+      })
+      this.newup=newup[0].value
+
+      const saveParams = Object.assign(this.userInfo, { images: this.images,Bank:this.newup });
       const reuslt = await this.axios.post(
         "/api/index/bankcardcommit",
         saveParams

@@ -70,9 +70,13 @@ axios.interceptors.request.use(
     //   rootUrl = 'http://www.paiming001.com'
     // }
     // console.log(process.env.NODE_ENV, 'axios')
-    rootUrl = baseConfig.axiosurl
 
-    config.url = rootUrl + config.url
+    rootUrl = baseConfig.axiosurl
+    // 银行卡归属银行接口
+    if(!config.url.includes('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json')){
+      config.url = rootUrl + config.url
+    }
+    // config.url = rootUrl + config.url
     config.cancelToken = new axios.CancelToken(cancel => {
       requests.push({
         cancel
@@ -101,6 +105,9 @@ axios.interceptors.response.use(
       return xhr.data
       // 区分grabTask接口
     }else if(xhr.data.status === false && (xhr.data.data.count==1 || xhr.data.data.inviter ==1 || xhr.data.data.code ==1 || xhr.data.data.code ==2 || xhr.data.data.code ==3 || xhr.data.data.code ==4 || xhr.data.data.address_status ==0)){
+      return xhr.data
+      // 第三方银行卡接口
+    }else if(xhr.data.stat == "ok"){
       return xhr.data
     } else if (xhr.data.status === '_0001') {
       utils.cookies.delAllCookie()
