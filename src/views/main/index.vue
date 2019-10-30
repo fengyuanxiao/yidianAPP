@@ -284,7 +284,8 @@ export default {
       this.newup=newup
       this.nickName=this.newup[0].nickname
       this.statusNum=this.newup[0].status
-      }    
+      } 
+    // await this.baiDuStatistics();
     }
   },
   methods: {
@@ -434,6 +435,15 @@ export default {
       this.no_task_list = result.data.no_task_list || [];
       this.address_info = result.data.address_info; 
     },
+    // async baiDuStatistics(){
+    //   var _hmt = _hmt || [];
+    //   (function() {
+    //     var hm = document.createElement("script");
+    //     hm.src = "https://hm.baidu.com/hm.js?3f63a710cb8d5d591c0fc63735621839";
+    //     var s = document.getElementsByTagName("script")[0]; 
+    //     s.parentNode.insertBefore(hm, s);
+    //   })();
+    // },
      // 获取用户的通讯录和uuid
     getPhoneUuid() {
       this.user_address_book = localStorage.getItem("user_address_book");
