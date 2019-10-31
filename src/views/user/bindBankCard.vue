@@ -9,7 +9,7 @@
         <div class="pad5 bgwhite" style="border-bottom:4px solid #e0e0e0;">
           <p>
             <span style="float:left;">1、</span>
-            <span style="float:left;word-break: break-all;width:90%;">柜台登记的手机号码、姓名卡号，必须一样！</span>
+            <span style="float:left;word-break: break-all;width:90%;">柜台登记的<span style="color:red">手机号码、姓名卡号、身份证号，必须一致！</span></span>
           </p>
           <p style="clear:both;">
             <span style="float:left;">2、</span>
