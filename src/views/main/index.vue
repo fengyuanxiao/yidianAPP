@@ -149,6 +149,19 @@
         <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
       </div>
     </x-dialog>
+    <!-- 买号弹窗 -->
+    <!-- <div v-if="statusNum ==0 "> -->
+     <x-dialog v-model.trim="showNumber" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">请先绑定淘宝账号，才能开始任务！</p>
+        </div>
+        <div @click="showNumber=false" style="margin: 20px 0px 0px 0px;height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block;width: 50%;background: white;border-top: 1px solid #E6E6E6;border-right: 1px solid #E6E6E6;" >取消</div>
+        <div @click="$router.push('/h5/user/addTaobaoAccount')" style="height: 45px;line-height: 45px;color: rgba(21,126,251,1);font-size: 18px;display: inline-block; width: 50%;background: white;border-top: 1px solid #E6E6E6;" >去绑定</div>
+      </x-dialog>
+      <!-- </div> -->
   </div>
 </template>
 
@@ -183,6 +196,7 @@ export default {
       unique_code: "",
       user_address_book:"",
       showTip:false,
+      showNumber:false,
       newup:null,
       statusNum:null,
       showMsg:"",
@@ -284,8 +298,11 @@ export default {
       this.newup=newup
       this.nickName=this.newup[0].nickname
       this.statusNum=this.newup[0].status
+      
       } 
-    // await this.baiDuStatistics();
+      if(this.companyAccount[0].bandList.length ==0 ||this.statusNum==0){
+        this.showNumber=true
+      }
     }
   },
   methods: {
@@ -577,6 +594,11 @@ export default {
   .tasknoInfo {
     text-align: center;
     padding: 80px 0;
+  }
+  .showAttention{
+    font-size: 24px;
+    font-weight: 600;
+    color:rgba(0,0,0,1);
   }
 }
 </style>

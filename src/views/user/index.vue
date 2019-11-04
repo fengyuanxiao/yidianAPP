@@ -20,8 +20,9 @@
               <!-- <p class="mobile">{{userInfo.mobile}}</p> -->
               <p class="mobile">{{userInfo.mobile}}</p>
               <p class="code">
-                <span style="font-size:14px;">我的邀请码:</span>
-                <span>{{userInfo.invite_code}}</span>
+                <span style="font-size:16px;">我的邀请码:</span>
+                <span style="color:#4D97FF">{{userInfo.invite_code}}</span>
+                <!-- <img src="@/assets/img/icon/copy_btn.png" alt :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy"/> -->
                 <span :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
               </p>
             </div>
@@ -29,24 +30,40 @@
         </flexbox>
       </div>
       <div class="userAccountInfo">
+        <!-- <grid :show-vertical-dividers="false" > -->
+          
+        <!-- </grid> -->
         <grid :show-vertical-dividers="false" >
+          <p class="cashWithdrawal">提现</p>
           <div @click="$router.push('/h5/user/tixian')">
-            <grid-item class="countBox" label="可提现总余额" style="padding-bottom:5px;" >
-              <strong slot="icon" style="font-size:36px;">{{userCenterInfo.total_commission||0.00}}元</strong>
+           <p class="canCash">可提现总余额(元)</p>
+            <grid-item class="countBox" style="padding-bottom:5px;" >
+              <strong slot="icon" style="font-size:25px;">{{userCenterInfo.total_commission||0.00}}元</strong>
+            </grid-item>
+             <grid-item  >
+                <x-button
+                mini
+                type="primary"
+                style="margin-top:-20px;"
+                >提现</x-button>
             </grid-item>
           </div>
         </grid>
         <grid :show-vertical-dividers="false">
-          <grid-item label="本金余额">
-            <strong slot="icon">{{userCenterInfo.money_account||0.00}}元</strong>
+          <p class="canCash" style="display: inline-block;padding-top: 20px; width: 49%;">本金余额(元)</p>
+          
+          <p class="canCash" style="display: inline-block;">佣金余额(元)</p>
+          <grid-item label="">
+            <strong slot="icon" style="font-size:19px;">{{userCenterInfo.money_account||0.00}}元</strong>
             <x-button
               mini
               type="primary"
               @click.native="getPay(1,userCenterInfo.money_account||0.00)"
             >转入到提现</x-button>
           </grid-item>
-          <grid-item label="佣金余额">
-            <strong slot="icon">{{userCenterInfo.commission_account||0.00}}元</strong>
+          <div style="width:1px;height:110px;background:#D9D9D9;float: left;margin-top: -20px;"></div>
+          <grid-item label="" style="width:49.8%">
+            <strong slot="icon" style="font-size:19px;">{{userCenterInfo.commission_account||0.00}}元</strong>
             <x-button
               mini
               type="primary"
@@ -90,28 +107,28 @@ export default {
       userOrderInfo: [
         [
           {
-            icon: require("@/assets/img/icon/gouwuche.png"),
+            icon: require("@/assets/img/icon/unpaid.png"),
             url: "/h5/order/dianfu/unfinish",
             label: "未垫付",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/waitorder.png"),
+            icon: require("@/assets/img/icon/not-browse.png"),
             url: "/h5/order/liulan/unfinish",
             label: "未浏览",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/waitok.png"),
+            icon: require("@/assets/img/icon/no-quest.png"),
             url: "/h5/order/question/unfinish",
             label: "未问答",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/waitbus.png"),
+            icon: require("@/assets/img/icon/my_bill.png"),
             url: "/h5/user/commission",
             label: "账单管理",
             isBadge: false,
@@ -120,28 +137,28 @@ export default {
         ],
         [
           {
-            icon: require("@/assets/img/icon/deal_7.png"),
+            icon: require("@/assets/img/icon/my_cw.png"),
             url: "/h5/user/tixian",
             label: "我要提现",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/deal_5.png"),
+            icon: require("@/assets/img/icon/my_appeal.png"),
             url: "/h5/user/shensu",
             label: "申诉中心",
             isBadge: true,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/user_info.png"),
+            icon: require("@/assets/img/icon/my_am.png"),
             url: "/h5/user/buyAccount",
             label: "买号管理",
             isBadge: true,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/xinshoujiaocheng.png"),
+            icon: require("@/assets/img/icon/my_ai.png"),
             url: "/h5/user/accountInfo",
             label: "账户信息",
             isBadge: false,
@@ -150,28 +167,28 @@ export default {
         ],
         [
           {
-            icon: require("@/assets/img/icon/weigui.png"),
+            icon: require("@/assets/img/icon/my_notice.png"),
             url: "/h5/user/tongzhi",
             label: "通知公告",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/deal_6.png"),
+            icon: require("@/assets/img/icon/my_recommend.png"),
             url: "/h5/invite",
             label: "推荐有奖",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/help.png"),
+            icon: require("@/assets/img/icon/help-center.png"),
             url: "/h5/user/help",
             label: "帮助中心",
             isBadge: false,
             badgeValue: 0
           },
           {
-            icon: require("@/assets/img/icon/kefu.png"),
+            icon: require("@/assets/img/icon/my_cs.png"),
             url:
               "http://wpa.qq.com/msgrd?v=3&uin=2324286706&site=qq&menu=yes",
             label: "在线客服",
@@ -237,6 +254,7 @@ export default {
   .weui-cells {
     padding: 5px 0;
     font-size: 12px;
+    border-radius: 10px;
   }
   .countBox {
     .weui-grid__label {
@@ -246,12 +264,20 @@ export default {
   }
 }
 .userHead {
-  color: #fff;
-  background: #1890ff;
+  color: #444;
+  background: url(/static/img/myTop_bg.png) no-repeat 50% -1200%;
   font-size: 16px;
   letter-spacing: 1px;
-  padding: 20px 20px;
+  padding: 20px 10px;
   position: relative;
+  height: 300px;
+  .vux-flex-row{
+    border-radius: 20px;
+    margin-top: 30px;
+    background: #fff;
+    height: 100px;
+    padding-left: 40px;
+  }
   .system {
     position: absolute;
     top: 10px;
@@ -260,9 +286,16 @@ export default {
     height: auto;
   }
   .vux-flexbox-item {
+    margin-left: 45px !important;
     &:first-child {
-      min-width: 64px;
+      min-width: 66px;
       flex: 0;
+    .flex-demo{
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      max-width: 66px;
+      max-height: 66px;
+    }  
     }
   }
   .userHeaderImg {
@@ -274,12 +307,20 @@ export default {
   }
   .mobile {
     margin-bottom: 10px;
+    color: black;
+    font-size: 18px;
   }
   .copy {
     font-size: 14px;
-    padding: 2px 10px;
     border: 1px solid #fff;
     border-radius: 20px;
+    width: 55px;
+    height: 30px;
+    background: linear-gradient(0deg,rgba(255,150,66,1),rgba(255,195,75,1));
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    margin-left: 10px;
   }
 }
 .userAccountInfo {
@@ -287,10 +328,27 @@ export default {
   position: relative;
   overflow: hidden;
   margin: 10px;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: white;
   background-clip: padding-box;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  margin-top: -140px;
+  .cashWithdrawal{
+    padding: 15px;
+    color: #444;
+    font-size: 22px;
+    font-family: PingFang SC;
+    font-weight: 500;
+  }
+  .weui-grid:after{
+    border: none !important;
+  }
+  .canCash{
+    font-size: 16px;
+    font-weight: normal;
+    color: rgba(68,68,68,1);
+    width: 50%;
+    text-align: center;
+  }
   // 图标
   .weui-grid__icon {
     width: 100%;
@@ -307,21 +365,50 @@ export default {
   }
   .weui-btn {
     display: block;
-    margin: 0 auto;
+    margin: 5px auto;
     width: 80%;
     padding: 3px 0;
+    width: 50% !important;
+  }
+  .weui-btn_primary{
+    background:linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1));
+    border-radius:25px;
   }
 }
 .userOrderInfo {
-  margin-top: 10px;
+  margin: 10px;
+  border-radius: 20px;
   background-color: #fff;
+  .vux-label{
+    color: #444;
+    font-size: 21px;
+    font-family: PingFang SC;
+    font-weight: 500;
+  }
   .vux-label-desc {
     display: none;
   }
+  .weui-cell__ft{
+    font-size: 16px;
+  }
+  .weui-cell__ft:after{
+    height: 8px !important;
+    width: 8px !important;
+  }
+  .weui-grid__icon{
+    width: 40px;
+    height: 48px;
+  }
   .weui-grid__icon img {
-    width: 22px;
+    width: 40px;
     height: auto;
     margin: 0 auto;
+  }
+  .weui-grids:before{
+    border: none !important;
+  }
+  .weui-grid:after{
+    border: none !important;
   }
   .weui-grid__label {
     font-size: 12px;

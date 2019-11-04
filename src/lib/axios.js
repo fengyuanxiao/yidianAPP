@@ -101,6 +101,7 @@ axios.interceptors.response.use(
     // adapted to mockjs with {array:[...]} but not [...]
     let data = null
     hideLoading()
+    console.log(xhr.data.msg,'222')
     if (xhr.data.status === true || xhr.data.status === 1) {
       return xhr.data
       // 区分grabTask接口
@@ -116,7 +117,8 @@ axios.interceptors.response.use(
         router.replace('/h5/login')
       }, 1500)
       return Promise.reject(xhr)
-    } else {
+    } else if(xhr.data.status == false){
+     
       Vue.$vux.toast.text(xhr.data.msg || '服务器响应失败，请检测网络')
       return Promise.reject(xhr)
     }

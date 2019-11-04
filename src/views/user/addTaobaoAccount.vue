@@ -50,6 +50,21 @@
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
             </li>
+             <li class="mui-table-view-cell no-padding">
+              <div class="mui-input-row bgwhite">
+                <label style="white-space:nowrap">年龄</label>
+                <datetime
+                  format="YYYY"
+                  name="year_name"
+                  v-model.trim="userInfo.year"
+                  class="mui-input-clear"
+                  placeholder="请选择出生年份"
+                  clear-text="选择年份"
+                  :min-year="1950"
+                />
+                <span class="mui-icon mui-icon-clear mui-hidden"></span>
+              </div>
+            </li>
             <li class="mui-table-view-cell no-padding">
               <div class="mui-input-row bgwhite">
                 <label style="white-space:nowrap">淘宝订单号</label>
@@ -284,7 +299,7 @@
   </div>
 </template>
 <script>
-import { XAddress, ChinaAddressV4Data } from "vux";
+import { XAddress, ChinaAddressV4Data, Datetime  } from "vux";
 export default {
   data() {
     return {
@@ -295,7 +310,8 @@ export default {
         GoodsPhone: "",
         provinces: [],
         address: "",
-        tb_order_sign: ""
+        tb_order_sign: "",
+        year:""
       },
       getAccount:{
         Account: "",
@@ -332,11 +348,12 @@ export default {
           exampleImg: require("@/assets/img/taobao/dingdan.png"),
           exampleFont:"淘宝订单示例图"
         }
-      ]
+      ],
     };
   },
   components: {
-    XAddress
+    XAddress,
+    Datetime 
   },
   mounted() {
     this.getCodeTime();
@@ -395,6 +412,9 @@ export default {
       if (this.userInfo.alipay_name === "") {
         return this.$vux.toast.text("请输入支付宝姓名");
       }
+      if (this.userInfo.year === "") {
+        return this.$vux.toast.text("请选择出生年份");
+      }
       if (this.userInfo.GoodsName === "") {
         return this.$vux.toast.text("请输入收货人姓名");
       }
@@ -422,7 +442,7 @@ export default {
       if (this.images[2].length === 0) {
         return this.$vux.toast.text("请输入淘宝订单截图");
       }
-      // 是否是重新提交的绑定
+      // 是重新提交的绑定
       if(this.$route.query.id){
           const reuslt1 = await this.axios.post(
             "/api/index/updatetb_bind",
@@ -526,7 +546,7 @@ export default {
     .userInfoForm {
       .accountInfo{
         width:100%;
-        height:245px;
+        height:295px;
         background:rgba(255,255,255,1);
         box-shadow: 5px 5px 10px #cccccc;
         border-radius:15px;
@@ -572,6 +592,26 @@ export default {
         height: 73%;
         overflow: scroll;
         z-index: 999999;
+      }
+      .vux-datetime-value{
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+        margin-left: 0px !important;
+        text-align: left !important;
+        padding-left: 10px;
+        line-height: 36px;
+        width: 100%;
+        margin-top: 5px;
+      }
+      .vux-cell-placeholder{
+        color: #777;
+      }
+      .dp-header{
+        color: black;
+        font-weight: bold;
+      }
+      .vux-cell-value{
+        color: #515a6e;
       }
       .img-box {
         height: 95%;
