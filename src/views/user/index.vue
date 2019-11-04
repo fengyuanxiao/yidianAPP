@@ -53,7 +53,7 @@
           <p class="canCash" style="display: inline-block;padding-top: 20px; width: 49%;">本金余额(元)</p>
           
           <p class="canCash" style="display: inline-block;">佣金余额(元)</p>
-          <grid-item label="">
+          <grid-item label="" style="width:49.6%">
             <strong slot="icon" style="font-size:19px;">{{userCenterInfo.money_account||0.00}}元</strong>
             <x-button
               mini
@@ -265,7 +265,7 @@ export default {
 }
 .userHead {
   color: #444;
-  background: url(/static/img/myTop_bg.png) no-repeat 50% -1200%;
+  background: url(/static/img/myTop_bg.png) no-repeat 50% -1300%;
   font-size: 16px;
   letter-spacing: 1px;
   padding: 20px 10px;
@@ -276,7 +276,7 @@ export default {
     margin-top: 30px;
     background: #fff;
     height: 100px;
-    padding-left: 40px;
+    padding-left: 20px;
   }
   .system {
     position: absolute;
@@ -286,7 +286,7 @@ export default {
     height: auto;
   }
   .vux-flexbox-item {
-    margin-left: 45px !important;
+    margin-left: 15px !important;
     &:first-child {
       min-width: 66px;
       flex: 0;
@@ -346,7 +346,7 @@ export default {
     font-size: 16px;
     font-weight: normal;
     color: rgba(68,68,68,1);
-    width: 50%;
+    width: 49%;
     text-align: center;
   }
   // 图标

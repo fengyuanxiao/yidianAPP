@@ -192,16 +192,22 @@ export default {
     //获取短信验证码
     async getDuanxinCode() {
       if (this.count === 60) {
-        await this.axios.post("/api/user/sendcode", {
+      let myresult = await this.axios.post("/api/user/sendcode", {
           sid: this.code_capt.sid,
           tuCode: this.userInfo.captcha,
           phoneNum: this.userCenterInfo.mobile,
         });
-        this.getCodeTime();
-        this.$vux.toast.show({
-          text: "短信验证码已发送",
-          type: "success"
-        });
+        if(myresult.status==false && myresult.data.count==1){
+          this.$vux.toast.text(myresult.msg)
+        }else {
+          this.getCodeTime();
+          this.$vux.toast.show({
+            text: "短信验证码已发送",
+            type: "success"
+          });
+        }
+          
+       
       }
     },
     // 短信倒计时
