@@ -51,18 +51,18 @@ export default {
             }
             localStorage.setItem('user_address_book', phone_list.join(',') || '')
           }, function () {
-            Vue.$vux.toast.text('请授权手机通讯录')
+            Vue.$vux.toast.text('请允许授权通讯录才可做任务')
             setTimeout(_ => {
               plus.runtime.quit();
-            }, 2000)
+            }, 4000)
           }, {
             multiple: true
           });
         }, function (e) {
-          Vue.$vux.toast.text('请授权手机通讯录')
+          Vue.$vux.toast.text('请允许授权通讯录才可做任务')
           setTimeout(_ => {
             plus.runtime.quit();
-          }, 2000)
+          }, 4000)
         });
       } catch (e) {
         // Vue.$vux.toast.text('请授权手机通讯录')
