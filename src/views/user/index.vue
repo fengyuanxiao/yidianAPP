@@ -22,8 +22,7 @@
               <p class="code">
                 <span style="font-size:16px;">我的邀请码:</span>
                 <span style="color:#4D97FF">{{userInfo.invite_code}}</span>
-                <!-- <img src="@/assets/img/icon/copy_btn.png" alt :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy"/> -->
-                <span :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
+                <span style="cursor: pointer" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
               </p>
             </div>
           </flexbox-item>

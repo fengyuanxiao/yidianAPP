@@ -415,6 +415,9 @@ export default {
       if (this.userInfo.year === "") {
         return this.$vux.toast.text("请选择出生年份");
       }
+      if(this.userInfo.year > 2004){
+        return this.$vux.toast.text("请正确提交实名认证人的真实年龄哦！");
+      }
       if (this.userInfo.GoodsName === "") {
         return this.$vux.toast.text("请输入收货人姓名");
       }

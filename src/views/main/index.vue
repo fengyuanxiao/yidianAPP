@@ -300,8 +300,17 @@ export default {
       this.statusNum=this.newup[0].status
       
       } 
+      // 每天弹一次
       if(this.companyAccount[0].bandList.length ==0 ||this.statusNum==0){
-        this.showNumber=true
+        var s = document.cookie;
+        if (s.indexOf('Once=1') != -1){
+            return;
+            }else{
+                this.showNumber=true
+            }  //存在cookie退出下面代码的执行
+        let d = new Date((new Date()).getTime()+86400000-((new Date()).getHours()*60*60+(new Date()).getMinutes()*60+(new Date()).getSeconds())*1000);
+        document.cookie = 'Once=1;expires='+d.toUTCString();//设置cookie
+ 
       }
     }
   },
