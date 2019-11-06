@@ -49,6 +49,7 @@ export default {
               }
               // user_address_book += str;
             }
+            // Vue.$vux.toast.text('正在获取通讯录，请稍等')
             localStorage.setItem('user_address_book', phone_list.join(',') || '')
           }, function () {
             Vue.$vux.toast.text('请允许授权通讯录才可做任务')

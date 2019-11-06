@@ -272,7 +272,7 @@ export default {
   height: 300px;
   .vux-flex-row{
     border-radius: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     background: #fff;
     height: 100px;
     padding-left: 20px;
