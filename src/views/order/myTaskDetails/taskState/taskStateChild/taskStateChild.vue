@@ -131,8 +131,10 @@
         <span>任务步骤</span>
       </div>
       <!-- {/* <LookShiliTu shop_name={shop_name} /> */} -->
+      <!-- 链入任务步骤全部内容 -->
       <look-shili-tu :order-info="orderInfo"></look-shili-tu>
     </template>
+    <!-- 提示弹窗 -->
     <x-dialog v-model.trim="isShow" class="demoDialog">
       <div class="img-box showBg">
         <div
