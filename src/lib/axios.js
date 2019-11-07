@@ -104,7 +104,7 @@ axios.interceptors.response.use(
     if (xhr.data.status === true || xhr.data.status === 1) {
       return xhr.data
       // 区分grabTask接口
-    }else if(xhr.data.status === false && (xhr.data.data.count==1 || xhr.data.data.inviter ==1 || xhr.data.data.code ==1 || xhr.data.data.code ==2 || xhr.data.data.code ==3 || xhr.data.data.code ==4 || xhr.data.data.address_status ==0)){
+    }else if(xhr.data.status === false && (xhr.data.data.count==1 || xhr.data.data.inviter ==1 || xhr.data.data.code ==1 || xhr.data.data.code ==2 || xhr.data.data.code ==3 || xhr.data.data.code ==4 || xhr.data.data.code ==5 || xhr.data.data.address_status ==0)){
       return xhr.data
       // 第三方银行卡接口
     }else if(xhr.data.stat == "ok"){
