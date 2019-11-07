@@ -20,7 +20,7 @@
           <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
         </group>
         <group>
-          <x-button type="primary" @click.native="checkName">核对</x-button>
+          <x-button type="primary" @click.native="checkName">{{this.waitCheckName === this.orderInfo.shop_name ? '核对正确' : '核对'}}</x-button>
         </group>
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
@@ -226,11 +226,9 @@ export default {
       return this.chat_pay_content.filter(e => e.length);
     },
     checkName() {
-      if (this.waitCheckName === this.orderInfo.shop_name) {
-        this.$vux.toast.text("店铺名称正确！");
-      } else {
-        this.$vux.toast.text("店铺名称错误！");
-      }
+      if (this.waitCheckName != this.orderInfo.shop_name) {
+         this.$vux.toast.text("店铺名称错误！");
+      } 
     },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
