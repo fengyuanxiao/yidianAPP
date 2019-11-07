@@ -278,11 +278,12 @@ export default {
     }
   },
   async mounted() {
+    await this.clearCache();
     let token = this.$utils.cookies.getCookie("token");
     if (!token) {
       this.$router.replace("/h5/login");
     } else {
-      await this.clearCache();
+      
       this.getPhoneUuid()
       await this.getBandAccount();
       this.choose = this.company[0];
