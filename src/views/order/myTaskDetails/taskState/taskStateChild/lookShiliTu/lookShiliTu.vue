@@ -20,28 +20,30 @@
           <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
         </group>
         <group>
-          <x-button type="primary" @click.native="checkName">{{this.waitCheckName === this.orderInfo.shop_name ? '核对正确' : '核对'}}</x-button>
+          <x-button type="primary" @click.native="checkName">{{this.checkCrreact}}</x-button>
         </group>
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
-      <div v-if="showSec" class="buzou-title" >
-        <span>第二步 浏览店铺</span>
-        <span @click="isShow2=true">点击查看示例</span>
+      <div v-if="showSec">
+        <div  class="buzou-title" >
+          <span>第二步 浏览店铺</span>
+          <span @click="isShow2=true">点击查看示例</span>
+        </div>
+        <p>.找到任务商家对应店铺产品并点击进入，浏览任务商品详情2-3分钟</p>
+
+        <p v-if="orderInfo.platform===5">按照商家指定的下单方式进行下单，下单方式请拉到顶部查看拼团类型</p>
+
+        <div v-else-if="orderInfo.platform===6">
+          <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
+          <p>.然后从购物车提交订单</p>
+        </div>
+
+        <div v-else>
+          <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
+          <p>.返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p>
+        </div>
+        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p>
       </div>
-      <p>.找到任务商家对应店铺产品并点击进入，浏览任务商品详情2-3分钟</p>
-
-      <p v-if="orderInfo.platform===5">按照商家指定的下单方式进行下单，下单方式请拉到顶部查看拼团类型</p>
-
-      <div v-else-if="orderInfo.platform===6">
-        <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
-        <p>.然后从购物车提交订单</p>
-      </div>
-
-      <div v-else>
-        <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
-        <p>.返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p>
-      </div>
-
       <!-- 第三步 聊天下单支付 -->
       <div v-if="showThird">
         <div v-if="orderInfo.platform===1">
@@ -61,6 +63,7 @@
             class="liaotian"
             v-if="!orderInfo.is_muti_keyword"
           >{{orderInfo.chatpic?'此任务商家要求聊天':'此任务不需要聊天'}}</p>
+          
         </div>
 
         <div v-else class="buzou-title">
@@ -175,7 +178,9 @@ export default {
   },
   data() {
     return {
-      Mincount:300,
+      checkCrreact:'核对',
+      Mincount:120,
+      second:6,
       timer: null,
       showSec:false,
       showThird:false,
@@ -240,11 +245,35 @@ export default {
       return this.chat_pay_content.filter(e => e.length);
     },
     checkName() {
-      if (this.waitCheckName != this.orderInfo.shop_name) {
-         this.$vux.toast.text("店铺名称错误！");
-      } 
+      if (this.waitCheckName == this.orderInfo.shop_name) {
+        this.checkCrreact="核对正确"
+        this.showSec=true
+        this.getSecondTime()
+        
+        setTimeout(() => {
+          this.showThird=true
+          if(this.showThird=true){
+            
+            setTimeout(() => {
+            this.showFourth=true
+          }, 120000);
+        }
+        }, 6000);
+      } else {
+        this.$vux.toast.text("店铺名称错误！");
+      }
     },
-     // 弹窗倒计时
+     // 第二步任务倒计时
+    async getSecondTime() {
+      this.timer = setInterval(_ => {
+        if (this.second > 0) {
+          this.second--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);        
+    },
+     // 第四步任务倒计时
     async getCodeTime() {
       this.timer = setInterval(_ => {
         if (this.Mincount > 0) {
