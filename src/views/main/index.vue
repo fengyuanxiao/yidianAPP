@@ -11,8 +11,8 @@
           <img :src="$url+'uploads/admin/avatar/'+item.avatar" />
         </swiper-item>
       </swiper>
-    </div>
-    <scroll-seamless :data="blackList" :class-option="optionLeft" class="ulBox">
+      <!-- 中奖信息 -->
+      <scroll-seamless :data="blackList" :class-option="optionLeft" class="ulBox">
       <ul class="ul">
         <li
           class="item"
@@ -22,12 +22,14 @@
         ></li>
       </ul>
     </scroll-seamless>
+    </div>
+    
 
     <div class="newInfo">
       <div class="newUser" style="margin-right: 8px;" @click="$router.push('/h5/user/buyAccount')">
       <!-- <grid :cols="2" :show-lr-borders="false">
         <grid-item link="/h5/user/buyAccount"> -->
-          <div style="display: inline-block;" >
+          <div style="display: flex;" >
             <img src="@/assets/img/icon/pic1.png" alt />
           </div>
           <div class="newDesc">
@@ -69,9 +71,10 @@
       </tab>
       <swiper v-model.trim="choose.ind" height="60px" :show-dots="false">
         <swiper-item v-for="(item, index) in companyAccount" :key="index">
-          <div class="bandAccountInfo" style="margin-top:25px" v-if="(statusNum ==0 || item.bandList.length ==0)">
+          <div @click="$router.push(item.url)" class="bandAccountInfo" style="margin-top:25px" v-if="(statusNum ==0 || item.bandList.length ==0)">
             请先绑定【{{choose.name}}】账号: 
-            <router-link :to="item.url" style="color:#f00;">立即绑定</router-link>
+            <!-- <router-link :to="item.url" style="color:#f00;">立即绑定</router-link> -->
+            <a style="color:#f00;">立即绑定</a>
           </div>
           <div class="bandAccountInfo" style="margin-top:25px" v-else-if="statusNum ==2">
             当前账号: 
@@ -502,6 +505,7 @@ export default {
     bottom: 22px !important;
   }
   #swiperBanner {
+    position:relative;
     .vux-swiper{
       height:187px !important;
     }
@@ -519,7 +523,7 @@ export default {
     background: linear-gradient(0deg,rgba(0,0,0,0.82),rgba(0,0,0,0));
     opacity:0.8;
     position:absolute;
-    top:23.5%;
+    bottom:0px;
     .ul {
       width: auto;
       white-space: nowrap;
@@ -534,30 +538,29 @@ export default {
   }
   .newInfo {
     margin: 15px 10px 10px;
-    // background: #fff;
     // .weui-grids a
     .newUser {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      // justify-content: space-between;
+      // align-items: center;
       padding: 10px 0px;
       height: 80px;
       width: 48.25%;
       background: #fff;
-      display: inline-block;
+      margin-bottom: 10px;
+      float: left;
       box-shadow:0px 4px 20px 0px rgba(236,236,236,1);
-          // box-shadow: 5px 5px 10px #cccccc;
       border-radius:20px;
       img {
         max-width: 60px;
         margin-top: 4px;
+        margin-left: 4px;
       }
       .newDesc {
-        margin-left: 2px;
         width: 57%;
-        display: inline-block;
         position: relative;
-        top: -8px;
+        top: 0px;
+        left: 6%;
         h3{
           font-size: 13px;
           color: #444444;
@@ -586,11 +589,15 @@ export default {
     background:rgba(244,250,255,1);
     border-radius:30px;
     margin:0px 10px;
+    .vux-marquee{
+      margin-top: -5px;
+    }
     .voiceIcon {
       display: block;
       max-width: 85px;
       padding-right: 10px;
       border-right: #e9e8e8 solid 1px;
+
     }
     .noticeVoice {
       display: block;

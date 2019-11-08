@@ -5,7 +5,7 @@
     </div>
     <div class="loginForm">
       <group title>
-        <x-input @on-blur="showText" title="手机号码" v-model.trim.trim="userInfo.phoneNum" type="tel" placeholder="请输入您申请银行卡时所预留手机号">
+        <x-input @on-blur="showText" title="手机号码" v-model.trim="userInfo.phoneNum" type="tel" placeholder="请输入您申请银行卡时所预留手机号">
           <!-- <span class="font-icon" slot="label"></span> -->
         </x-input>
       </group>
@@ -143,16 +143,22 @@ export default {
     //获取短信验证码
     async getDuanxinCode() {
       if (this.count === 60) {
-        await this.axios.post("/api/user/sendcode", {
+        let result=await this.axios.post("/api/user/sendcode", {
           sid: this.code_capt.sid,
           tuCode: this.userInfo.captcha,
           phoneNum: this.userInfo.phoneNum
         });
-        this.getCodeTime();
-        this.$vux.toast.show({
+        
+        if(result.status== false){
+          this.$vux.toast.text(result.msg)
+        } else if(result.status== true){
+          this.getCodeTime();
+          this.$vux.toast.show({
           text: "短信验证码已发送",
           type: "success"
-        });
+          });
+        }
+       
       }
     },
     // 短信倒计时

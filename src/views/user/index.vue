@@ -19,12 +19,12 @@
             <div class="flex-demo">
               <!-- <p class="mobile">{{userInfo.mobile}}</p> -->
               <p class="mobile">{{userInfo.mobile}}</p>
-              <p class="code">
+              <p class="code" style="margin-top:3px">
                 <span style="font-size:14px;">我的邀请码:</span>
                 <span style="color:#4D97FF;font-size: 15px;">{{userInfo.invite_code}}</span>
-                <span style="cursor: pointer" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
+                <span style="cursor: pointer;margin-left: 5px;margin-top: -4px;" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
               </p>
-              <p class="code" @click="goDown()">
+              <p class="code"  style="margin-top:6px">
                 <span style="font-size:14px;">下载地址:</span>
                 <span style="color:#4D97FF;font-size: 15px;">{{loadAddress}}</span>
                 <span style="cursor: pointer;" onclick="" :data-clipboard-text="loadAddress" class="copy" @click="copy">复制</span>
@@ -39,7 +39,7 @@
         <!-- </grid> -->
         <grid :show-vertical-dividers="false" >
           <p class="cashWithdrawal">提现</p>
-          <div @click="$router.push('/h5/user/tixian')">
+          <div id="cashMoney" @click="$router.push('/h5/user/tixian')">
            <p class="canCash">可提现总余额(元)</p>
             <grid-item class="countBox" style="padding-bottom:5px;" >
               <strong slot="icon" style="font-size:25px;">{{userCenterInfo.total_commission||0.00}}元</strong>
@@ -216,15 +216,6 @@ export default {
     }
   },
   methods: {
-    goDown() {
-      try{
-        plus.runtime.openURL("https://fir.im/na73")
-      }catch (e) {
-      }
-      // 测试下载地址：https://fir.im/j1g5
-      //线上下载地址： "https://fir.im/na73"
-      // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
-    },
     copy() {
       var clipboard = new Clipboard(".copy");
       clipboard.on("success", e => {
@@ -266,7 +257,7 @@ export default {
 <style lang="less">
 .user {
   .weui-cells {
-    padding: 5px 0;
+    padding:0px;
     font-size: 12px;
     border-radius: 10px;
   }
@@ -289,8 +280,8 @@ export default {
     border-radius: 20px;
     margin-top: 20px;
     background: #fff;
-    height: 100px;
-    padding-left: 10px;
+    height: 115px;
+    padding-left: 5px;
   }
   .system {
     position: absolute;
@@ -300,41 +291,45 @@ export default {
     height: auto;
   }
   .vux-flexbox-item {
-    margin-left: 5px !important;
+    margin-left: 0px !important;
+    margin-bottom: 2px;
     &:first-child {
       min-width: 66px;
       flex: 0;
     .flex-demo{
       border: 1px solid #ddd;
       border-radius: 50%;
-      max-width: 62px;
-      max-height: 62px;
+      max-width: 59px;
+      max-height: 59px;
     }  
     }
   }
   .userHeaderImg {
     display: block;
-    max-width: 60px;
-    max-height: 60px;
+    max-width:57px;
+    max-height: 57px;
     border-radius: 50%;
     background: #fff;
   }
   .mobile {
     margin-top: 5px;
     color: black;
-    font-size: 18px;
+    font-size: 18.5px;
+  }
+  .code{
+    margin-top:3px;
   }
   .copy {
-    font-size: 12px;
+    font-size: 14px;
     border: 1px solid #fff;
     border-radius: 20px;
     height: 26px;
     background: linear-gradient(0deg,rgba(255,150,66,1),rgba(255,195,75,1));
     color: #fff;
     text-align: center;
-    line-height: 26px;
-    padding: 0px 10px;
-    margin-left: 8px;
+    padding: 2px 10px;
+    float: right;
+    margin-right: 5px;
   }
 }
 .userAccountInfo {
@@ -345,13 +340,21 @@ export default {
   border-radius: 20px;
   background-color: white;
   background-clip: padding-box;
-  margin-top: -140px;
+  margin-top: -132px;
+  .weui-grid:before{
+    border-right: none !important;
+  }
   .cashWithdrawal{
-    padding: 15px;
+    padding: 10px 15px 15px;
     color: #444;
     font-size: 22px;
     font-family: PingFang SC;
     font-weight: 500;
+  }
+  #cashMoney{
+    .weui-btn{
+      padding:4px 38px;
+    }
   }
   .weui-grid:after{
     border: none !important;
@@ -380,12 +383,11 @@ export default {
   .weui-btn {
     display: block;
     margin: 5px auto;
-    width: 80%;
-    padding: 3px 0;
-    width: 50% !important;
+    padding: 4px 20px;
+    margin-bottom: 0px;
   }
   .weui-btn_primary{
-    background:linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1));
+    background:linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1)) !important;
     border-radius:25px;
   }
 }
@@ -423,6 +425,12 @@ export default {
   }
   .weui-grid:after{
     border: none !important;
+  }
+  .weui-grids:after{
+    border: none !important;
+  }
+  .weui-grid:before{
+    border-right: none !important;
   }
   .weui-grid__label {
     font-size: 12px;

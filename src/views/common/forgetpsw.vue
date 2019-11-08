@@ -95,16 +95,20 @@ export default {
     //获取短信验证码
     async getDuanxinCode() {
       if (this.count === 60) {
-        await this.axios.post("/api/user/sendcode", {
+      let result=await this.axios.post("/api/user/sendcode", {
           sid: this.code_capt.sid,
           tuCode: this.userInfo.captcha,
           phoneNum: this.userInfo.mobile
         });
-        this.getCodeTime();
-        this.$vux.toast.show({
+         if(result.status== false){
+          this.$vux.toast.text(result.msg)
+        } else if(result.status== true){
+          this.getCodeTime();
+          this.$vux.toast.show({
           text: "短信验证码已发送",
           type: "success"
-        });
+          });
+        }
       }
     },
     // 短信倒计时
