@@ -20,9 +20,14 @@
               <!-- <p class="mobile">{{userInfo.mobile}}</p> -->
               <p class="mobile">{{userInfo.mobile}}</p>
               <p class="code">
-                <span style="font-size:16px;">我的邀请码:</span>
-                <span style="color:#4D97FF">{{userInfo.invite_code}}</span>
+                <span style="font-size:14px;">我的邀请码:</span>
+                <span style="color:#4D97FF;font-size: 15px;">{{userInfo.invite_code}}</span>
                 <span style="cursor: pointer" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
+              </p>
+              <p class="code" @click="goDown()">
+                <span style="font-size:14px;">下载地址:</span>
+                <span style="color:#4D97FF;font-size: 15px;">{{loadAddress}}</span>
+                <span style="cursor: pointer;" onclick="" :data-clipboard-text="loadAddress" class="copy" @click="copy">复制</span>
               </p>
             </div>
           </flexbox-item>
@@ -99,6 +104,7 @@ export default {
   },
   data() {
     return {
+      loadAddress:"https://fir.im/na73",
       userInfo: {},
       // userAccountInfo
       //  userOrderInfo
@@ -210,6 +216,15 @@ export default {
     }
   },
   methods: {
+    goDown() {
+      try{
+        plus.runtime.openURL("https://fir.im/na73")
+      }catch (e) {
+      }
+      // 测试下载地址：https://fir.im/j1g5
+      //线上下载地址： "https://fir.im/na73"
+      // "https://dowmload.kouziapp.com/Hp_yidianzhengqian/downloadWeb.html";
+    },
     copy() {
       var clipboard = new Clipboard(".copy");
       clipboard.on("success", e => {
@@ -275,7 +290,7 @@ export default {
     margin-top: 20px;
     background: #fff;
     height: 100px;
-    padding-left: 20px;
+    padding-left: 10px;
   }
   .system {
     position: absolute;
@@ -285,41 +300,41 @@ export default {
     height: auto;
   }
   .vux-flexbox-item {
-    margin-left: 15px !important;
+    margin-left: 5px !important;
     &:first-child {
       min-width: 66px;
       flex: 0;
     .flex-demo{
       border: 1px solid #ddd;
       border-radius: 50%;
-      max-width: 66px;
-      max-height: 66px;
+      max-width: 62px;
+      max-height: 62px;
     }  
     }
   }
   .userHeaderImg {
     display: block;
-    max-width: 64px;
-    max-height: 64px;
+    max-width: 60px;
+    max-height: 60px;
     border-radius: 50%;
     background: #fff;
   }
   .mobile {
-    margin-bottom: 10px;
+    margin-top: 5px;
     color: black;
     font-size: 18px;
   }
   .copy {
-    font-size: 14px;
+    font-size: 12px;
     border: 1px solid #fff;
     border-radius: 20px;
-    width: 55px;
-    height: 30px;
+    height: 26px;
     background: linear-gradient(0deg,rgba(255,150,66,1),rgba(255,195,75,1));
     color: #fff;
     text-align: center;
-    line-height: 30px;
-    margin-left: 10px;
+    line-height: 26px;
+    padding: 0px 10px;
+    margin-left: 8px;
   }
 }
 .userAccountInfo {

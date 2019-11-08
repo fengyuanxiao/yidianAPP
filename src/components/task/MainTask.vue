@@ -5,9 +5,9 @@
         <img :src="task.goodspic" alt />
       </flexbox-item>
       <flexbox-item :span="6">
-        <p>{{task.new_type ==1 ? '垫付任务' :task.new_type ==2?'回访任务' :'图文任务'}}</p>
-        <p class="price">佣金：￥{{task.commission}}</p>
-        <p style="color: #999999">垫付：{{task.itemprice}}元</p>
+        <p style="font-size: 16px;">{{task.new_type ==1 ? '垫付任务' :task.new_type ==2?'回访任务' :'图文任务'}}</p>
+        <p class="price"><span style="color: #999999">佣金：</span>￥{{task.commission}}</p>
+        <p style="color: #999999;font-size: 13px;">垫付：{{task.itemprice}}元</p>
         <p class="count">
           <span>共{{task.common_orderitem_num}}单</span>
           <span>剩{{task.residue_order}}单</span>
@@ -156,8 +156,13 @@ export default {
       this.address_status=result.data.address_status
       if(this.address_status==0){
             this.getPhoneUuid();
+            if(result.data.code==5 && result.status== false){
+              this.$vux.toast.text(this.showMsg)
+            }
       }else{
-            if(result.data.code==1 && result.status== false){
+          if(result.data.code==5 && result.status== false){
+            this.$vux.toast.text(this.showMsg)
+          }else if(result.data.code==1 && result.status== false){
             this.showUnbound=true
           }else if((result.data.code==2 || result.data.code==4) && result.status== false){
             this.showTip=true
@@ -170,7 +175,7 @@ export default {
               if((result.data.bank_status ==1 || result.data.bank_status ==2) && realname_status==0){
                   this.showID=true
               }
-              if((result.data.bank_status ==2 && realname_status ==2)|| (result.data.bank_status ==1 && realname_status ==2)||(result.data.bank_status ==2 && realname_status ==1) ){
+              if((result.data.bank_status ==2 && realname_status ==2)|| (result.data.bank_status ==1 && realname_status ==2)||(result.data.bank_status ==2 && realname_status ==1)||(result.data.bank_status ==3 && realname_status ==3)||(result.data.bank_status ==2 && realname_status ==3)||(result.data.bank_status ==3 && realname_status ==2)||(result.data.bank_status ==3 && realname_status ==1)||(result.data.bank_status ==1 && realname_status ==3) ){
                   this.showTip=true
               }
               
@@ -223,27 +228,38 @@ export default {
   padding: 11px 0;
   border-bottom: 1px solid #e1e1e1;
   .vux-flexbox {
-    padding: 0 10px 0 5px;
+    padding: 0 10px 0 0px;
   }
   .price {
     line-height: 18px;
     margin: 5px 0;
-    font-weight: bold;
-    color: #fe905f !important;
+    color: #FF2E2E !important;
+    font-size: 13px;
   }
   .count {
     span {
-      background: #fe905f;
-      color: #fff;
-      padding: 2px 10px;
-      border-radius: 10px;
-      font-size: 13px;
+      color: #4D97FF;
+      padding: 1px 9px;
+      border-radius: 20px;
+      font-size: 12px;
       margin-right: 5px;
       margin-top: 5px;
-    }
+      border: 1px solid #4D97FF;
+      }
+  }
+  .vux-flexbox-item:nth-child(1) {
+    flex: 0 0 28% !important;
   }
   .vux-flexbox-item:nth-child(2) {
-    padding: 0 10px;
+    padding: 0 0 0 10px;
+    margin: -9px 0 0 5px;
+    flex: 0 0 48% !important;
+  }
+  .vux-flexbox-item{
+    .weui-btn_primary{
+      background:linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1)) !important;
+      border-radius:20px;
+    }
   }
   .weui-btn_primary {
     padding: 0;

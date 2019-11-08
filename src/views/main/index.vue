@@ -1,15 +1,17 @@
-<template>
-  <div class="menuBoxBottom main">
-    <swiper auto loop v-model.trim="swiperItemIndex">
-      <swiper-item
-        class="swiper-demo-img"
-        v-for="(item, index) in baseList"
-        :key="index"
-        @click="goDetail(item.url)"
-      >
-        <img :src="$url+'uploads/admin/avatar/'+item.avatar" />
-      </swiper-item>
-    </swiper>
+<template >
+  <div class="menuBoxBottom main" style="background:#fff">
+    <div id="swiperBanner">
+      <swiper auto loop v-model.trim="swiperItemIndex">
+        <swiper-item
+          class="swiper-demo-img"
+          v-for="(item, index) in baseList"
+          :key="index"
+          @click="goDetail(item.url)"
+        >
+          <img :src="$url+'uploads/admin/avatar/'+item.avatar" />
+        </swiper-item>
+      </swiper>
+    </div>
     <scroll-seamless :data="blackList" :class-option="optionLeft" class="ulBox">
       <ul class="ul">
         <li
@@ -20,27 +22,28 @@
         ></li>
       </ul>
     </scroll-seamless>
+
     <div class="newInfo">
-      <grid :cols="2" :show-lr-borders="false">
-        <grid-item link="/h5/user/buyAccount">
-          <div>
+      <div class="newUser" style="margin-right: 8px;" @click="$router.push('/h5/user/buyAccount')">
+      <!-- <grid :cols="2" :show-lr-borders="false">
+        <grid-item link="/h5/user/buyAccount"> -->
+          <div style="display: inline-block;" >
             <img src="@/assets/img/icon/pic1.png" alt />
           </div>
           <div class="newDesc">
             <h3>新手绑定</h3>
             <p>新手必须绑定对应账号才可做任务</p>
-          </div>
-        </grid-item>
-        <grid-item link="/h5/user/help">
-          <div>
+           </div>
+      </div>
+      <div class="newUser" @click="$router.push('/h5/user/help')">
+          <div style="display: inline-block;">
             <img src="@/assets/img/icon/pic2.png" alt />
           </div>
           <div class="newDesc">
             <h3>新手教程</h3>
             <p>新手必须绑定对应账号才可做任务</p>
           </div>
-        </grid-item>
-      </grid>
+      </div>
     </div>
     <div class="voice">
       <div class="voiceIcon">
@@ -55,7 +58,7 @@
     </div>
     <!-- 切換账号 -->
     <div class="changeAccount">
-      <tab :line-width="2" active-color="#fc378c">
+      <tab :line-width="2" active-color="#000">
         <tab-item
           class="vux-center"
           :selected="choose.id === item.id"
@@ -135,8 +138,10 @@
       </div>
       <div class="tasknoInfo" v-if="taskInfo.length==0 && no_task_list.length==0">当前无新任务哦</div>
     </div>
+
     <!-- 菜单 -->
     <tabbar-menu></tabbar-menu>
+
     <!-- 版本号弹窗 -->
     <x-dialog v-model.trim="showTip" class="dialog_demo">
       <group title>
@@ -462,15 +467,6 @@ export default {
       this.no_task_list = result.data.no_task_list || [];
       this.address_info = result.data.address_info; 
     },
-    // async baiDuStatistics(){
-    //   var _hmt = _hmt || [];
-    //   (function() {
-    //     var hm = document.createElement("script");
-    //     hm.src = "https://hm.baidu.com/hm.js?3f63a710cb8d5d591c0fc63735621839";
-    //     var s = document.getElementsByTagName("script")[0]; 
-    //     s.parentNode.insertBefore(hm, s);
-    //   })();
-    // },
      // 获取用户的通讯录和uuid
     getPhoneUuid() {
       this.user_address_book = localStorage.getItem("user_address_book");
@@ -501,15 +497,29 @@ export default {
     font-weight: 600;
     color:rgba(0,0,0,1);
   }
+  .vux-indicator-right{
+    right: 46% !important;
+    bottom: 22px !important;
+  }
+  #swiperBanner {
+    .vux-swiper{
+      height:187px !important;
+    }
+    .vux-icon-dot.active{
+      background-color:#4D97FF !important;
+    }
+  }
   .ulBox {
     overflow: hidden;
-    height: 50px;
+    height: 31px;
     width: 100%;
-    line-height: 50px;
+    line-height: 35px;
     overflow: hidden;
-    margin: 0.5rem 0;
     font-size: 18px;
-    background-color: #fff;
+    background: linear-gradient(0deg,rgba(0,0,0,0.82),rgba(0,0,0,0));
+    opacity:0.8;
+    position:absolute;
+    top:23.5%;
     .ul {
       width: auto;
       white-space: nowrap;
@@ -517,26 +527,43 @@ export default {
       .item {
         display: inline-block;
         margin-left: 30px;
-        color: #f00;
+        color: #fff;
         list-style: none;
       }
     }
   }
   .newInfo {
-    margin: 0.5rem 0;
-    background: #fff;
-    .weui-grids a {
+    margin: 15px 10px 10px;
+    // background: #fff;
+    // .weui-grids a
+    .newUser {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 10px 0px;
       height: 80px;
+      width: 48.25%;
+      background: #fff;
+      display: inline-block;
+      box-shadow:0px 4px 20px 0px rgba(236,236,236,1);
+          // box-shadow: 5px 5px 10px #cccccc;
+      border-radius:20px;
       img {
-        max-width: 75px;
+        max-width: 60px;
+        margin-top: 4px;
       }
       .newDesc {
-        margin-left: 10px;
-        h3,
+        margin-left: 2px;
+        width: 57%;
+        display: inline-block;
+        position: relative;
+        top: -8px;
+        h3{
+          font-size: 13px;
+          color: #444444;
+          font-weight: bold;
+          line-height: 20px;
+        }
         p {
           font-size: 12px;
           color: #666;
@@ -551,23 +578,23 @@ export default {
     }
   }
   .voice {
-    margin: 0.5rem 0;
     background: #fff;
-    padding: 12px 10px;
+        padding: 12px 10px 5px 10px;
     display: flex;
     // justify-content: space-between;
     align-items: center;
+    background:rgba(244,250,255,1);
+    border-radius:30px;
+    margin:0px 10px;
     .voiceIcon {
       display: block;
-      max-width: 45px;
-      width: 10%;
+      max-width: 85px;
       padding-right: 10px;
-      margin-right: 10px;
       border-right: #e9e8e8 solid 1px;
     }
     .noticeVoice {
       display: block;
-      color: #1890ff;
+      color: #4D97FF;
       height: 20px;
       line-height: 20px;
       overflow: hidden;
@@ -576,9 +603,19 @@ export default {
     }
   }
   .changeAccount {
-    margin: 0.5rem 0;
+    margin: 10px 10px 0px;
     background: #fff;
-    padding: 5px;
+    padding: 0 0px 5px 0px;
+    border-top: 1px solid #E5E5E5;
+    .vux-tab-ink-bar{
+      background: #4D97FF !important;
+    }
+    .vux-tab-item{
+      background-size: 100% 0px !important;
+    }
+    .vux-swiper{
+      height: 50px !important;
+    }
     .bandAccountInfo {
       margin: 15px 10px;
       color: #999;
@@ -598,8 +635,12 @@ export default {
     }
   }
   .mainOrder {
-    margin: 0.5rem 0;
+    margin: 0px 10px 5px;
     background: #fff;
+    border-top: 1px solid #E5E5E5;
+    .vux-tab-item{
+      background-size: 100% 0px !important;
+    }
   }
   .tasknoInfo {
     text-align: center;

@@ -91,11 +91,20 @@
                           border-radius: 5px;
                           line-height: 30px;
                           text-align: center;">
-                  <a style="color:white;"
+                  <span style="color:white;"
                     class="example"
                     href="javascript:void(0);"
                     @click="item.showExample=true"
-                  >查看示例</a>
+                  >查看示例</span>
+                  <!-- 查看示例 -->
+                  <x-dialog v-model.trim="item.showExample" class="dialogDemo">
+                    <div class="img-box">
+                      <img :src="item.exampleImg" style="max-width:100%" />
+                    </div>
+                    <div @click="item.showExample=false">
+                      <img class="vux-close" src="@/assets/img/taobao/close_btn.png" alt />
+                    </div>
+                  </x-dialog>
                 </div>
                 <span class="mui-icon mui-icon-clear mui-hidden"></span>
               </div>
@@ -197,8 +206,8 @@
                 </div>
                 <p class="no-margin">{{item.title}}</p>
               </div>
+              <!-- 示例图片 -->
               <x-dialog v-model.trim="item.showExample" class="dialogDemo">
-                <!-- 示例图片 -->
                 <div class="img-box">
                   <img :src="item.exampleImg" style="max-width:100%" />
                 </div>
@@ -326,6 +335,15 @@ export default {
       realnameStatus:null,
       Mincount:5,
       timer: null,
+      showPopPic:[
+        {
+          value: 0,
+          title: "上传淘气值截图",
+          showExample: false,
+          exampleImg: require("@/assets/img/taobao/alipayOrder.png"),
+          exampleFont:"订单示例图"
+        },
+      ],
       uploadPhotoes: [
         {
           value: 0,
@@ -361,11 +379,10 @@ export default {
       this.getDetail();
     }
     // 查看示例
-    let newup = this.uploadPhotoes.filter(item=> {
-        return item.value==2
+    let newup = this.showPopPic.filter(item=> {
+        return item.value==0
     })
     this.newup=newup
-
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -412,7 +429,7 @@ export default {
       if (this.userInfo.alipay_name === "") {
         return this.$vux.toast.text("请输入支付宝姓名");
       }
-      if (this.userInfo.year === "") {
+      if (!this.userInfo.year) {
         return this.$vux.toast.text("请选择出生年份");
       }
       if(this.userInfo.year > 2004){
