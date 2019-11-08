@@ -21,13 +21,13 @@
               <p class="mobile">{{userInfo.mobile}}</p>
               <p class="code" style="margin-top:3px">
                 <span style="font-size:14px;">我的邀请码:</span>
-                <span style="color:#4D97FF;font-size: 15px;">{{userInfo.invite_code}}</span>
-                <span style="cursor: pointer;margin-left: 5px;margin-top: -4px;" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy" @click="copy">复制</span>
+                <span style="color:#4D97FF;font-size: 15px;cursor: pointer;display:inline-block" onclick="" :data-clipboard-text="userInfo.invite_code" @click="copy" class="copy">{{userInfo.invite_code}}</span>
+                <span style="cursor: pointer;margin-left: 5px;margin-top: -4px;" onclick="" :data-clipboard-text="userInfo.invite_code" class="copy copyCon" @click="copy">复制</span>
               </p>
               <p class="code"  style="margin-top:6px">
                 <span style="font-size:14px;">下载地址:</span>
-                <span style="color:#4D97FF;font-size: 15px;">{{loadAddress}}</span>
-                <span style="cursor: pointer;" onclick="" :data-clipboard-text="loadAddress" class="copy" @click="copy">复制</span>
+                <span style="color:#4D97FF;font-size: 15px;cursor: pointer;"  onclick="" :data-clipboard-text="loadAddress" @click="copy" class="copy">{{loadAddress}}</span>
+                <span style="cursor: pointer;" onclick="" :data-clipboard-text="loadAddress" class="copy copyCon" @click="copy">复制</span>
               </p>
             </div>
           </flexbox-item>
@@ -319,7 +319,7 @@ export default {
   .code{
     margin-top:3px;
   }
-  .copy {
+  .copyCon {
     font-size: 14px;
     border: 1px solid #fff;
     border-radius: 20px;
@@ -342,7 +342,13 @@ export default {
   background-clip: padding-box;
   margin-top: -132px;
   .weui-grid:before{
-    border-right: none !important;
+    border: none !important;
+  }
+  .weui-grids:before{
+    border:none !important;
+  }
+  .weui-grids:after{
+    border:none;
   }
   .cashWithdrawal{
     padding: 10px 15px 15px;
