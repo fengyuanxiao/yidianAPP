@@ -544,7 +544,7 @@ export default {
       }    
       
     },
-    // 弹窗倒计时
+    // 短信倒计时
     async getCodeTime() {
       this.timer = setInterval(_ => {
         if (this.Mincount > 0) {
@@ -552,9 +552,9 @@ export default {
         } else {
           clearInterval(this.timer);
         }
-      }, 1000);        
+      }, 1000);
+        
     },
-    
   }
 };
 </script>
