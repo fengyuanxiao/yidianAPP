@@ -24,7 +24,7 @@
         </group>
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
-      <div class="buzou-title">
+      <div v-if="showSec" class="buzou-title" >
         <span>第二步 浏览店铺</span>
         <span @click="isShow2=true">点击查看示例</span>
       </div>
@@ -42,88 +42,94 @@
         <p>.返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p>
       </div>
 
-      <!-- 第三步 -->
-      <!-- {{/* 第三步 聊天下单支付 */}} -->
+      <!-- 第三步 聊天下单支付 -->
+      <div v-if="showThird">
+        <div v-if="orderInfo.platform===1">
+          <div class="buzou-title" >
+            <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
+            <span @click="isShow3=true">点击查看示例</span>
+          </div>
 
-      <div v-if="orderInfo.platform===1">
-        <div class="buzou-title">
-          <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
+          <div v-if="orderInfo.is_muti_keyword">
+            <p>.主关键词搜索 找到对应任务宝贝店外截图 进店浏览2-3分钟 任务宝贝加入购物车 退出 上传正确的图</p>
+            <p>.点开购物车 截图购物车里的任务宝贝 上传正确的图</p>
+          </div>
+          <p>.需按商家要求选择是否聊天下单支付，或直接提交订单不聊天</p>
+          <p>.付款完成后，进入支付账单详情页面，截图上传</p>
+          <!-- {{/* <p style="color:'red', fontWeight:'bold' }}}}>.如商家备注无需聊天，聊天图上传支付宝账单替代</p> */}} -->
+          <p
+            class="liaotian"
+            v-if="!orderInfo.is_muti_keyword"
+          >{{orderInfo.chatpic?'此任务商家要求聊天':'此任务不需要聊天'}}</p>
+        </div>
+
+        <div v-else class="buzou-title">
+          <span>第三步 上传订单截图</span>
           <span @click="isShow3=true">点击查看示例</span>
         </div>
-
-        <div v-if="orderInfo.is_muti_keyword">
-          <p>.主关键词搜索 找到对应任务宝贝店外截图 进店浏览2-3分钟 任务宝贝加入购物车 退出 上传正确的图</p>
-          <p>.点开购物车 截图购物车里的任务宝贝 上传正确的图</p>
-        </div>
-        <p>.需按商家要求选择是否聊天下单支付，或直接提交订单不聊天</p>
-        <p>.付款完成后，进入支付账单详情页面，截图上传</p>
-        <!-- {{/* <p style="color:'red', fontWeight:'bold' }}}}>.如商家备注无需聊天，聊天图上传支付宝账单替代</p> */}} -->
-        <p
-          class="liaotian"
-          v-if="!orderInfo.is_muti_keyword"
-        >{{orderInfo.chatpic?'此任务商家要求聊天':'此任务不需要聊天'}}</p>
-      </div>
-
-      <div v-else class="buzou-title">
-        <span>第三步 上传订单截图</span>
-        <span @click="isShow3=true">点击查看示例</span>
-      </div>
-      <!-- {{/* 支付宝 账单截图 */}} -->
-      <div class="upicFlex">
-        <div
-          class="upic"
-          v-for="(item,ind) in pic_uploads_box"
-          :key="ind"
-          style="padding-right:5px;background:#fff"
-        >
-          <div style="border:1px solid #ccc">
-            <div class="uadd">+</div>
-            <img v-if="item.uploadSrc" :src="item.uploadSrc" alt />
-            <!-- 图片 -->
-            <input
-              @change="uploadPhoto($event,item,ind)"
-              ref="tu1"
-              type="file"
-              class="ufile"
-              accept="image/*"
-            />
+        <!-- {{/* 支付宝 账单截图 */}} -->
+        <div class="upicFlex">
+          <div
+            class="upic"
+            v-for="(item,ind) in pic_uploads_box"
+            :key="ind"
+            style="padding-right:5px;background:#fff"
+          >
+            <div style="border:1px solid #ccc">
+              <div class="uadd">+</div>
+              <img v-if="item.uploadSrc" :src="item.uploadSrc" alt />
+              <!-- 图片 -->
+              <input
+                @change="uploadPhoto($event,item,ind)"
+                ref="tu1"
+                type="file"
+                class="ufile"
+                accept="image/*"
+              />
+            </div>
           </div>
         </div>
+        <p class="jietuFont">
+          注：请上传
+          <span style="font-weight:bold;font-size:1rem;color:red">（{{orderInfo.pic_desc}}）</span>
+        </p>
+        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
       </div>
-      <p class="jietuFont">
-        注：请上传
-        <span style="font-weight:bold;font-size:1rem;color:red">（{{orderInfo.pic_desc}}）</span>
-      </p>
-      <div class="buzou-title">
-        <span style="color:#63bb95">第四步 订单信息核对</span>
-      </div>
-      <p>应垫付金额:{{orderInfo.need_principal}}元(请按实际垫付金额填写，实际相差超50元请取消任务)</p>
+      <!-- 第四步 订单信息核对 -->
+      <div v-if="showFourth">
+        <div class="buzou-title">
+          <span style="color:#63bb95">第四步 订单信息核对</span>
+        </div>
+        <p>应垫付金额:{{orderInfo.need_principal}}元(请按实际垫付金额填写，实际相差超50元请取消任务)</p>
 
-      <p
-        v-if="orderInfo.platform===1"
-        style="color: red; font-weight:bold; margin-bottom:1rem"
-      >商户订单号可在支付账单详情中复制</p>
+        <p
+          v-if="orderInfo.platform===1"
+          style="color: red; font-weight:bold; margin-bottom:1rem"
+        >商户订单号可在支付账单详情中复制</p>
 
-      <p v-else style="color: red; font-weight:bold; margin-bottom:1rem">订单号可在订单详情中复制</p>
-      <div class="login-form">
-        <group>
-          <x-input
-            type="number"
-            v-model.trim="orderForm.need_principal"
-            placeholder="请输入实际付款金额"
-            class="jineInput"
-          ></x-input>
-        </group>
-        <group>
-          <x-input
-            placeholder="请输入支付商户订单号"
-            v-model.trim="orderForm.taobao_ordersn"
-            class="jineInput"
-          ></x-input>
-        </group>
-        <group>
-          <x-button type="primary" class="login-form-x-button" @click.native="subTask">提交任务</x-button>
-        </group>
+        <p v-else style="color: red; font-weight:bold; margin-bottom:1rem">订单号可在订单详情中复制</p>
+        <div class="login-form">
+          <group>
+            <x-input
+              type="number"
+              v-model.trim="orderForm.need_principal"
+              placeholder="请输入实际付款金额"
+              class="jineInput"
+              :disabled="this.Mincount>0"
+            ></x-input>
+          </group>
+          <group>
+            <x-input
+              placeholder="请输入支付商户订单号"
+              v-model.trim="orderForm.taobao_ordersn"
+              class="jineInput"
+              :disabled="this.Mincount>0"
+            ></x-input>
+          </group>
+          <group>
+            <x-button type="primary" class="login-form-x-button" @click.native="subTask">提交任务</x-button>
+          </group>
+        </div>
       </div>
     </div>
 
@@ -169,6 +175,11 @@ export default {
   },
   data() {
     return {
+      Mincount:300,
+      timer: null,
+      showSec:false,
+      showThird:false,
+      showFourth:false,
       isShow1: false,
       isShow2: false,
       isShow3: false,
@@ -185,6 +196,9 @@ export default {
   },
   mounted() {
     this.initArr(parseInt(this.orderInfo.pic_uploads_num || 1));
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   methods: {
      async getOrderInfo() {
@@ -230,6 +244,16 @@ export default {
          this.$vux.toast.text("店铺名称错误！");
       } 
     },
+     // 弹窗倒计时
+    async getCodeTime() {
+      this.timer = setInterval(_ => {
+        if (this.Mincount > 0) {
+          this.Mincount--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);        
+    },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
       if (url === "big") {
@@ -238,8 +262,11 @@ export default {
         this.$set(item, "uploadSrc", url);
         this.chat_pay_content.splice(ind, 1, url);
       }
-      // console.log(this.chat_pay_content);
+      // if(this.chat_pay_content !==""){
+       
+      // }
     }
+
   }
 };
 </script>
