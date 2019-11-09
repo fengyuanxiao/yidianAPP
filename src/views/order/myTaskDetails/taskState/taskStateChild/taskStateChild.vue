@@ -39,10 +39,10 @@
 
       <!-- {/* 任务要求 */} -->      
       <div class="plan-box task-plan" style="margin-bottom:0">
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>任务要求</span>
-      </div>
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>任务要求</span>
+        </div>
         <p class="task-plan-list">
           <span>任务类型</span>
           <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>

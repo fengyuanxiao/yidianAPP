@@ -20,13 +20,17 @@
   
 }
 .taskPlan{
-  
   box-shadow: 0px 8px 12px 0px rgba(236,236,236,1);
   border-radius: 20px;
 }
 .task-plan{
   padding: .8rem 1rem 1rem 1rem;
   background: #fff;
+  box-shadow: 0px 8px 12px 0px rgba(236,236,236,1);
+  border-radius: 20px;
+}
+.plan-box{
+  margin: 0px 10px 10px 10px;
 }
 .task-plan-list-Child {
   font-size: 0.3rem;
