@@ -3,7 +3,7 @@
     <user-header :title="'操作任务'"></user-header>
     <template v-if="orderInfo">
       <!-- {/* 目标商品详情介绍 */} -->
-      <div class="task-plan" style="margin:0px 10px;">
+      <div class="task-plan taskPlan" style="margin:10px 10px;">
         <!-- {/* <div class="plan-box" style="marginTop: "2rem"">
             <p class="task-plan-list"><span>{shop_name}</span><Link to="/">如果遇到问题点击联系商家</Link></p>
         </div> */}-->
@@ -13,13 +13,13 @@
           </p>
           <div class="taskDetail-header-button">
             <div style="width:30%">
-              <img :src="orderInfo.goodspic" alt="商品图" style="width:100%;padding-right:0.3rem" />
+              <img :src="orderInfo.goodspic" alt="商品图" style="width:100%;padding-right:0.8rem" />
             </div>
-            <div style="width: 70%">
-              <p style="font-weight:bold">{{orderInfo.goodsname.substring(0,2)}}****</p>
+            <div style="width: 70%;color:#444;line-height: 22px;">
+              <p style="font-weight:bold;padding-bottom: 3px;">{{orderInfo.goodsname.substring(0,2)}}****</p>
               <p>
                 搜索展示价格：
-                <span>{{orderInfo.searchprice}}</span>
+                <span class="make-num">{{orderInfo.searchprice}}</span>
               </p>
               <p>
                 商品单件成交价格：
@@ -31,14 +31,18 @@
               </p>
             </div>
           </div>
+          <p style="padding-top: 2px;">下单规格和尺寸：
+            <span class="make-num">111</span>
+          </p>
         </section>
       </div>
-      <!-- {/* 任务要求 */} -->
+
+      <!-- {/* 任务要求 */} -->      
+      <div class="plan-box task-plan" style="margin-bottom:0">
       <div class="taskRenw">
         <!-- <Icon type="pushpin" theme="outlined" /> -->
         <span>任务要求</span>
       </div>
-      <div class="plan-box task-plan" style="margin-bottom:0">
         <p class="task-plan-list">
           <span>任务类型</span>
           <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
