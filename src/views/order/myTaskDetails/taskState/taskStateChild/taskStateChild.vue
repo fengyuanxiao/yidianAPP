@@ -3,7 +3,7 @@
     <user-header :title="'操作任务'"></user-header>
     <template v-if="orderInfo">
       <!-- {/* 目标商品详情介绍 */} -->
-      <div class="task-plan" style="margin:0">
+      <div class="task-plan" style="margin:0px 10px;">
         <!-- {/* <div class="plan-box" style="marginTop: "2rem"">
             <p class="task-plan-list"><span>{shop_name}</span><Link to="/">如果遇到问题点击联系商家</Link></p>
         </div> */}-->
@@ -187,6 +187,6 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="less">
 @import "./taskStateChild.css";
 </style>
