@@ -1,27 +1,35 @@
 <template>
-  <div>
+  <div style="margin: 0px 10px;">
     <!-- {{/* 第一步货比三家 */}} -->
     <div class="task-plan buzhou" v-if="orderInfo">
+      <div class="taskRenw">
+        <!-- <Icon type="edit" theme="outlined" /> -->
+        <span>任务步骤</span>
+      </div>
       <div class="buzou-title">
         <span>第一步 货比三家</span>
         <span @click="isShow1=true">点击查看示例</span>
       </div>
-      <p>.请确认使用{{orderInfo.user_taobao}}（{{orderInfo.platformname}}账号）登入{{orderInfo.tasktype_itemname}}APP</p>
-      <p>.打开{{orderInfo.tasktype_itemname}}，在搜索框手动输入指定关键词</p>
-      <p>.按任务要求先浏览任意三家同类产品1-3分钟</p>
-      <h3 style="color:#c15958; margin-top:1rem">核对商家店铺名是否正确</h3>
-      <div class="shop-title">
-        <span>1</span>
-        <span>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</span>
+      <p>① 请务必登入当前接任务的{{orderInfo.platformname}}账号:{{orderInfo.user_taobao}};</p>
+      <p style="line-height: 27px;">② 进入{{orderInfo.tasktype_itemname}}点击搜索框输入指定的关键词，根据任务提示找到目标商品； </p>
+      <p style="line-height: 27px;">③ 按任务要求，先浏览第一个带有hot图标的产品，然后随意浏览两 家同等价位的产品1~3分钟。</p>
+     
+      <!-- <h4 style="color:#FF9642; margin-top:1rem">核对商家店铺名是否正确</h4> -->
+      <div class="buzou-title">
+        <span style="color:#FF9642">核对商家店铺名是否正确</span>
       </div>
+      <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
       <div class="shop-title">
         <!-- <span>2</span> -->
+        <!-- <group style=""> -->
+          <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对" style="display:inline-block"></x-input>
+          <x-button type="primary" @click.native="checkName" style="display:inline-block">{{this.checkCrreact}}</x-button>
+        <!-- </group> -->
         <group>
-          <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
+          
         </group>
-        <group>
-          <x-button type="primary" @click.native="checkName">{{this.checkCrreact}}</x-button>
-        </group>
+          <!-- <div @click.native="checkName">{{this.checkCrreact}}</div> -->
+
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
       <div v-if="showSec">
@@ -182,9 +190,9 @@ export default {
       Mincount:120,
       second:6,
       timer: null,
-      showSec:false,
-      showThird:false,
-      showFourth:false,
+      showSec:true,
+      showThird:true,
+      showFourth:true,
       isShow1: false,
       isShow2: false,
       isShow3: false,

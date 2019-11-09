@@ -45,16 +45,46 @@
         </div>
         <p class="task-plan-list">
           <span>任务类型</span>
-          <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
+          <span style="color:#FF9642">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
         </p>
+        <p class="task-plan-list">
+          <span>是否包邮</span>
+          <span>加字段</span>
+        </p>
+        <p class="task-plan-list">
+          <span>搜索关键字</span>
+          <span style="overflow:auto;word-break:keep-all;color:#FF9642;">{{orderInfo.keyword}}</span>
+        </p>
+        <p class="task-plan-list">
+          <span>购买数量</span>
+          <span>{{orderInfo.itemnum}}件</span>
+        </p>
+        <p class="task-plan-list">
+          <span>排序方式</span>
+          <span>{{orderInfo.taskInfo.sortmsg}}排序</span>
+        </p>
+        <p class="task-plan-list">
+          <span>付款人数/收货人数</span>
+          <span>约{{orderInfo.taskInfo.position}}人收货/付款</span>
+        </p>
+        <p class="task-plan-list">
+          <span>发货地</span>
+          <span>{{orderInfo.taskInfo.goods_address? orderInfo.taskInfo.goods_address: "全国"}}</span>
+        </p>
+        <p class="task-plan-list">
+          <span>价格区间</span>
+          <span>{{orderInfo.taskInfo.maxprice? orderInfo.taskInfo.minprice+"—"+orderInfo.taskInfo.maxprice : "无需筛选价格"}}</span>
+        </p>
+        <p class="task-plan-list">
+          <span>折扣和服务</span>
+          <span>什么东东</span>
+        </p>
+
         <p class="task-plan-list">
           <span>评价要求</span>
           <span>{{orderInfo.keyword_type_name}}</span>
         </p>
-        <p class="task-plan-list" style="border:none">
-          <span>搜索关键字</span>
-          <span style="overflow:auto;word-break:keep-all">{{orderInfo.keyword}}</span>
-        </p>
+        
         <div v-if="orderInfo.is_muti_keyword">
           <p class="task-plan-list" style="border:none">
             <span>搜索关键字1</span>
@@ -69,30 +99,18 @@
           <span>(打开{{orderInfo.platformname}}搜索关键词)</span>
           <span class="fontsi">注：如有关键字过长请左右拖动查看</span>
         </p>
-        <p class="task-plan-list">
-          <span>购买数量</span>
-          <span>目标商品{{orderInfo.itemnum}}件</span>
-        </p>
+        
         <p v-for="(item,index) in orderInfo.sku_set" :key="index" class="task-plan-list">
           <span>商品规格：{{item.attribute_key}}</span>
           <span>{{item.attribute_value}}</span>
         </p>
-        <p class="task-plan-list">
-          <span>排序方式</span>
-          <span>{{orderInfo.taskInfo.sortmsg}}排序</span>
-        </p>
-        <p class="task-plan-list">
+        
+        <!-- <p class="task-plan-list">
           <span>排序位置</span>
           <span>约{{orderInfo.taskInfo.position}}人收货/付款</span>
-        </p>
-        <p class="task-plan-list">
-          <span>所在地</span>
-          <span>{{orderInfo.taskInfo.goods_address? orderInfo.taskInfo.goods_address: "全国"}}</span>
-        </p>
-        <p class="task-plan-list">
-          <span>价格区间</span>
-          <span>{{orderInfo.taskInfo.maxprice? orderInfo.taskInfo.minprice+"—"+orderInfo.taskInfo.maxprice : "无需筛选价格"}}</span>
-        </p>
+        </p> -->
+        
+        
         <p class="task-plan-list">
           <span>支付方式</span>
           <span>
@@ -109,11 +127,12 @@
         </p>
       </div>
       <!-- {/* 商家要求 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>商家要求</span>
-      </div>
-      <div class="plan-box task-plan" style="margin-bottom:0">
+      
+      <div class="plan-box task-plan" style="margin-top: 10px;">
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>商家要求</span>
+        </div>
         <!-- <div class="task-plan-list">
           <span style="text-align: left;color:red">商家要求：</span> -->
           <!-- {/* <span style="width: '70%',textAlign:'initial'}}>{this.props.location}</span> */} -->
@@ -121,22 +140,20 @@
         <div style="margin:0 10px;">
           <template v-if="orderInfo.remark_pic.length  && orderInfo.remark_pic[0].length">
             <div v-for="(item,index) in orderInfo.remark_pic" :key="index">
-              <span style="color:red;display:block;">{{orderInfo.taskInfo.remark}}</span>
+              <span style="color:#FF9642;display:block;">{{orderInfo.taskInfo.remark}}</span>
               <img style="max-width:100%" :src="$url+item" />
             </div>
           </template>
-          <p v-else>此商家没有额外要求</p>
+          <p style="padding-top:5px" v-else>此商家没有额外要求</p>
         </div>
       </div>
-      <!-- {/* 注意事项 */} -->
-      <!-- {/* 任务步骤 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="edit" theme="outlined" /> -->
-        <span>任务步骤</span>
-      </div>
+      
+      <!-- {/* 任务步骤 */} -->     
       <!-- {/* <LookShiliTu shop_name={shop_name} /> */} -->
       <look-shili-tu :order-info="orderInfo"></look-shili-tu>
     </template>
+
+    <!-- {/* 注意事项 */} -->
     <x-dialog v-model.trim="isShow" class="demoDialog">
       <div class="img-box showBg">
         <div
