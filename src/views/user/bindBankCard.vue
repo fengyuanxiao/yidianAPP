@@ -170,6 +170,7 @@ export default {
   data() {
     return {
       newup:null,
+      validated:true,
       creactBank:"",
       userInfo: {
         realName: "",
@@ -280,12 +281,20 @@ export default {
     // 银行卡归属银行接口
     async showBankName(){
     let result1=await this.axios.get('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo='+this.userInfo.BankCode+'&cardBinCheck=true')
+     if(result1.validated===false){
+      this.$vux.toast.text("请输入正确的银行卡号");
+    }
+    this.validated=result1.validated
     this.userInfo.Bank=result1.bank
     this.creactBank=result1.bank
+    
     },
     // 提交
     async bandCard() {
      
+      if (this.validated ===false) {
+        return this.$vux.toast.text("请输入正确的银行卡号");
+      }
       if (this.userInfo.realName === "") {
         return this.$vux.toast.text("请输入姓名");
       }
