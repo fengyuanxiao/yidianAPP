@@ -7,7 +7,7 @@
           <img slot="icon" src="@/assets/img/icon/wangwang.png" />
           <span class="storeName">{{item.nickname}}</span>
           <div class="hearderRight">
-            <a class="update" v-if="item.status==3">重新編輯</a>
+            <a class="update" v-if="item.status==3">重新编辑</a>
             <span class="state" v-if="item.status==1" style="color: rgb(255, 0, 0);">已审核</span>
             <span class="state" v-if="item.status==2" style="color: rgb(255, 0, 0);">审核中</span>
             <span class="state" v-if="item.status==3" style="color: rgb(255, 0, 0);">未通过</span>

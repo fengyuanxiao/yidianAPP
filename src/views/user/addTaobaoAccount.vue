@@ -1,6 +1,6 @@
 <template>
   <div class="addTaobaoAccount">
-    <user-header :title="'淘宝账户信息'"></user-header>
+    <user-header :title="this.addAnother?'重新编辑淘宝账户':'淘宝账户信息'"></user-header>
     <div class="addUser">
       <div class="userInfoForm">
         <!-- 账号信息 -->
@@ -312,6 +312,7 @@ import { XAddress, ChinaAddressV4Data, Datetime  } from "vux";
 export default {
   data() {
     return {
+      addAnother:null,
       userInfo: {
         Account: "",
         alipay_name: "",
@@ -374,6 +375,7 @@ export default {
     Datetime 
   },
   mounted() {
+    this.addAnother=this.$route.query.id
     this.getCodeTime();
     if (this.$route.query && this.$route.query.id) {
       this.getDetail();
