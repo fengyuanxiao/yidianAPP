@@ -1,22 +1,33 @@
 <template>
   <section class="taskDetail-header" v-if="orderInfo">
+    <p class="taskType">
+      任务类型：垫付任务
+    </p>
     <p class="taskDetail-header-top">
-      <span>目标商品</span>
-      <span>
+      <span style="font-size: 15px;color: #444;">目标商品</span>
+      <!-- <span>
         <img class="iphone" src="@/assets/img/icon1.png" alt="手机端" />
-      </span>
+      </span> -->
       <span>平台返款</span>
     </p>
     <div class="taskDetail-header-button">
       <img :src="orderInfo.goodspic||defaultImg" :onerror="onerror" alt="商品图" />
       <div>
         <p>
-          商品成交价格：
-          <span class="make-num">{{orderInfo.itemprice}}元</span>
+          编号：
+          <span>{{orderInfo.order_id}}</span>
         </p>
         <p>
           件数：
-          <span class="make-num">{{orderInfo.itemnum}}件</span>
+          <span>{{orderInfo.itemnum}}件</span>
+        </p>
+        <p>
+          垫付本金：
+          <span>{{orderInfo.itemprice}}元</span>
+        </p>
+        <p>
+          佣金：
+          <span class="make-num">{{orderInfo.itemnum}}343</span>元
         </p>
       </div>
     </div>

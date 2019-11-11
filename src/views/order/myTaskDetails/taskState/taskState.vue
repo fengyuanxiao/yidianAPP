@@ -1,10 +1,10 @@
 <template>
   <section class="taskDetail-state" v-if="order && orderInfo">
-    <img :src="order.tasktype_pic" alt="taobaoImg" />
-    <span style="font-size: 1rem ">任务状态：{{order.ordertatusText}}</span>
-    <span style="color: red ">
+    <!-- <img :src="order.tasktype_pic" alt="taobaoImg" /> -->
+    <span style="font-size: 15px">任务状态：{{order.ordertatusText}}</span>
+    <span style="color:#FF9642;color:15px">
       <span v-if="!orderInfo.order_status">
-        提交倒计时：
+      <span style="color:#444">提交倒计时：</span>
         <b>{{cuttime}}</b>(未在截止时间之前提交将扣1元手续费)
       </span>
     </span>
@@ -17,9 +17,9 @@
         :src="item"
         alt="要求图"
       />
-      <p v-if="orderInfo.remark_pic.length===0">此商家没有额外要求</p>
+      <p v-if="orderInfo.remark_pic.length===0" class="showColor">此商家没有额外要求</p>
     </div>
-    <p>订单要求：{{orderInfo.order_message||'暂无'}}</p>
+    <p>订单要求：<span class="showColor">{{orderInfo.order_message||'此订单没有额外要求'}}</span></p>
     <div class="start-task-btn">
       <button class="tasktn" @click="cancelTask">取消任务</button>
       <template v-if="!orderInfo.order_status && order.is_appeal!=1">
@@ -33,7 +33,7 @@
           >操作任务</router-link>
         </button>
       </template>
-      <button class="tasktn" style="background:#F56C6C;">
+      <button class="tasktn" style="background: #909399;;">
         <router-link :to="'/h5/shensu/appealTask?id='+orderInfo.order_id">申诉任务</router-link>
       </button>
     </div>

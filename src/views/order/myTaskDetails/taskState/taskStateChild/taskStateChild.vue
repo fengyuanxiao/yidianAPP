@@ -31,9 +31,14 @@
               </p>
             </div>
           </div>
-          <p style="padding-top: 2px;">下单规格和尺寸：
-            <span class="make-num">111</span>
+          <span>下单规格和尺寸：</span>
+          <p v-for="(item,index) in orderInfo.sku_set" :key="index" style="display:inline-block">
+            <span class="make-num"> {{item.attribute_key}}:</span>
+            <span class="make-num" style="padding-right:8px">{{item.attribute_value}} </span>
           </p>
+          <!-- <p style="padding-top: 2px;">
+            <span class="make-num">111</span>
+          </p> -->
         </section>
       </div>
 
@@ -71,7 +76,7 @@
           <span>发货地</span>
           <span>{{orderInfo.taskInfo.goods_address? orderInfo.taskInfo.goods_address: "全国"}}</span>
         </p>
-        <p class="task-plan-list">
+        <p class="task-plan-list" v-if="orderInfo.taskInfo.maxprice">
           <span>价格区间</span>
           <span>{{orderInfo.taskInfo.maxprice? orderInfo.taskInfo.minprice+"—"+orderInfo.taskInfo.maxprice : "无需筛选价格"}}</span>
         </p>
@@ -114,8 +119,12 @@
         <p class="task-plan-list">
           <span>支付方式</span>
           <span>
-            <template v-for="item in orderInfo.taskInfo.paychannel">{{item}}</template>
+            <template v-for="item in orderInfo.taskInfo.paychannel">{{item+'、'}}</template>
           </span>
+        </p>
+        <p class="task-plan-list">
+          <span>商品分类</span>
+          <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message||""}}</span>
         </p>
         <p class="task-plan-list">
           <span>订单留言</span>

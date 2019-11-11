@@ -1,7 +1,7 @@
 <template>
-  <div style="margin: 0px 10px;">
+  <div>
     <!-- {{/* 第一步货比三家 */}} -->
-    <div class="task-plan buzhou" v-if="orderInfo">
+    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 10px 10px;">
       <div class="taskRenw">
         <!-- <Icon type="edit" theme="outlined" /> -->
         <span>任务步骤</span>
@@ -23,12 +23,8 @@
         <!-- <span>2</span> -->
         <!-- <group style=""> -->
           <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对" style="display:inline-block"></x-input>
-          <x-button type="primary" @click.native="checkName" style="display:inline-block">{{this.checkCrreact}}</x-button>
+          <div @click="checkName" class="checkOut">{{this.waitCheckName == this.orderInfo.shop_name ? this.checkCrreact :'核对'}}</div>
         <!-- </group> -->
-        <group>
-          
-        </group>
-          <!-- <div @click.native="checkName">{{this.checkCrreact}}</div> -->
 
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
@@ -37,20 +33,23 @@
           <span>第二步 浏览店铺</span>
           <span @click="isShow2=true">点击查看示例</span>
         </div>
-        <p>.找到任务商家对应店铺产品并点击进入，浏览任务商品详情2-3分钟</p>
+        <p style="color:#444">① 浏览目标商品；（务必从页头至页尾进行浏览，3分钟以上）</p>
 
-        <p v-if="orderInfo.platform===5">按照商家指定的下单方式进行下单，下单方式请拉到顶部查看拼团类型</p>
+        <!-- 拼多多 -->
+        <p v-if="orderInfo.platform===5">② 按照商家指定的下单方式进行下单，下单方式请拉到顶部查看拼团类型</p>
 
+        <!-- 唯品会 -->
         <div v-else-if="orderInfo.platform===6">
-          <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
-          <p>.然后从购物车提交订单</p>
+          <p>② 把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
+          <p>③ 然后从购物车提交订单</p>
         </div>
 
-        <div v-else>
-          <p>.把任务商品加入购物车，并同时浏览该店铺任意一款商品1分钟</p>
-          <p>.返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p>
+        <!-- 淘宝和京东：1和2 -->
+        <div v-else style="color:#444">
+          <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
+          <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
-        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p>
+        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p> -->
       </div>
       <!-- 第三步 聊天下单支付 -->
       <div v-if="showThird">
@@ -79,7 +78,7 @@
           <span @click="isShow3=true">点击查看示例</span>
         </div>
         <!-- {{/* 支付宝 账单截图 */}} -->
-        <div class="upicFlex">
+        <!-- <div class="upicFlex">
           <div
             class="upic"
             v-for="(item,ind) in pic_uploads_box"
@@ -88,9 +87,9 @@
           >
             <div style="border:1px solid #ccc">
               <div class="uadd">+</div>
-              <img v-if="item.uploadSrc" :src="item.uploadSrc" alt />
+              <img v-if="item.uploadSrc" :src="item.uploadSrc" alt /> -->
               <!-- 图片 -->
-              <input
+              <!-- <input
                 @change="uploadPhoto($event,item,ind)"
                 ref="tu1"
                 type="file"
@@ -103,22 +102,27 @@
         <p class="jietuFont">
           注：请上传
           <span style="font-weight:bold;font-size:1rem;color:red">（{{orderInfo.pic_desc}}）</span>
-        </p>
-        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
+        </p> -->
+        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p> -->
       </div>
       <!-- 第四步 订单信息核对 -->
       <div v-if="showFourth">
-        <div class="buzou-title">
+        <!-- <div class="buzou-title">
           <span style="color:#63bb95">第四步 订单信息核对</span>
         </div>
-        <p>应垫付金额:{{orderInfo.need_principal}}元(请按实际垫付金额填写，实际相差超50元请取消任务)</p>
+        -->
 
         <p
           v-if="orderInfo.platform===1"
-          style="color: red; font-weight:bold; margin-bottom:1rem"
-        >商户订单号可在支付账单详情中复制</p>
+          style="color:#444;font-size: 15px; margin-bottom:1rem"
+        >订单编号可在淘宝订单详情中复制</p>
 
-        <p v-else style="color: red; font-weight:bold; margin-bottom:1rem">订单号可在订单详情中复制</p>
+        <p v-else style="color:#444;font-size: 15px; margin-bottom:1rem">订单号可在订单详情中复制</p>
+        <p style="color:#444;font-size: 15px;">应垫付金额参考:
+          <span style="color:#FF9642">{{orderInfo.need_principal}}元</span>
+          <span style="color:#4D97FF;padding-left: 15px;">金额有误？</span>
+        </p>
+        <!-- (请按实际垫付金额填写，实际相差超50元请取消任务) -->
         <div class="login-form">
           <group>
             <x-input
@@ -137,13 +141,43 @@
               :disabled="this.Mincount>0"
             ></x-input>
           </group>
-          <group>
-            <x-button type="primary" class="login-form-x-button" @click.native="subTask">提交任务</x-button>
-          </group>
+          <!-- {{/* 支付宝 账单截图 */}} -->
+          <div class="upicFlex">
+            <div
+              class="upic"
+              v-for="(item,ind) in pic_uploads_box"
+              :key="ind"
+              style="background:#F8F8F8;margin: 10px;width: 35%;"
+            >
+              <div style="border:1px solid #E5E5E5">
+                <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
+                <img v-if="item.uploadSrc" :src="item.uploadSrc" alt />
+                <!-- 图片 -->
+                <input
+                  @change="uploadPhoto($event,item,ind)"
+                  ref="tu1"
+                  type="file"
+                  class="ufile"
+                  accept="image/*"
+                />
+              </div>
+            </div>
+          </div>
+          <p class="jietuFont">
+            请上传订单截图
+            <span style="font-weight:bold;font-size:1rem;color:red">（{{orderInfo.pic_desc}}）</span>
+          </p>
+          
         </div>
       </div>
+      
     </div>
-
+    <div class="currentNum">
+      <p style="padding-top: 5px;">您当前的买号为:</p>
+      <span>xj1993920</span>
+    </div>
+    <div class="commiteTsak" @click="subTask">提交审核</div>
+  
     <!-- {{/* 第一步货比三家的图片示例 */}} -->
     <x-dialog v-model.trim="isShow1" class="demoDialog">
       <div class="img-box">
@@ -268,6 +302,7 @@ export default {
         }
         }, 6000);
       } else {
+        this.checkCrreact="核对"
         this.$vux.toast.text("店铺名称错误！");
       }
     },
