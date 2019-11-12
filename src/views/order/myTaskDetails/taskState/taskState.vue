@@ -2,14 +2,14 @@
   <section class="taskDetail-state" v-if="order && orderInfo">
     <!-- <img :src="order.tasktype_pic" alt="taobaoImg" /> -->
     <span style="font-size: 15px">任务状态：{{order.ordertatusText}}</span>
-    <span style="color:#FF9642;color:15px">
+    <span style="color:#FF9642;font-size:15px;padding-top: 5px;">
       <span v-if="!orderInfo.order_status">
       <span style="color:#444">提交倒计时：</span>
         <b>{{cuttime}}</b>(未在截止时间之前提交将扣1元手续费)
       </span>
     </span>
-    <p>商家要求：</p>
-    <div>
+    <p style="display: inline-block;">商家要求：</p>
+    <div style="display: inline-block;">
       <img
         style="max-width:100%;margin-bottom:0.3rem"
         v-for="(item,index) in orderInfo.remark_pic"
@@ -19,7 +19,7 @@
       />
       <p v-if="orderInfo.remark_pic.length===0" class="showColor">此商家没有额外要求</p>
     </div>
-    <p>订单要求：<span class="showColor">{{orderInfo.order_message||'此订单没有额外要求'}}</span></p>
+    <p style="margin-top: 0px;">订单要求：<span class="showColor">{{orderInfo.order_message||'此订单没有额外要求'}}</span></p>
     <div class="start-task-btn">
       <button class="tasktn" @click="cancelTask">取消任务</button>
       <template v-if="!orderInfo.order_status && order.is_appeal!=1">

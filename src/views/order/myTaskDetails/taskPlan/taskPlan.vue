@@ -1,42 +1,51 @@
 <template>
-  <div class="task-plan" v-if="orderInfo">
-    <div class="plan">
-      <!-- <Progress className="plan-child" type="circle" percent={ orderInfo.order_status === 0? 25 : (orderInfo.order_status === 1? 50 : (orderInfo.order_status ===3? 75 : (orderInfo.order_status ===5? 95 : 100) )) } width={80} /> -->
-      <p>下一步：请点击操作任务按钮操作</p>
-    </div>
-    <div class="plan-box">
-      <p class="title">
-        <b class="plan-title">接受任务</b>
+  <div class="task-plans" v-if="orderInfo">
+    <!-- <div class="plan"> -->
+      <!-- <Progress className="plan-child" type="circle" percent={ orderInfo.order_status === 0? 25 : (orderInfo.order_status === 1? 50 : (orderInfo.order_status ===3? 75 : (orderInfo.order_status ===5? 95 : 100) )) } width={80} />-->
+      <!-- <p>下一步：请点击操作任务按钮操作</p>
+    </div> -->
+    <!-- <div class="planBox">
+      <p class="taskPlanList">
+        <span>接受任务</span>
         <span>{{orderInfo.addtime}}</span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>任务编号</span>
         <span>{{orderInfo.order_id}}</span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>买号</span>
         <span>{{orderInfo.user_taobao}}</span>
       </p>
-      <div class="task-plan-list">
+      <div class="taskPlanList">
         <span>商品金额</span>
         <span>{{orderInfo.itemprice}}*{{orderInfo.itemnum}}件</span>
       </div>
-    </div>
+    </div> -->
     <!-- {/* 任务要求 */} -->
-    <div class="plan-box">
+    <div class="planBox">
       <p class="title">
-        <b class="plan-title">一：任务要求</b>
+        <b class="plan-title">
+          <span 
+          class="firstOne"
+          :style="orderInfo.order_status !==1 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
+          >1</span> 订单付款
+        </b>
         <span></span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList showDistance">
         <span>货比三家</span>
         <span></span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>浏览店铺</span>
         <span></span>
       </p>
-      <div class="task-plan-list">
+      <!-- <p class="taskPlanList">
+        <span>订单编号</span>
+        <span></span>
+      </p> -->
+      <div class="taskPlanList">
         <span>聊天下单</span>
         <div class="task-plan-list-img">
           <template v-if="orderInfo.chat_pay_content">
@@ -50,35 +59,41 @@
           </template>
         </div>
       </div>
-      <div class="task-plan-list">
-        <span class="ask-start">如商家有要求优先按商家要求操作</span>
+      <!-- <p class="changePic">商家确认订单前点击可更换图片</p> -->
+      <!-- <div class="taskPlanList">
+        <span class="ask-start">商家确认订单前点击可更换图片</span> -->
         <!-- <button
           :style="orderInfo.order_status === 0 ? {backgroundColor: '#66caa8'} : {backgroundColor: '#ccc'} "
         >操作任务</button>-->
-      </div>
+      <!-- </div> -->
+      <!-- <p class="waitOrder">等待订单付款</p> -->
     </div>
     <!-- {/* 商家确定订单 */} -->
-    <div class="plan-box">
+    <div class="planBox">
       <p class="title">
-        <b class="plan-title">二：商家确定订单</b>
+        <b class="plan-title">
+          <span class="firstOne" 
+                :style="orderInfo.order_status !== 1 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
+          ">2</span> 商家返款
+        </b>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList showDistance">
         <span>{{orderInfo.platformname}}订单号</span>
         <span>{{orderInfo.taobao_ordersn}}</span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>返款方式</span>
         <span>平台返款</span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>返款账号</span>
         <span>默认返款账号</span>
       </p>
-      <p class="task-plan-list">
+      <p class="taskPlanList">
         <span>返款金额</span>
         <span>{{orderInfo.need_principal}}</span>
       </p>
-      <div class="task-plan-list">
+      <div class="taskPlanList">
         <span class="ask-start">平台规定商家48小时内还款</span>
         <button
           :disabled="orderInfo.order_status !== 1"
@@ -88,12 +103,17 @@
       </div>
     </div>
     <!-- {/* 收货好评 */} -->
-    <div class="plan-box">
+    <div class="planBox">
       <p class="title">
-        <b class="plan-title">三：收货好评</b>
+        <b class="plan-title">
+          <span class="firstOne"
+                :style="orderInfo.order_status !== 3 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+          >3</span>
+           收货好评
+        </b>
         <span></span>
       </p>
-      <div class="task-plan-list">
+      <div class="taskPlanList showDistance">
         <span>物流截图，五星好评</span>
         <div class="task-plan-list-img">
           <!-- {/* 循环出物流截图和好评截图显示 */} -->
@@ -107,25 +127,29 @@
           />
         </div>
       </div>
-      <div class="task-plan-list">
-        <span class="ask-start">此单为普通五星好评 点击查看评价要求</span>
+      <div class="taskPlanList">
+        <span class="ask-start" style="width: 70%;">此单为普通五星好评 点击查看评价要求</span>
         <button v-if="orderInfo.order_status==3" style="background-color:#66caa8">
           <router-link
             style="color: #fff"
             :to="'/h5/order/dianfu/detail/goodPingJia/'+orderInfo.order_id"
-          >去收货好评</router-link>
+          >收货好评</router-link>
         </button>
-        <button v-else style="backgroundColor: #ccc">去收货好评</button>
+        <button v-else style="backgroundColor: #ccc">收货好评</button>
       </div>
     </div>
     <!-- {/* 追加评论 */} -->
 
-    <div v-if="orderInfo.is_addcomments" class="plan-box">
+    <div v-if="orderInfo.is_addcomments" class="planBox">
       <p class="title">
-        <b class="plan-title">{{orderInfo.is_addcomments? "四" : "三" }}：追加好评</b>
+        <b class="plan-title">
+          <span class="firstOne"
+                :style="orderInfo.order_status !== 5 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+          >{{orderInfo.is_addcomments? "4" : "3" }}</span>追加好评
+        </b>
         <span></span>
       </p>
-      <div class="task-plan-list">
+      <div class="taskPlanList">
         <span>追评截图</span>
         <div class="task-plan-list-img">
           <!-- {/* 循环出物流截图和好评截图显示 */} -->
@@ -138,7 +162,7 @@
           />
         </div>
       </div>
-      <div class="task-plan-list">
+      <div class="taskPlanList">
         <span class="ask-start">此单需要追评 点击查看追评图片</span>
         <button v-if="orderInfo.order_status === 5" style="backgroundColor: #66caa8">
           <router-link
@@ -151,12 +175,17 @@
     </div>
 
     <!-- {/* 任务完成 */} -->
-    <div class="plan-box">
+    <div class="planBox">
       <p class="title">
-        <b class="plan-title">{{ orderInfo.is_addcomments? "五" : "四" }}：完成任务</b>
+        <b class="plan-title">
+          <span class="firstOne"
+                :style="orderInfo.order_status !== 4 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+          >{{ orderInfo.is_addcomments? "5" : "4" }}</span>
+           完成任务
+        </b>
         <span></span>
       </p>
-      <div class="task-plan-list">
+      <div class="taskPlanList showDistance">
         <span class="ask-start">平台规定商家48小时内返款</span>
         <button
           :style="orderInfo.order_status === 4 ? {backgroundColor: '#66caa8'} : {backgroundColor: '#ccc'}"

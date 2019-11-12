@@ -31,7 +31,7 @@
               </p>
             </div>
           </div>
-          <span>下单规格和尺寸：</span>
+          <span>{{orderInfo.sku_set.length !=0 ?'下单规格和尺寸:':''}}</span>
           <p v-for="(item,index) in orderInfo.sku_set" :key="index" style="display:inline-block">
             <span class="make-num"> {{item.attribute_key}}:</span>
             <span class="make-num" style="padding-right:8px">{{item.attribute_value}} </span>
@@ -52,12 +52,12 @@
           <span>任务类型</span>
           <span style="color:#FF9642">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
         </p>
-        <p class="task-plan-list">
+        <!-- <p class="task-plan-list">
           <span>是否包邮</span>
           <span>加字段</span>
-        </p>
+        </p> -->
         <p class="task-plan-list">
-          <span>搜索关键字</span>
+          <span style="color:#FF9642;">搜索关键字</span>
           <span style="overflow:auto;word-break:keep-all;color:#FF9642;">{{orderInfo.keyword}}</span>
         </p>
         <p class="task-plan-list">
@@ -80,10 +80,10 @@
           <span>价格区间</span>
           <span>{{orderInfo.taskInfo.maxprice? orderInfo.taskInfo.minprice+"—"+orderInfo.taskInfo.maxprice : "无需筛选价格"}}</span>
         </p>
-        <p class="task-plan-list">
+        <!-- <p class="task-plan-list">
           <span>折扣和服务</span>
           <span>什么东东</span>
-        </p>
+        </p> -->
 
         <p class="task-plan-list">
           <span>评价要求</span>
@@ -122,10 +122,10 @@
             <template v-for="item in orderInfo.taskInfo.paychannel">{{item+'、'}}</template>
           </span>
         </p>
-        <p class="task-plan-list">
+        <!-- <p class="task-plan-list">
           <span>商品分类</span>
           <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message||""}}</span>
-        </p>
+        </p> -->
         <p class="task-plan-list">
           <span>订单留言</span>
           <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message||""}}</span>

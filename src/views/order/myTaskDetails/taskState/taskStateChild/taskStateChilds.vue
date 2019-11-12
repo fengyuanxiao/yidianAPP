@@ -3,7 +3,7 @@
     <user-header :title="'多关键词操作任务'"></user-header>
     <template v-if="orderInfo">
       <!-- {/* 目标商品详情介绍 */} -->
-      <div class="task-plan" style="margin:0">
+      <div class="task-plan" style="margin:10px">
         <!-- {/* <div class="plan-box" style="marginTop: "2rem"">
             <p class="task-plan-list"><span>{shop_name}</span><Link to="/">如果遇到问题点击联系商家</Link></p>
         </div> */}-->
@@ -36,11 +36,12 @@
         </section>
       </div>
       <!-- {/* 任务要求 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>任务要求</span>
-      </div>
+      
       <div class="plan-box task-plan" style="margin-bottom:0">
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>任务要求</span>
+        </div>
         <p class="task-plan-list">
           <span>任务类型</span>
           <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
@@ -111,15 +112,13 @@
         </p>
       </div>
       <!-- {/* 商家要求 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>商家要求</span>
-      </div>
+      
       <div class="plan-box task-plan" style="margin:10px;">
-        <div class="task-plan-list">
-          <!-- <span style="color:red">商家要求：</span> -->
-          <!-- {/* <span style="width: '70%',textAlign:'initial'}}>{this.props.location}</span> */} -->
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>商家要求</span>
         </div>
+
         <div>
           <template v-if="orderInfo.remark_pic.length && orderInfo.remark_pic[0].length">
             <img
@@ -133,29 +132,25 @@
           <p v-else>此商家没有额外要求</p>
         </div>
       </div>
-      <div style="margin:10px">
-        <h3 style="color:#c15958; margin-top:1.5rem">核对商家店铺名是否正确</h3>
-        <div class="shop-title">
-          <span>1</span>
-          <span>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</span>
-        </div>
-        <div class="shop-title">
-          <!-- <span>2</span> -->
-          <group>
+      <div class="plan-box task-plan" style="margin:10px">
+        <h3 style="color:#c15958;">核对商家店铺名是否正确</h3>
+        <!-- <div class="shop-title"> -->
+          <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
+        <!-- </div> -->
+        <div class="shop-title" style="border:none;padding-bottom:0px">
             <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
-          </group>
-          <group>
-            <x-button type="primary" @click.native="checkName">核对</x-button>
-          </group>
+            <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
+            <x-button type="primary" @click.native="checkName" style="width:30%">核对</x-button>
         </div>
       </div>
       <!-- {/* 注意事项 */} -->
       <!-- {/* 任务步骤 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="edit" theme="outlined" /> -->
-        <span>任务步骤</span>
-      </div>
-      <div class="task-plan buzhou" style="margin-bottom: 0">
+     
+      <div class="task-plan buzhou" style="margin:10px">
+        <div class="taskRenw">
+          <!-- <Icon type="edit" theme="outlined" /> -->
+          <span>任务步骤</span>
+        </div>
         <div class="buzou-title">
           <span>第一步 货比三家</span>
           <span @click="isShow=true">点击查看示例</span>
@@ -227,9 +222,14 @@
   </div>
 </template>
 <script>
+import { Icon } from 'vux';
 export default {
+  components: {
+    Icon
+  },
   data() {
     return {
+      showIcon:false,
       orderInfo: null,
       pic_uploads_box: [
         { uploadSrc: "" },
@@ -290,9 +290,11 @@ export default {
     },
     checkName() {
       if (this.waitCheckName === this.orderInfo.shop_name) {
-        this.$vux.toast.text("店铺名称正确！");
+        // this.$vux.toast.text("店铺名称正确！");
+        this.showIcon="success"
       } else {
-        this.$vux.toast.text("店铺名称错误！");
+        this.showIcon="cancel"
+        // this.$vux.toast.text("店铺名称错误！");
       }
     }
   }

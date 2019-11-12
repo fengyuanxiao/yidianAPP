@@ -8,7 +8,8 @@
       <!-- <span>
         <img class="iphone" src="@/assets/img/icon1.png" alt="手机端" />
       </span> -->
-      <span>平台返款</span>
+      <span class="platformMoney">平台返款</span>
+      <span>买号：{{orderInfo.user_taobao}}</span>
     </p>
     <div class="taskDetail-header-button">
       <img :src="orderInfo.goodspic||defaultImg" :onerror="onerror" alt="商品图" />
