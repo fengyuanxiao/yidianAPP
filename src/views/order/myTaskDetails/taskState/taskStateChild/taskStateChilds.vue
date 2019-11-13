@@ -125,7 +125,6 @@
               style="max-width:100%"
               v-for="(item,index) in orderInfo.remark_pic"
               :key="index"
-              v-if="item.length"
               :src="$url+item"
             />
           </template>

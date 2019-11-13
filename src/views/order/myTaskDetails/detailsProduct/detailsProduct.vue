@@ -12,8 +12,10 @@
       <span>买号：{{orderInfo.user_taobao}}</span>
     </p>
     <div class="taskDetail-header-button">
-      <img :src="orderInfo.goodspic||defaultImg" :onerror="onerror" alt="商品图" />
-      <div>
+      <div style="width:28%;margin-right:0.8rem">
+        <img :src="orderInfo.goodspic||defaultImg" :onerror="onerror" alt="商品图" style="width:100%;height:100%"/>
+      </div>    
+      <div style="width: 70%;line-height: 24px;">
         <p>
           编号：
           <span>{{orderInfo.order_id}}</span>

@@ -9,20 +9,18 @@
   color: #888;
   font-size: 15px;
 }
-/* .weui-cell__bd{
-  flex: 0.7 !important;
-  display:inline-block;
-} */
 .weui-cell__ft {
   display: inline-block;
 }
 .taskStateChild-box .taskDetail-header-button {
   display: flex;
+  justify-content: space-between;
   margin-top: 10px;
-  padding: 5px 0 5px 0px;
+  padding: 5px 0px 0px 0px;
 }
-.make-num{
-  color:#FF9642;
+.makeNum {
+  color: #FF9642;
+  font-size: 16px;
 }
 .taskDetail-header{
   background-color: #fff !important;
@@ -33,7 +31,7 @@
   border-radius: 20px;
 }
 .task-plan{
-  padding: .8rem 1rem 1rem 1rem;
+  padding: .8rem 0.8rem 1rem .8rem;
   background: #fff;
   box-shadow: 0px 8px 12px 0px rgba(236,236,236,1);
   border-radius: 20px;
@@ -66,7 +64,7 @@
 }
 
 .task-plan-list>span:last-child {
-  width: 60%;
+  width: 64%;
   text-align: right;
   color:#444;
 }
@@ -96,14 +94,14 @@
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
   margin-bottom: 6px;
 }
 
 .buzou-title>span:first-child {
   color: #FF9642;
   font-size: 15px;
-  padding: 4px 0px;
+  padding-bottom: 4px;
 }
 
 .buzou-title>span:last-child {
@@ -112,7 +110,7 @@
 }
 
 .buzhou {
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem .8rem 0.5rem .8rem;
 }
 
 .buzhou>p {
@@ -207,14 +205,13 @@
 }
 
 .charsets {
-  color: red;
+  color: #FF9642;
 }
 
-.liaotian {
-  font-size: 0.2rem;
-  padding: 0.7rem 0;
-  color: red;
+.chatPicture {
+  color: #FF9642;
   font-weight: bold;
+  padding: 0.1rem 0;
 }
 
 .fontsi {

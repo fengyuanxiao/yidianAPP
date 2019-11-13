@@ -1,20 +1,41 @@
 <template>
   <div>
     <!-- {{/* 第一步货比三家 */}} -->
-    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 10px 10px;">
+    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 15px 10px;">
       <div class="taskRenw">
         <!-- <Icon type="edit" theme="outlined" /> -->
         <span>任务步骤</span>
       </div>
       <div class="buzou-title">
         <span>第一步 货比三家</span>
-        <span @click="isShow1=true">点击查看示例</span>
+        <span @click="isShow1=true">查看截图示例</span>
       </div>
       <p>① 请务必登入当前接任务的{{orderInfo.platformname}}账号:{{orderInfo.user_taobao}};</p>
       <p style="line-height: 27px;">② 进入{{orderInfo.tasktype_itemname}}点击搜索框输入指定的关键词，根据任务提示找到目标商品； </p>
-      <p style="line-height: 27px;">③ 按任务要求，先浏览第一个带有hot图标的产品，然后随意浏览两 家同等价位的产品1~3分钟。</p>
-     
-      <!-- <h4 style="color:#FF9642; margin-top:1rem">核对商家店铺名是否正确</h4> -->
+      <p style="line-height: 27px;">③ 按任务要求，先浏览第一个带有hot图标的产品，然后随意浏览两家同等价位的产品1~3分钟。</p>
+    
+      <!-- 上传货货比三家截图 -->
+      <div class="upicFlex" v-if="orderInfo.taskInfo.is_compared ===1">
+        <div
+          class="upic"
+          style="background:#F8F8F8;margin:10px 8px 10px 0px;width: 35%;"
+        >
+          <div style="border:1px solid #E5E5E5">
+            <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
+            <img style="width:100%;margin:0px" v-if="orderInfo.taskInfo.compared_content" :src="orderInfo.taskInfo.compared_content[0]"  alt />
+            <!-- 图片  -->
+            <input
+              @change="uploadPhotos($event,0)"
+              ref="tu1"
+              type="file"
+              class="ufile"
+              accept="image/*"
+              style="margin:0px"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- 核对店铺名 -->
       <div class="buzou-title">
         <span style="color:#FF9642">核对商家店铺名是否正确</span>
       </div>
@@ -29,7 +50,7 @@
       <div v-if="showSec" style="border-bottom: 1px solid #E5E5E5;padding-bottom: 20px;">
         <div  class="buzou-title" >
           <span>第二步 浏览店铺</span>
-          <span @click="isShow2=true">点击查看示例</span>
+          <span @click="isShow2=true">查看截图示例</span>
         </div>
         <p style="color:#444">① 浏览目标商品；（务必从页头至页尾进行浏览，3分钟以上）</p>
 
@@ -50,76 +71,78 @@
         <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p> -->
       </div>
       <!-- 第三步 聊天下单支付 -->
-      <div v-if="showThird" style="border-bottom: 1px solid rgb(229, 229, 229);padding-bottom: 10px;">
+      <div v-if="showThird" style="color:#444">
         <div v-if="orderInfo.platform===1">
           <div class="buzou-title" >
             <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
-            <span @click="isShow3=true">点击查看示例</span>
+            <span @click="isShow3=true">查看截图示例</span>
           </div>
-
+          
           <div v-if="orderInfo.is_muti_keyword">
             <p>① 主关键词搜索 找到对应任务宝贝店外截图 进店浏览2-3分钟 任务宝贝加入购物车 退出 上传正确的图</p>
             <p>② 点开购物车 截图购物车里的任务宝贝 上传正确的图</p>
+            <p>③ 买手与客服以<span style="color:#FF9642">一问一答</span>的方式，关于产品需提出4~5个问题，严禁 未答复就下单（例：尺码、颜色、材质、包邮等问题）；</p>
+            <p>④ 付款完成后，进入支付账单详情页面截图并上传</p>
           </div>
-          <p>{{orderInfo.is_muti_keyword ?'③' : '①'}} 需按商家要求选择是否聊天下单支付，或直接提交订单不聊天</p>
-          <p>{{orderInfo.is_muti_keyword ?'④' : '②'}} 付款完成后，进入支付账单详情页面，截图上传</p>
-          <!-- {{/* <p style="color:'red', fontWeight:'bold' }}}}>.如商家备注无需聊天，聊天图上传支付宝账单替代</p> */}} -->
-          <p
-            class="liaotian"
-            v-if="!orderInfo.is_muti_keyword"
-          >{{orderInfo.chatpic?'此任务商家要求聊天':'此任务不需要聊天'}}</p>
+          <div v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===1">
+            <p>① 买手与客服以<span style="color:#FF9642">一问一答</span>的方式，关于产品需提出4~5个问题，严禁 未答复就下单（例：尺码、颜色、材质、包邮等问题）；</p>
+            <p>② 下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与 任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单， 若浮动超过20元，请联系客服确认</span>。</p>
+          </div>
           
-        </div>
+          <!-- <p style="color:'red', fontWeight:'bold'">.如商家备注无需聊天，聊天图上传支付宝账单替代</p> -->         
+        </div> 
 
         <div v-else class="buzou-title">
           <span>第三步 上传订单截图</span>
-          <span @click="isShow3=true">点击查看示例</span>
+          <span @click="isShow3=true">查看截图示例</span>
         </div>
-        <!-- {{/* 支付宝 账单截图 */}} -->
-        <!-- <div class="upicFlex">
+        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p> -->
+      </div>
+      <!-- 第四步 订单信息核对 -->
+      <div v-if="showFourth" style="padding-bottom: 8px;">
+        <!-- <div class="buzou-title">
+          <span style="color:#FF9642">第四步 订单信息核对</span>
+        </div>       -->
+        <div  class="buzou-title" >
+          <span style="color:#444;">订单编号可在{{orderInfo.platformname}}订单详情中复制</span>
+          <span @click="isShow4=true">查看截图示例</span>
+        </div>
+        <!-- <p v-else style="color:#444;font-size: 15px;margin: 0.5rem 0px;">订单号可在订单详情中复制</p> -->
+        <p style="color:#444;font-size: 15px;">应垫付金额参考:
+          <span style="color:#FF9642">{{orderInfo.need_principal}}元</span>
+           <!--<span style="color:#4D97FF;padding-left: 15px;">金额有误？</span> -->
+                   <!-- (请按实际垫付金额填写，实际相差超20元请取消任务) -->
+        </p>
+         <p
+          style="color: #FF9642;font-weight: bold;padding: 0.2rem 0;"
+          v-if="!orderInfo.is_muti_keyword"
+          >{{orderInfo.chatpic===1?'此任务商家要求聊天':''}}
+        </p>
+        <!-- {{/*聊天 支付宝 账单截图 */}} -->
+        <p class="chatPicture">请上传{{orderInfo.pic_desc}}</p>
+        <div class="upicFlex">
           <div
             class="upic"
             v-for="(item,ind) in pic_uploads_box"
             :key="ind"
-            style="padding-right:5px;background:#fff"
+            style="background:#F8F8F8;margin:10px 8px 10px 0px;width: 35%;"
           >
-            <div style="border:1px solid #ccc">
-              <div class="uadd">+</div>
-              <img v-if="item.uploadSrc" :src="item.uploadSrc" alt /> -->
+            <div style="border:1px solid #E5E5E5">
+              <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
+              <img style="width:100%;margin:0px" v-if="item.uploadSrc" :src="item.uploadSrc" alt />
               <!-- 图片 -->
-              <!-- <input
+              <input
                 @change="uploadPhoto($event,item,ind)"
                 ref="tu1"
                 type="file"
                 class="ufile"
                 accept="image/*"
+                style="margin:0px"
               />
             </div>
           </div>
         </div>
-        <p class="jietuFont">
-          注：请上传
-          <span style="font-weight:bold;font-size:1rem;color:red">（{{orderInfo.pic_desc}}）</span>
-        </p> -->
-        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p> -->
-      </div>
-      <!-- 第四步 订单信息核对 -->
-      <div v-if="showFourth">
-        <div class="buzou-title">
-          <span style="color:#FF9642">第四步 订单信息核对</span>
-        </div>      
-        <p
-          v-if="orderInfo.platform===1"
-          style="color:#444;font-size: 15px; margin-bottom:1rem"
-        >订单编号可在淘宝订单详情中复制</p>
-
-        <p v-else style="color:#444;font-size: 15px; margin-bottom:1rem">订单号可在订单详情中复制</p>
-        <p style="color:#444;font-size: 15px;">应垫付金额参考:
-          <span style="color:#FF9642">{{orderInfo.need_principal}}元</span>
-           <!--<span style="color:#4D97FF;padding-left: 15px;">金额有误？</span> -->
-           (请按实际垫付金额填写，实际相差超50元请取消任务)
-        </p>
-        <!-- (请按实际垫付金额填写，实际相差超50元请取消任务) -->
+        
         <div class="login-form">
           <group>
             <x-input
@@ -139,39 +162,11 @@
               
             ></x-input>
             <!-- :disabled="this.Mincount>0" -->
-          </group>
-          <!-- {{/* 支付宝 账单截图 */}} -->
-          <div class="upicFlex">
-            <div
-              class="upic"
-              v-for="(item,ind) in pic_uploads_box"
-              :key="ind"
-              style="background:#F8F8F8;margin: 10px;width: 35%;"
-            >
-              <div style="border:1px solid #E5E5E5">
-                <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
-                <img style="width:100%;margin:0px" v-if="item.uploadSrc" :src="item.uploadSrc" alt />
-                <!-- 图片 -->
-                <input
-                  @change="uploadPhoto($event,item,ind)"
-                  ref="tu1"
-                  type="file"
-                  class="ufile"
-                  accept="image/*"
-                  style="margin:0px"
-                />
-              </div>
-            </div>
-          </div>
-          <p class="jietuFont">
-            请上传订单截图
-            <span style="font-weight:bold;font-size:0.2rem;color:red">（{{orderInfo.pic_desc}}）</span>
-          </p>
-          
+          </group>          
         </div>
-      </div>
-      
+      </div>     
     </div>
+
     <div class="currentNum">
       <p style="padding-top: 5px;">您当前的买号为:</p>
       <span>{{orderInfo.user_taobao}}</span>
@@ -181,7 +176,7 @@
     <!-- {{/* 第一步货比三家的图片示例 */}} -->
     <x-dialog v-model.trim="isShow1" class="demoDialog">
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/4444.jpg" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleHot.png" alt="问答任务示例图" />
       </div>
       <div @click="isShow1=false">
         <span class="vux-close">X</span>
@@ -191,19 +186,27 @@
     <!-- {{/* 第二步浏览店铺的图片示例 */}} -->
     <x-dialog v-model.trim="isShow2" class="demoDialog">
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/5555.jpg" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleFoot.png" alt="问答任务示例图" />
       </div>
       <div @click="isShow2=false">
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
-    <!-- <img class="shilitu" src={{require('../../../../../img/5555.jpg')}} alt="浏览店铺" /> -->
     <!-- {{/* 第三步聊天下单支付的图片示例 */}} -->
     <x-dialog v-model.trim="isShow3" class="demoDialog">
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/6666.jpg" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleChat.png" alt="问答任务示例图" />
       </div>
       <div @click="isShow3=false">
+        <span class="vux-close">X</span>
+      </div>
+    </x-dialog>
+    <!-- {{/* 第三步订单编号截图的图片示例 */}} -->
+    <x-dialog v-model.trim="isShow4" class="demoDialog">
+      <div class="img-box">
+        <img class="shilitu" src="@/assets/img/exampleOrder.png" alt="问答任务示例图" />
+      </div>
+      <div @click="isShow4=false">
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
@@ -234,6 +237,7 @@ export default {
       isShow1: false,
       isShow2: false,
       isShow3: false,
+      isShow4:false,
       waitCheckName: "",
       chat_pay_content: [],
       pic_uploads_box: [],
@@ -257,6 +261,16 @@ export default {
         order_id: this.$route.params.id //订单ID
       });
       this.orderInfo = result.data.taskDetail || {};
+    },
+     // 触发对应的上传
+    async uploadPhotos(e, ind) {
+      const url = await this.$utils.tools.base64Img(e);
+      if (url === "big") {
+        this.$vux.toast.text("图片不能超过10M");
+      } else {
+        this.$set(this.appeal, "images", [url]);
+      }
+      // console.log(this.images);
     },
     // 提交任务
     async subTask() {

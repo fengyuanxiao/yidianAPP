@@ -65,6 +65,7 @@
 
 .taskDetail-header-button {
   display: flex;
+  justify-content: space-between;
   margin-top: 15px;
   color:#444;
 }

@@ -28,7 +28,7 @@
         <b class="plan-title">
           <span 
           class="firstOne"
-          :style="orderInfo.order_status !==1 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
+          :style="orderInfo.order_status !==0 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
           >1</span> 订单付款
         </b>
         <span></span>

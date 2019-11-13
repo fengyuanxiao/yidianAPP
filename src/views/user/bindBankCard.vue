@@ -228,7 +228,7 @@ export default {
           key: "CITIC"
         },
         {
-          value: "中国光大银行",
+          value: "光大银行",
           key: "CEB"
         },
         {
