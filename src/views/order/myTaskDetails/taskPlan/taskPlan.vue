@@ -16,10 +16,17 @@
         </b>
         <span></span>
       </p>
-      <p class="taskPlanList showDistance">
+      <div class="taskPlanList showDistance">
         <span>货比三家</span>
-        <span></span>
-      </p>
+         <div class="task-plan-list-img">
+          <template v-if="orderInfo.compared_content.length !==0">
+            <img
+              :src="orderInfo.compared_content"
+              alt="货比三家截图"
+            />
+          </template>
+        </div>
+      </div>
       <p class="taskPlanList">
         <span>浏览店铺</span>
         <span></span>

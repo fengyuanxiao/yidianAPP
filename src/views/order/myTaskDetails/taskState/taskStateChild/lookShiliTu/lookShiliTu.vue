@@ -68,11 +68,10 @@
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
           <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
-        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
-        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p> -->
+        <p v-if="this.orderInfo.check_shop_time ==0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
       </div>
       <!-- 第三步 聊天下单支付 -->
-      <div v-if="this.Mincount<=0" style="color:#444">
+      <div v-if="this.Mincount<=0 || this.nowTime>this.endTimes" style="color:#444">
         <div v-if="orderInfo.platform===1">
           <div class="buzou-title" >
             <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
@@ -207,7 +206,7 @@
   </div>
 </template>
 <script>
-import { Icon } from 'vux';
+import { Icon ,dateFormat } from 'vux';
 export default {
   components: {
     Icon
@@ -221,16 +220,18 @@ export default {
   data() {
     return {
       showIcon:false,
-      Mincount:120,
-      second:6,
+      Mincount:60,
       timer: null,
       showSec:false,
-      showThird:false,
+      endTimes:"",
+      nowTime:"",
+      shopNameTime:"", //  验证店铺时间
+      compared_content:[],  //  货比三家截图
       isShow1: false,
       isShow2: false,
       isShow3: false,
       isShow4:false,
-      waitCheckName: "",
+      waitCheckName:"",
       chat_pay_content: [],
       pic_uploads_box: [],
       appeal: {
@@ -240,23 +241,47 @@ export default {
         order_id: "",
         chat_pay_content: [],
         taobao_ordersn: "",
-        need_principal: ""
+        need_principal: "",
+        compared_content:[],
       },
     };
   },
   mounted() {
+    this.shopNameTime=this.orderInfo.check_shop_time
     this.initArr(parseInt(this.orderInfo.pic_uploads_num || 1));
+  if(this.orderInfo.check_shop_time !==0){
+    this.showSec=true
+    let checkTime= dateFormat(new Date(this.orderInfo.check_shop_time*1000), "YYYY-MM-DD HH:mm:ss")
+    let nowTime= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
+    let time = new Date(checkTime.replace("-","/"));
+    let minutes=1
+    let endTime=time.setMinutes(time.getMinutes() + minutes);
+    let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
+    this.endTimes=endTimes
+    this.nowTime=nowTime     
+  }
+   
+  },
+  watch: {    
+    shopNameTime:function(val){
+        val===0 ? this.waitCheckName==="" :this.orderInfo.shop_name;
+    }
+    
   },
   beforeDestroy() {
     clearInterval(this.timer);
   },
   methods: {
-     async getOrderInfo() {
-      const result = await this.axios.post("/api/task/operateTask", {
-        order_id: this.$route.params.id //订单ID
-      });
-      this.orderInfo = result.data.taskDetail || {};
-    },
+    //  async getOrderInfo() {
+    //   const result = await this.axios.post("/api/task/operateTask", {
+    //     order_id: this.$route.params.id //订单ID
+    //   });
+    //   this.orderInfo = result.data.taskDetail || {};
+    //   this.appeal.images=this.orderInfo.taskInfo.compared_content
+    //   let checkShopTime=this.orderInfo.check_shop_time
+    //   let nowTime=new Date()
+    //   console.log(nowTime,'222')
+    // },
     
     // 提交任务
     async subTask() {
@@ -271,6 +296,7 @@ export default {
       }
       this.$set(this.orderForm, "chat_pay_content", this.chat_pay_content);
       this.$set(this.orderForm, "order_id", this.orderInfo.order_id);
+      this.$set(this.orderForm, "compared_content", this.appeal.images);
       await this.axios.post("/api/task/operateTaskCommit", this.orderForm);
       this.$vux.toast.show({
         type: "success",
@@ -293,16 +319,26 @@ export default {
     checkName() {
       if (this.waitCheckName == this.orderInfo.shop_name) {
         this.showIcon="success"
-      const results = this.axios.post("/api/task/placeOrderOperation", {
-        // order_id:this.orderInfo.order_id,
-        operation:"validate",
-        shop_name: this.waitCheckName //订单ID
-      });
-        this.showSec=true
-        this.getCodeTime()
-        setTimeout(() => {
-          this.showThird=true         
-        }, 6000);
+        const result1 = this.axios.post("/api/task/validateShop", {
+          order_id:this.orderInfo.order_id,//订单ID
+          operation:"validate",
+          shop_name: this.waitCheckName 
+        });
+        if(this.orderInfo.taskInfo.is_compared ===1){
+          if(this.appeal.images.length !==0 ){
+            this.showSec=true
+            this.getCodeTime()
+          }else{
+            setTimeout(() => {
+              return this.$vux.toast.text("请上传货比三家截图");
+            }, 1000);
+          }
+        }else{
+          this.showSec=true
+          this.getCodeTime()
+        }
+       
+        
       } else {
         this.showIcon="cancel"
         // this.$vux.toast.text("店铺名称错误！");
@@ -326,7 +362,6 @@ export default {
       } else {
         this.$set(this.appeal, "images", [url]);
       }
-      // console.log(this.images);
     },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);

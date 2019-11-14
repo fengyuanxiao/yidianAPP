@@ -31,10 +31,10 @@
               </p>
             </div>
           </div>
-          <span v-if="orderInfo.sku_set.length !==0">下单规格和尺寸</span>
+          <span v-if="orderInfo.sku_set.length !==0">下单规格和尺寸:</span>
           <p v-for="(item,index) in orderInfo.sku_set" :key="index" style="display:inline-block">
-            <span class="make-num"> {{item.attribute_key}}:</span>
-            <span class="make-num" style="padding-right:8px">{{item.attribute_value}} </span>
+            <span class="make-num" style="font-size:14px"> {{item.attribute_key}}:</span>
+            <span class="make-num" style="padding-right:8px;font-size:14px">{{item.attribute_value}} </span>
           </p>
         </section>
       </div>
@@ -161,7 +161,7 @@
 </template>
 <script>
 import LookShiliTu from "./lookShiliTu/lookShiliTu";
-import { cookie } from "vux";
+import { cookie,dateFormat } from "vux";
 export default {
   components: {
     LookShiliTu

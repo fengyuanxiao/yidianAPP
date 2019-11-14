@@ -251,7 +251,7 @@ export default {
         {
           bind_type: 1,
           bandList: [],
-          id: "taobao2",
+          id: "taobao",
           url: "/h5/user/addTaobaoAccount"
         },
         {
