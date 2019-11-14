@@ -22,7 +22,6 @@
     <div class="start-task-btn">
       <button class="tasktn" @click="cancelTask">取消任务</button>
       <template v-if="!orderInfo.order_status && order.is_appeal!=1">
-        <!-- 参数为：remark_pic -->
         <button v-if="orderInfo.shop_around_time" class="stateBtns">
           <router-link :to="'/h5/order/dianfu/detail/taskStateChild/'+orderInfo.order_id">操作任务</router-link>
         </button>

@@ -4,24 +4,7 @@
       <!-- <Progress className="plan-child" type="circle" percent={ orderInfo.order_status === 0? 25 : (orderInfo.order_status === 1? 50 : (orderInfo.order_status ===3? 75 : (orderInfo.order_status ===5? 95 : 100) )) } width={80} />-->
       <!-- <p>下一步：请点击操作任务按钮操作</p>
     </div> -->
-    <!-- <div class="planBox">
-      <p class="taskPlanList">
-        <span>接受任务</span>
-        <span>{{orderInfo.addtime}}</span>
-      </p>
-      <p class="taskPlanList">
-        <span>任务编号</span>
-        <span>{{orderInfo.order_id}}</span>
-      </p>
-      <p class="taskPlanList">
-        <span>买号</span>
-        <span>{{orderInfo.user_taobao}}</span>
-      </p>
-      <div class="taskPlanList">
-        <span>商品金额</span>
-        <span>{{orderInfo.itemprice}}*{{orderInfo.itemnum}}件</span>
-      </div>
-    </div> -->
+   
     <!-- {/* 任务要求 */} -->
     <div class="planBox">
       <p class="title">
@@ -41,10 +24,6 @@
         <span>浏览店铺</span>
         <span></span>
       </p>
-      <!-- <p class="taskPlanList">
-        <span>订单编号</span>
-        <span></span>
-      </p> -->
       <div class="taskPlanList">
         <span>聊天下单</span>
         <div class="task-plan-list-img">

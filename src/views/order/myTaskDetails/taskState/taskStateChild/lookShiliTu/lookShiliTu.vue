@@ -22,7 +22,7 @@
         >
           <div style="border:1px solid #E5E5E5">
             <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
-            <img style="width:100%;margin:0px" v-if="orderInfo.taskInfo.compared_content" :src="orderInfo.taskInfo.compared_content[0]"  alt />
+            <img style="width:100%;margin:0px" v-if="appeal.images.length" :src="appeal.images[0]"  alt />
             <!-- 图片  -->
             <input
               @change="uploadPhotos($event,0)"
@@ -68,16 +68,17 @@
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
           <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
+        <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
         <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{this.second}}秒后才能继续操作下一步</p> -->
       </div>
       <!-- 第三步 聊天下单支付 -->
-      <div v-if="showThird" style="color:#444">
+      <div v-if="this.Mincount<=0" style="color:#444">
         <div v-if="orderInfo.platform===1">
           <div class="buzou-title" >
             <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
             <span @click="isShow3=true">查看截图示例</span>
           </div>
-          
+          <p v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===0">下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单；若浮动超过20元，请联系客服确认</span>。</p>
           <div v-if="orderInfo.is_muti_keyword">
             <p>① 主关键词搜索 找到对应任务宝贝店外截图 进店浏览2-3分钟 任务宝贝加入购物车 退出 上传正确的图</p>
             <p>② 点开购物车 截图购物车里的任务宝贝 上传正确的图</p>
@@ -86,9 +87,8 @@
           </div>
           <div v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===1">
             <p>① 买手与客服以<span style="color:#FF9642">一问一答</span>的方式，关于产品需提出4~5个问题，严禁 未答复就下单（例：尺码、颜色、材质、包邮等问题）；</p>
-            <p>② 下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与 任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单， 若浮动超过20元，请联系客服确认</span>。</p>
-          </div>
-          
+            <p>② 下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单；若浮动超过20元，请联系客服确认</span>。</p>
+          </div>         
           <!-- <p style="color:'red', fontWeight:'bold'">.如商家备注无需聊天，聊天图上传支付宝账单替代</p> -->         
         </div> 
 
@@ -96,10 +96,9 @@
           <span>第三步 上传订单截图</span>
           <span @click="isShow3=true">查看截图示例</span>
         </div>
-        <!-- <p style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p> -->
-      </div>
-      <!-- 第四步 订单信息核对 -->
-      <div v-if="showFourth" style="padding-bottom: 8px;">
+            
+      <!-- 订单信息核对 -->
+      <div style="padding-bottom: 8px;">
         <!-- <div class="buzou-title">
           <span style="color:#FF9642">第四步 订单信息核对</span>
         </div>       -->
@@ -111,7 +110,6 @@
         <p style="color:#444;font-size: 15px;">应垫付金额参考:
           <span style="color:#FF9642">{{orderInfo.need_principal}}元</span>
            <!--<span style="color:#4D97FF;padding-left: 15px;">金额有误？</span> -->
-                   <!-- (请按实际垫付金额填写，实际相差超20元请取消任务) -->
         </p>
          <p
           style="color: #FF9642;font-weight: bold;padding: 0.2rem 0;"
@@ -150,20 +148,17 @@
               v-model.trim="orderForm.need_principal"
               placeholder="请输入实际付款金额"
               class="jineInput"
-              
             ></x-input>
-            <!-- :disabled="this.Mincount>0" -->
           </group>
           <group>
             <x-input
               placeholder="请输入支付商户订单号"
               v-model.trim="orderForm.taobao_ordersn"
               class="jineInput"
-              
             ></x-input>
-            <!-- :disabled="this.Mincount>0" -->
           </group>          
         </div>
+      </div>
       </div>     
     </div>
 
@@ -174,7 +169,7 @@
     <div class="commiteTsak" @click="subTask">提交审核</div>
   
     <!-- {{/* 第一步货比三家的图片示例 */}} -->
-    <x-dialog v-model.trim="isShow1" class="demoDialog">
+    <x-dialog v-model.trim="isShow1" class="demoDialog" hide-on-blur>
       <div class="img-box">
         <img class="shilitu" src="@/assets/img/exampleHot.png" alt="问答任务示例图" />
       </div>
@@ -182,9 +177,8 @@
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
-    <!-- <img class="shilitu" src={{require('../../../../../img/4444.jpg')}} alt="货比三家" /> -->
     <!-- {{/* 第二步浏览店铺的图片示例 */}} -->
-    <x-dialog v-model.trim="isShow2" class="demoDialog">
+    <x-dialog v-model.trim="isShow2" class="demoDialog" hide-on-blur>
       <div class="img-box">
         <img class="shilitu" src="@/assets/img/exampleFoot.png" alt="问答任务示例图" />
       </div>
@@ -193,7 +187,7 @@
       </div>
     </x-dialog>
     <!-- {{/* 第三步聊天下单支付的图片示例 */}} -->
-    <x-dialog v-model.trim="isShow3" class="demoDialog">
+    <x-dialog v-model.trim="isShow3" class="demoDialog" hide-on-blur>
       <div class="img-box">
         <img class="shilitu" src="@/assets/img/exampleChat.png" alt="问答任务示例图" />
       </div>
@@ -202,7 +196,7 @@
       </div>
     </x-dialog>
     <!-- {{/* 第三步订单编号截图的图片示例 */}} -->
-    <x-dialog v-model.trim="isShow4" class="demoDialog">
+    <x-dialog v-model.trim="isShow4" class="demoDialog" hide-on-blur>
       <div class="img-box">
         <img class="shilitu" src="@/assets/img/exampleOrder.png" alt="问答任务示例图" />
       </div>
@@ -210,7 +204,6 @@
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
-    <!--  <img class="shilitu" src={{platform === 1? require('../../../../../img/6666.jpg') : (platform === 2? require('../../../../../img/jdshili.jpg') : (platform === 5? require('../../../../../img/pddorder.png') : require('../../../../../img/wphorder.jpg')))}} alt="聊天下单" /> -->
   </div>
 </template>
 <script>
@@ -231,9 +224,8 @@ export default {
       Mincount:120,
       second:6,
       timer: null,
-      showSec:true,
-      showThird:true,
-      showFourth:true,
+      showSec:false,
+      showThird:false,
       isShow1: false,
       isShow2: false,
       isShow3: false,
@@ -241,12 +233,15 @@ export default {
       waitCheckName: "",
       chat_pay_content: [],
       pic_uploads_box: [],
+      appeal: {
+        images: []
+      },
       orderForm: {
         order_id: "",
         chat_pay_content: [],
         taobao_ordersn: "",
         need_principal: ""
-      }
+      },
     };
   },
   mounted() {
@@ -262,16 +257,7 @@ export default {
       });
       this.orderInfo = result.data.taskDetail || {};
     },
-     // 触发对应的上传
-    async uploadPhotos(e, ind) {
-      const url = await this.$utils.tools.base64Img(e);
-      if (url === "big") {
-        this.$vux.toast.text("图片不能超过10M");
-      } else {
-        this.$set(this.appeal, "images", [url]);
-      }
-      // console.log(this.images);
-    },
+    
     // 提交任务
     async subTask() {
       if (this.isEmptyArr().length !== this.chat_pay_content.length) {
@@ -307,34 +293,22 @@ export default {
     checkName() {
       if (this.waitCheckName == this.orderInfo.shop_name) {
         this.showIcon="success"
+      const results = this.axios.post("/api/task/placeOrderOperation", {
+        // order_id:this.orderInfo.order_id,
+        operation:"validate",
+        shop_name: this.waitCheckName //订单ID
+      });
         this.showSec=true
-        this.getSecondTime()
-        
+        this.getCodeTime()
         setTimeout(() => {
-          this.showThird=true
-          if(this.showThird=true){
-            
-            setTimeout(() => {
-            this.showFourth=true
-          }, 120000);
-        }
+          this.showThird=true         
         }, 6000);
       } else {
         this.showIcon="cancel"
         // this.$vux.toast.text("店铺名称错误！");
       }
     },
-     // 第二步任务倒计时
-    async getSecondTime() {
-      this.timer = setInterval(_ => {
-        if (this.second > 0) {
-          this.second--;
-        } else {
-          clearInterval(this.timer);
-        }
-      }, 1000);        
-    },
-     // 第四步任务倒计时
+     // 倒计时
     async getCodeTime() {
       this.timer = setInterval(_ => {
         if (this.Mincount > 0) {
@@ -344,6 +318,16 @@ export default {
         }
       }, 1000);        
     },
+     // 触发对应的上传
+    async uploadPhotos(e, ind) {
+      const url = await this.$utils.tools.base64Img(e);
+      if (url === "big") {
+        this.$vux.toast.text("图片不能超过10M");
+      } else {
+        this.$set(this.appeal, "images", [url]);
+      }
+      // console.log(this.images);
+    },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
       if (url === "big") {
@@ -352,9 +336,6 @@ export default {
         this.$set(item, "uploadSrc", url);
         this.chat_pay_content.splice(ind, 1, url);
       }
-      // if(this.chat_pay_content !==""){
-       
-      // }
     }
 
   }

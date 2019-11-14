@@ -15,17 +15,17 @@
             <div style="width:30%;margin-right:0.8rem">
               <img :src="orderInfo.goodspic" alt="商品图" style="width:100%;height:100%" />
             </div>
-            <div style="width: 75%;color:#444;line-height: 22px;">
-              <p style="font-weight:bold;padding-bottom: 3px;">{{orderInfo.goodsname.substring(0,2)}}****</p>
-              <p>
+            <div style="width: 75%;color:#444;">
+              <p style="font-weight:bold;line-height: 24px;">{{orderInfo.goodsname.substring(0,2)}}****</p>
+              <p style="line-height: 24px;">
                 搜索展示价格：
                 <span class="makeNum">{{orderInfo.searchprice}}</span>
               </p>
-              <p>
+              <p style="line-height: 24px;">
                 商品单件成交价格：
                 <span class="makeNum">{{orderInfo.itemprice}}元</span>
               </p>
-              <p>
+              <p style="line-height: 24px;">
                 下单件数：
                 <span class="makeNum">{{orderInfo.itemnum}}件</span>
               </p>
@@ -36,9 +36,6 @@
             <span class="make-num"> {{item.attribute_key}}:</span>
             <span class="make-num" style="padding-right:8px">{{item.attribute_value}} </span>
           </p>
-          <!-- <p style="padding-top: 2px;">
-            <span class="make-num">111</span>
-          </p> -->
         </section>
       </div>
 
@@ -105,10 +102,6 @@
             <template v-for="item in orderInfo.taskInfo.paychannel">{{item+'、'}}</template>
           </span>
         </p>
-        <!-- <p class="task-plan-list">
-          <span>商品分类</span>
-          <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message||""}}</span>
-        </p> -->
         <p class="task-plan-list" v-if="orderInfo.order_message !==''">
           <span>订单留言</span>
           <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message}}</span>

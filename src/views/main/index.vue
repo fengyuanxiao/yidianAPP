@@ -139,7 +139,11 @@
           :key="item.task_id"
         ></main-task>
       </div>
-      <div class="tasknoInfo" v-if="taskInfo.length==0 && no_task_list.length==0">当前无新任务哦</div>
+
+      <div class="tasknoInfo" v-if="taskInfo.length==0 && no_task_list.length==0">
+        <img src="/static/img/homeIcon.png" alt="" style="width:50%">
+        <p>当前无新任务哦</p>
+      </div>
     </div>
 
     <!-- 菜单 -->
@@ -247,7 +251,7 @@ export default {
         {
           bind_type: 1,
           bandList: [],
-          id: "taobao",
+          id: "taobao2",
           url: "/h5/user/addTaobaoAccount"
         },
         {
@@ -651,7 +655,7 @@ export default {
   }
   .tasknoInfo {
     text-align: center;
-    padding: 80px 0;
+    padding: 30px 0;
   }
   .showAttention{
     font-size: 24px;
