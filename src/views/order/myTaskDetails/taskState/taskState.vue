@@ -31,7 +31,7 @@
           >操作任务</router-link>
         </button>
       </template>
-      <button v-if="orderInfo.order_status !==0" class="tasktn" style="background: #909399;">
+      <button v-if="orderInfo.order_status !==0" class="tasktn" style="background:linear-gradient(0deg,rgba(255,195,75,1),rgba(255,150,66,1));">
         <router-link :to="'/h5/shensu/appealTask?id='+orderInfo.order_id">申诉任务</router-link>
       </button>
     </div>

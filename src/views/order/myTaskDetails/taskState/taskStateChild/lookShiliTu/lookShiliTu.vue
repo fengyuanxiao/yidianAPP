@@ -1,21 +1,23 @@
 <template>
   <div>
     <!-- {{/* 第一步货比三家 */}} -->
-    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 15px 10px;">
+    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 65px 10px;">
       <div class="taskRenw">
         <!-- <Icon type="edit" theme="outlined" /> -->
         <span>任务步骤</span>
       </div>
       <div class="buzou-title">
         <span>第一步 货比三家</span>
-        <span @click="isShow1=true">查看截图示例</span>
+        <span @click="isShow2=true">查看截图示例</span>
       </div>
       <p>① 请务必登入当前接任务的{{orderInfo.platformname}}账号:{{orderInfo.user_taobao}};</p>
       <p style="line-height: 27px;">② 进入{{orderInfo.tasktype_itemname}}点击搜索框输入指定的关键词，根据任务提示找到目标商品； </p>
-      <p style="line-height: 27px;">③ 按任务要求，先浏览第一个带有hot图标的产品，然后随意浏览两家同等价位的产品1~3分钟。</p>
-    
+      <p style="line-height: 27px;">③ 按任务要求，随意浏览一个带有hot图标的产品，然后随意浏览两家 同等价位的产品1~3分钟。
+        <span @click="isShow1=true" style="color:#4D97FF">什么是带有hot图标的产品？</span>
+      </p>    
       <!-- 上传货货比三家截图 -->
       <div class="upicFlex" v-if="orderInfo.taskInfo.is_compared ===1">
+        <p style="color:red">请上传足迹截图</p>
         <div
           class="upic"
           style="background:#F8F8F8;margin:10px 8px 10px 0px;width: 35%;"
@@ -41,7 +43,7 @@
       </div>
       <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
       <div class="shop-title">
-        <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
+        <x-input v-model.trim="orderInfo.check_shop_name" placeholder="请在此输入店铺名核对"></x-input>
         <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
         <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF">核对</x-button>
       </div>
@@ -50,7 +52,7 @@
       <div v-if="showSec" style="border-bottom: 1px solid #E5E5E5;padding-bottom: 20px;">
         <div  class="buzou-title" >
           <span>第二步 浏览店铺</span>
-          <span @click="isShow2=true">查看截图示例</span>
+          <span @click="isShow5=true">查看截图示例</span>
         </div>
         <p style="color:#444">① 浏览目标商品；（务必从页头至页尾进行浏览，3分钟以上）</p>
 
@@ -68,20 +70,24 @@
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
           <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
-        <p v-if="this.orderInfo.check_shop_time ==0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
+        <p v-if="this.nowTimes<this.endTimes" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
       </div>
       <!-- 第三步 聊天下单支付 -->
-      <div v-if="this.Mincount<=0 || this.nowTime>this.endTimes" style="color:#444">
+      <div v-if="this.Mincount<=0 && orderInfo.check_shop_time !==0" style="color:#444">
         <div v-if="orderInfo.platform===1">
-          <div class="buzou-title" >
-            <span>第三步 {{orderInfo.platform===1? "聊天下单支付" : "上传订单截图"}}</span>
+          <div class="buzou-title" v-if="orderInfo.chatpic===1">
+            <span>第三步 聊天下单支付</span>
             <span @click="isShow3=true">查看截图示例</span>
+          </div>
+          <div v-else class="buzou-title">
+            <span>第三步 订单信息核对</span>
+            <span @click="isShow4=true">查看截图示例</span>
           </div>
           <p v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===0">下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单；若浮动超过20元，请联系客服确认</span>。</p>
           <div v-if="orderInfo.is_muti_keyword">
             <p>① 主关键词搜索 找到对应任务宝贝店外截图 进店浏览2-3分钟 任务宝贝加入购物车 退出 上传正确的图</p>
             <p>② 点开购物车 截图购物车里的任务宝贝 上传正确的图</p>
-            <p>③ 买手与客服以<span style="color:#FF9642">一问一答</span>的方式，关于产品需提出4~5个问题，严禁 未答复就下单（例：尺码、颜色、材质、包邮等问题）；</p>
+            <p>③ 下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单；若浮动超过20元，请联系客服确认</span>。</p>
             <p>④ 付款完成后，进入支付账单详情页面截图并上传</p>
           </div>
           <div v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===1">
@@ -92,8 +98,8 @@
         </div> 
 
         <div v-else class="buzou-title">
-          <span>第三步 上传订单截图</span>
-          <span @click="isShow3=true">查看截图示例</span>
+          <span>第三步 订单信息核对</span>
+          <span @click="isShow4=true">查看截图示例</span>
         </div>
             
       <!-- 订单信息核对 -->
@@ -103,7 +109,7 @@
         </div>       -->
         <div  class="buzou-title" >
           <span style="color:#444;">订单编号可在{{orderInfo.platformname}}订单详情中复制</span>
-          <span @click="isShow4=true">查看截图示例</span>
+          <span v-if="orderInfo.chatpic===1"  @click="isShow4=true">查看截图示例</span>
         </div>
         <!-- <p v-else style="color:#444;font-size: 15px;margin: 0.5rem 0px;">订单号可在订单详情中复制</p> -->
         <p style="color:#444;font-size: 15px;">应垫付金额参考:
@@ -144,7 +150,7 @@
           <group>
             <x-input
               type="number"
-              v-model.trim="orderForm.need_principal"
+              v-model.trim="orderForm.pay_money"
               placeholder="请输入实际付款金额"
               class="jineInput"
             ></x-input>
@@ -152,7 +158,7 @@
           <group>
             <x-input
               placeholder="请输入支付商户订单号"
-              v-model.trim="orderForm.taobao_ordersn"
+              v-model.trim="orderForm.order_no"
               class="jineInput"
             ></x-input>
           </group>          
@@ -160,35 +166,44 @@
       </div>
       </div>     
     </div>
-
-    <div class="currentNum">
-      <p style="padding-top: 5px;">您当前的买号为:</p>
-      <span>{{orderInfo.user_taobao}}</span>
+    <div style="position:fixed;bottom:0px;width: 100%;z-index: 999;">
+      <div class="currentNum">
+        <p style="padding-top: 5px;">您当前的买号为:</p>
+        <span>{{orderInfo.user_taobao}}</span>
+      </div>
+      <div class="commiteTsak" @click="subTask">提交审核</div>
     </div>
-    <div class="commiteTsak" @click="subTask">提交审核</div>
-  
-    <!-- {{/* 第一步货比三家的图片示例 */}} -->
+    <!-- {{/* 第一步hot图片示例 */}} -->
     <x-dialog v-model.trim="isShow1" class="demoDialog" hide-on-blur>
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/exampleHot.png" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleHot.png" alt="" />
       </div>
       <div @click="isShow1=false">
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
-    <!-- {{/* 第二步浏览店铺的图片示例 */}} -->
+    <!-- {{/* 第一步货比三家的图片示例 */}} -->
     <x-dialog v-model.trim="isShow2" class="demoDialog" hide-on-blur>
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/exampleFoot.png" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleFoot.png" alt="" />
       </div>
       <div @click="isShow2=false">
+        <span class="vux-close">X</span>
+      </div>
+    </x-dialog>
+    <!-- {{/* 第二步浏览店铺的图片示例 */}} -->
+    <x-dialog v-model.trim="isShow5" class="demoDialog" hide-on-blur>
+      <div class="img-box">
+        <img class="shilitu" src="@/assets/img/5555.jpg" alt="" />
+      </div>
+      <div @click="isShow5=false">
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
     <!-- {{/* 第三步聊天下单支付的图片示例 */}} -->
     <x-dialog v-model.trim="isShow3" class="demoDialog" hide-on-blur>
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/exampleChat.png" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleChat.png" alt="" />
       </div>
       <div @click="isShow3=false">
         <span class="vux-close">X</span>
@@ -197,7 +212,7 @@
     <!-- {{/* 第三步订单编号截图的图片示例 */}} -->
     <x-dialog v-model.trim="isShow4" class="demoDialog" hide-on-blur>
       <div class="img-box">
-        <img class="shilitu" src="@/assets/img/exampleOrder.png" alt="问答任务示例图" />
+        <img class="shilitu" src="@/assets/img/exampleOrder.png" alt="" />
       </div>
       <div @click="isShow4=false">
         <span class="vux-close">X</span>
@@ -220,53 +235,62 @@ export default {
   data() {
     return {
       showIcon:false,
-      Mincount:60,
+      Mincount:"",
       timer: null,
       showSec:false,
-      endTimes:"",
-      nowTime:"",
       shopNameTime:"", //  验证店铺时间
-      compared_content:[],  //  货比三家截图
+      nowTimes:"",
+      endTimes:"",
       isShow1: false,
       isShow2: false,
       isShow3: false,
       isShow4:false,
-      waitCheckName:"",
-      chat_pay_content: [],
+      isShow5:false,
+      check_shop_name:"",
+      image: [],
       pic_uploads_box: [],
       appeal: {
         images: []
       },
       orderForm: {
         order_id: "",
-        chat_pay_content: [],
-        taobao_ordersn: "",
-        need_principal: "",
-        compared_content:[],
+        image: [],
+        order_no: "",
+        pay_money: "",
+        operation:"payment",
       },
     };
   },
   mounted() {
+    if(this.orderInfo.check_shop_name !==""){
+      this.showIcon="success"
+    }
+    this.appeal.images=this.orderInfo.compared_content
     this.shopNameTime=this.orderInfo.check_shop_time
     this.initArr(parseInt(this.orderInfo.pic_uploads_num || 1));
-  if(this.orderInfo.check_shop_time !==0){
-    this.showSec=true
-    let checkTime= dateFormat(new Date(this.orderInfo.check_shop_time*1000), "YYYY-MM-DD HH:mm:ss")
-    let nowTime= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
-    let time = new Date(checkTime.replace("-","/"));
-    let minutes=1
-    let endTime=time.setMinutes(time.getMinutes() + minutes);
-    let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
-    this.endTimes=endTimes
-    this.nowTime=nowTime     
-  }
-   
-  },
-  watch: {    
-    shopNameTime:function(val){
-        val===0 ? this.waitCheckName==="" :this.orderInfo.shop_name;
+    if(this.orderInfo.check_shop_time){
+      this.showSec=true
+      let checkTime= dateFormat(new Date(this.orderInfo.check_shop_time*1000), "YYYY-MM-DD HH:mm:ss")
+      let time = new Date(checkTime.replace("-","/"));
+      let minutes=3
+      let endTime=time.setMinutes(time.getMinutes() + minutes);
+      let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")      
+      let nowTime = new Date().getTime()
+      let nowTimes= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
+      this.nowTimes=nowTimes
+      this.endTimes=endTimes
+      let showTime=endTime-nowTime
+      let leave1=showTime%(24*3600*1000) 
+      let leave2=leave1%(3600*1000)
+      let leave3=leave2%(60*1000)     
+      let seconds=Math.round(leave3/1000)
+      let endMinutes=Math.floor(leave2/(60*1000))
+      this.Mincount=endMinutes*60+seconds  
+      if(this.Mincount>0 ||this.orderInfo.check_shop_name == this.orderInfo.shop_name){
+        this.getCodeTime()
+      }
     }
-    
+   
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -278,26 +302,23 @@ export default {
     //   });
     //   this.orderInfo = result.data.taskDetail || {};
     //   this.appeal.images=this.orderInfo.taskInfo.compared_content
-    //   let checkShopTime=this.orderInfo.check_shop_time
-    //   let nowTime=new Date()
-    //   console.log(nowTime,'222')
     // },
     
     // 提交任务
     async subTask() {
-      if (this.isEmptyArr().length !== this.chat_pay_content.length) {
+      if (this.isEmptyArr().length !== this.image.length) {
         return this.$vux.toast.text("所有的截图都必须上传");
       }
-      if (!this.orderForm.need_principal.length) {
+      if (!this.orderForm.pay_money.length) {
         return this.$vux.toast.text("请输入实际付款金额");
       }
-      if (!this.orderForm.taobao_ordersn.length) {
+      if (!this.orderForm.order_no.length) {
         return this.$vux.toast.text("请输入支付商户订单号");
       }
-      this.$set(this.orderForm, "chat_pay_content", this.chat_pay_content);
+      this.$set(this.orderForm, "image", this.image);
       this.$set(this.orderForm, "order_id", this.orderInfo.order_id);
-      this.$set(this.orderForm, "compared_content", this.appeal.images);
-      await this.axios.post("/api/task/operateTaskCommit", this.orderForm);
+      // this.$set(this.orderForm, "operation", payment);
+      await this.axios.post("/api/task/placeOrderOperation", this.orderForm);
       this.$vux.toast.show({
         type: "success",
         text: "提交成功"
@@ -308,21 +329,23 @@ export default {
     },
     initArr(length) {
       for (let i = 0; i < length; i++) {
-        this.chat_pay_content.push("");
+        this.image.push("");
         this.pic_uploads_box.push({ uploadSrc: "" });
       }
     },
     // 判断数组元素是否有为空的情况
     isEmptyArr() {
-      return this.chat_pay_content.filter(e => e.length);
+      return this.image.filter(e => e.length);
     },
     checkName() {
-      if (this.waitCheckName == this.orderInfo.shop_name) {
+     
+      if (this.orderInfo.check_shop_name == this.orderInfo.shop_name) {
         this.showIcon="success"
-        const result1 = this.axios.post("/api/task/validateShop", {
+        const result1 = this.axios.post("/api/task/placeOrderOperation", {
           order_id:this.orderInfo.order_id,//订单ID
-          operation:"validate",
-          shop_name: this.waitCheckName 
+          operation:"compared",
+          shop_name: this.orderInfo.check_shop_name,
+          image:this.appeal.images
         });
         if(this.orderInfo.taskInfo.is_compared ===1){
           if(this.appeal.images.length !==0 ){
@@ -369,7 +392,7 @@ export default {
         this.$vux.toast.text("图片不能超过10M");
       } else {
         this.$set(item, "uploadSrc", url);
-        this.chat_pay_content.splice(ind, 1, url);
+        this.image.splice(ind, 1, url);
       }
     }
 

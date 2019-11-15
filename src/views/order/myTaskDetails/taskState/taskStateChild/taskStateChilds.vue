@@ -64,10 +64,6 @@
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_one}}</span>
           </p>
         </div>
-        <p class="task-plan-list-Child">
-          <span>(打开{{orderInfo.platformname}}搜索关键词)</span>
-          <span class="fontsi">注：如有关键字过长请左右拖动查看</span>
-        </p>
         <p class="task-plan-list">
           <span>购买数量</span>
           <span>目标商品{{orderInfo.itemnum}}件</span>
@@ -106,21 +102,17 @@
           <span>订单留言</span>
           <span style="overflow:auto;wordBreak:keep-all">{{orderInfo.remark||""}}</span>
         </p>
-        <p class="task-plan-list-Child">
-          <span>(查看订单留言)</span>
-          <span class="fontsi">注：如内容过长请左右拖动查看</span>
-        </p>
       </div>
       <!-- {/* 商家要求 */} -->
       
-      <div class="plan-box task-plan" style="margin:10px;">
+      <div v-if="orderInfo.remark_pic.length && orderInfo.remark_pic[0].length" class="plan-box task-plan" style="margin:10px;">
         <div class="taskRenw">
           <!-- <Icon type="pushpin" theme="outlined" /> -->
           <span>商家要求</span>
         </div>
 
         <div>
-          <template v-if="orderInfo.remark_pic.length && orderInfo.remark_pic[0].length">
+          <template >
             <img
               style="max-width:100%"
               v-for="(item,index) in orderInfo.remark_pic"
@@ -128,7 +120,6 @@
               :src="$url+item"
             />
           </template>
-          <p v-else>此商家没有额外要求</p>
         </div>
       </div>
       <div class="plan-box task-plan" style="margin:10px">

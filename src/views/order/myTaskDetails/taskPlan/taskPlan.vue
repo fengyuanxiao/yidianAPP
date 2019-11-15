@@ -6,42 +6,67 @@
     </div> -->
    
     <!-- {/* 任务要求 */} -->
+    <!-- <div class="planBox" v-if="orderInfo.is_muti_keyword === 1">
+      <p class="title">
+        <b class="plan-title">
+          <span 
+          class="firstOne"
+          :style="orderInfo.order_status !==1 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
+          >1</span> 三关键词
+        </b>
+        <span></span>
+      </p>
+      <p class="taskPlanList showDistance">
+        <span>{{orderInfo.platformname}}订单号</span>
+        <span>{{orderInfo.taobao_ordersn}}</span>
+      </p>
+    </div> -->
+    <!-- 1、订单付款 -->
     <div class="planBox">
       <p class="title">
         <b class="plan-title">
           <span 
           class="firstOne"
-          :style="orderInfo.order_status !==0 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
+          :style="(orderInfo.order_status !==1 && orderInfo.order_status !==3&& orderInfo.order_status !==4) ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
           >1</span> 订单付款
         </b>
         <span></span>
       </p>
       <div class="taskPlanList showDistance">
         <span>货比三家</span>
-         <div class="task-plan-list-img">
+        <div class="task-plan-list-img">
           <template v-if="orderInfo.compared_content.length !==0">
-            <img
+            <icon type="success"></icon>
+            <!-- <img
               :src="orderInfo.compared_content"
               alt="货比三家截图"
-            />
+            /> -->
+          </template>
+          <template v-if="orderInfo.compared_content.length ===0 && orderInfo.compared_time !==0">
+            <icon type="success"></icon>
           </template>
         </div>
       </div>
-      <p class="taskPlanList">
+      <div class="taskPlanList">
         <span>浏览店铺</span>
-        <span></span>
-      </p>
+        <div class="task-plan-list-img">
+          <template v-if="this.nowTime>this.endTimes && orderInfo.compared_time !==0">
+            <icon type="success"></icon>
+          </template>
+        </div>
+      </div>
       <div class="taskPlanList">
         <span>聊天下单</span>
         <div class="task-plan-list-img">
           <template v-if="orderInfo.chat_pay_content">
-            <img
+            <icon type="success"></icon>
+            <!-- <img
               :key="ind"
               v-for="(item,ind) in orderInfo.chat_pay_content"
               @click="showImg(item)"
               :src="item"
               alt="聊天截图"
-            />
+            /> -->
           </template>
         </div>
       </div>
@@ -54,12 +79,12 @@
       <!-- </div> -->
       <!-- <p class="waitOrder">等待订单付款</p> -->
     </div>
-    <!-- {/* 商家确定订单 */} -->
+    <!-- {/* 2、商家确定订单 */} -->
     <div class="planBox">
       <p class="title">
         <b class="plan-title">
           <span class="firstOne" 
-                :style="orderInfo.order_status !== 1 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
+                :style="orderInfo.order_status !== 3 && orderInfo.order_status !== 4? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
           ">2</span> 商家返款
         </b>
       </p>
@@ -83,19 +108,19 @@
         <span class="ask-start">平台规定商家48小时内还款</span>
         <button
           :disabled="orderInfo.order_status !== 1"
-          :style="orderInfo.order_status === 1 ? {backgroundColor: '#66caa8'} : {backgroundColor: '#ccc'}"
+          :style="orderInfo.order_status === 1? {backgroundColor: '#09BB07'} : {backgroundColor: '#ccc'}"
           @click="showMsg"
-        >催返款</button>
+        >{{orderInfo.order_status === 3 ? '已返款' : '催返款'}}</button>
       </div>
     </div>
-    <!-- {/* 收货好评 */} -->
+    <!-- {/* 3、收货好评 */} -->
     <div class="planBox">
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 3 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 4 && orderInfo.order_status !==9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >3</span>
-           收货好评
+           收货好评 
         </b>
         <span></span>
       </p>
@@ -115,7 +140,7 @@
       </div>
       <div class="taskPlanList">
         <span class="ask-start" style="width: 70%;">此单为普通五星好评 点击查看评价要求</span>
-        <button v-if="orderInfo.order_status==3" style="background-color:#66caa8">
+        <button v-if="orderInfo.order_status==3" style="background-color:#09BB07">
           <router-link
             style="color: #fff"
             :to="'/h5/order/dianfu/detail/goodPingJia/'+orderInfo.order_id"
@@ -165,7 +190,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 4 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >{{ orderInfo.is_addcomments? "5" : "4" }}</span>
            完成任务
         </b>
@@ -189,13 +214,36 @@
   </div>
 </template>
 <script>
+import { Icon ,dateFormat } from 'vux';
 export default {
+  components: {
+    Icon
+  },
   props: ["orderInfo"],
   data() {
     return {
       isShow: false,
-      showSrc: ""
+      showSrc: "",
+      endTimes:"",
+      nowTime:"",
+      cData:{},
     };
+  },
+  watch: {
+    //监听父组件传的orderInfo属性值，否则取不到
+    orderInfo: function(val){
+      this.cData = val;  //newVal即是chartData
+      if(this.cData.compared_time !==0){
+        let checkTime= dateFormat(new Date(this.cData.compared_time*1000), "YYYY-MM-DD HH:mm:ss")
+        let nowTime= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
+        let time = new Date(checkTime.replace("-","/"));
+        let minutes=1
+        let endTime=time.setMinutes(time.getMinutes() + minutes);
+        let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
+        this.endTimes=endTimes
+        this.nowTime=nowTime   
+      }
+    }
   },
   methods: {
     showImg(img) {

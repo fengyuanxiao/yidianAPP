@@ -40,7 +40,7 @@
       </div>
 
       <!-- {/* 任务要求 */} -->      
-      <div class="plan-box task-plan" style="margin-bottom:10px">
+      <div class="plan-box task-plan" style="margin-bottom:10px;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;">
         <div class="taskRenw">
           <!-- <Icon type="pushpin" theme="outlined" /> -->
           <span>任务要求</span>
