@@ -58,11 +58,11 @@
           <span style="overflow:auto;word-break:keep-all;color:#FF9642;">{{orderInfo.keyword}}</span>
         </p>
          <div v-if="orderInfo.is_muti_keyword">
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字1</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_two}}</span>
           </p>
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字2</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_one}}</span>
           </p>

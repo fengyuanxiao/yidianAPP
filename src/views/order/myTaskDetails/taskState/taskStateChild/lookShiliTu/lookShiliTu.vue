@@ -70,10 +70,12 @@
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
           <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
-        <p v-if="this.nowTimes<this.endTimes" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
+        <p v-if="firstMincount>0 &&orderInfo.check_shop_time ===0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.firstMincount/60)+"分"+this.firstMincount%60}}秒后才能继续操作下一步</p>
+        <p v-if="this.Mincount>0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
+        
       </div>
       <!-- 第三步 聊天下单支付 -->
-      <div v-if="this.Mincount<=0 && orderInfo.check_shop_time !==0" style="color:#444">
+      <div v-if="(Mincount<=0 && orderInfo.check_shop_time !==0) ||firstMincount<=0" style="color:#444">
         <div v-if="orderInfo.platform===1">
           <div class="buzou-title" v-if="orderInfo.chatpic===1">
             <span>第三步 聊天下单支付</span>
@@ -235,12 +237,14 @@ export default {
   data() {
     return {
       showIcon:false,
+      firstMincount:"180",
       Mincount:"",
       timer: null,
       showSec:false,
       shopNameTime:"", //  验证店铺时间
       nowTimes:"",
       endTimes:"",
+      showEndTime:false,
       isShow1: false,
       isShow2: false,
       isShow3: false,
@@ -317,7 +321,6 @@ export default {
       }
       this.$set(this.orderForm, "image", this.image);
       this.$set(this.orderForm, "order_id", this.orderInfo.order_id);
-      // this.$set(this.orderForm, "operation", payment);
       await this.axios.post("/api/task/placeOrderOperation", this.orderForm);
       this.$vux.toast.show({
         type: "success",
@@ -348,17 +351,25 @@ export default {
           image:this.appeal.images
         });
         if(this.orderInfo.taskInfo.is_compared ===1){
-          if(this.appeal.images.length !==0 ){
-            this.showSec=true
-            this.getCodeTime()
-          }else{
-            setTimeout(() => {
-              return this.$vux.toast.text("请上传货比三家截图");
-            }, 1000);
-          }
+          // if(this.appeal.images.length !==0 ){
+          //   this.showSec=true
+          //   this.showEndTime=true
+          //   this.getTime()
+          //   this.getCodeTime()
+          // }else{
+          //   setTimeout(() => {
+          //     return this.$vux.toast.text("请上传货比三家截图");
+          //   }, 1000);
+          // }
         }else{
           this.showSec=true
+          if(this.orderInfo.check_shop_time ===0){
+            this.showEndTime=true
+            this.getTime()
+          }
+          
           this.getCodeTime()
+          
         }
        
         
@@ -367,11 +378,20 @@ export default {
         // this.$vux.toast.text("店铺名称错误！");
       }
     },
-     // 倒计时
+    // 倒计时
     async getCodeTime() {
       this.timer = setInterval(_ => {
         if (this.Mincount > 0) {
           this.Mincount--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);        
+    },
+     async getTime() {
+      this.timer = setInterval(_ => {
+        if (this.firstMincount > 0) {
+          this.firstMincount--;
         } else {
           clearInterval(this.timer);
         }

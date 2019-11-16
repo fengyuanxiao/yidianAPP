@@ -27,7 +27,7 @@
         <b class="plan-title">
           <span 
           class="firstOne"
-          :style="(orderInfo.order_status !==1 && orderInfo.order_status !==3&& orderInfo.order_status !==4) ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
+          :style="(orderInfo.order_status !==0 &&orderInfo.order_status !==1 && orderInfo.order_status !==3&& orderInfo.order_status !==4 && orderInfo.order_status !==5) ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'} "
           >1</span> 订单付款
         </b>
         <span></span>
@@ -84,7 +84,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne" 
-                :style="orderInfo.order_status !== 3 && orderInfo.order_status !== 4? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
+                :style="orderInfo.order_status !== 3 && orderInfo.order_status !== 4 && orderInfo.order_status !==5? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
           ">2</span> 商家返款
         </b>
       </p>
@@ -110,7 +110,7 @@
           :disabled="orderInfo.order_status !== 1"
           :style="orderInfo.order_status === 1? {backgroundColor: '#09BB07'} : {backgroundColor: '#ccc'}"
           @click="showMsg"
-        >{{orderInfo.order_status === 3 ? '已返款' : '催返款'}}</button>
+        >{{orderInfo.order_status === 3 ||orderInfo.order_status=== 4 ? '已返款' : '催返款'}}</button>
       </div>
     </div>
     <!-- {/* 3、收货好评 */} -->
@@ -118,7 +118,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 4 && orderInfo.order_status !==9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 4&& orderInfo.order_status !==5 && orderInfo.order_status !==9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >3</span>
            收货好评 
         </b>
@@ -139,14 +139,15 @@
         </div>
       </div>
       <div class="taskPlanList">
-        <span class="ask-start" style="width: 70%;">此单为普通五星好评 点击查看评价要求</span>
-        <button v-if="orderInfo.order_status==3" style="background-color:#09BB07">
+        <span class="ask-start" style="width: 70%;">此单为普通五星好评 <span v-if="showEndTime>0" style="color:#FF9642">{{cuttime}}后可收货好评</span></span>
+        <button v-if="orderInfo.order_status==3 && showEndTime<=0" style="background-color:#09BB07"> 
+          <!--  -->
           <router-link
             style="color: #fff"
             :to="'/h5/order/dianfu/detail/goodPingJia/'+orderInfo.order_id"
           >收货好评</router-link>
         </button>
-        <button v-else style="backgroundColor: #ccc">收货好评</button>
+        <button v-else style="backgroundColor: #ccc">{{orderInfo.order_status=== 4 ?"已收货好评" : "收货好评"}}</button>
       </div>
     </div>
     <!-- {/* 追加评论 */} -->
@@ -155,7 +156,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 5 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 5&&orderInfo.order_status !== 4 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >{{orderInfo.is_addcomments? "4" : "3" }}</span>追加好评
         </b>
         <span></span>
@@ -181,7 +182,7 @@
             :to="'/h5/order/dianfu/detail/addPingJia/'+orderInfo.order_id"
           >去追加评论</router-link>
         </button>
-        <button v-else style="backgroundColor: #ccc">去追加评论</button>
+        <button v-else style="backgroundColor: #ccc">{{orderInfo.order_status === 4 ? '已追加好评' : '去追加评论'}}</button>
       </div>
     </div>
 
@@ -190,7 +191,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 9 && orderInfo.order_status !== 4 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >{{ orderInfo.is_addcomments? "5" : "4" }}</span>
            完成任务
         </b>
@@ -227,6 +228,9 @@ export default {
       endTimes:"",
       nowTime:"",
       cData:{},
+      cuttime: "",
+      timer: null,
+      showEndTime:""
     };
   },
   watch: {
@@ -242,6 +246,37 @@ export default {
         let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
         this.endTimes=endTimes
         this.nowTime=nowTime   
+      }
+      if(this.cData.order_status==3){
+        let checkTime= dateFormat(new Date(this.cData.chat_pay_time*1000), "YYYY-MM-DD HH:mm:ss")
+        let time = new Date(checkTime.replace("-","/"));
+        let days=1
+        let endTime=time.setDate(time.getDate() + days);
+        let nowTime = new Date().getTime()
+        let showTime=endTime-nowTime
+        this.showEndTime=showTime
+          this.timer = setInterval(() => {
+          var day=0 ,
+          hour = 0,
+          minute = 0,
+          second = 0; //时间默认值
+        if (showTime > 0) {
+          day = Math.floor((showTime / 1000 / 3600) / 24);
+          hour = Math.floor((showTime / 1000 / 3600) % 24);
+          let a = Math.floor(showTime / (60 * 60));
+          minute = Math.floor(showTime / 60) - a * 60;
+          second = Math.floor(showTime) - a * 60 * 60 - minute * 60;
+        }
+        day = day;
+        if (hour <= 9) hour = "0" + hour;
+        if (minute <= 9) minute = "0" + minute;
+        if (second <= 9) second = "0" + second;
+        this.cuttime =day+"天"+ hour + "小时" + minute + "分" + second+"秒";
+        showTime--;
+      }, 1000);
+      if (showTime <= 0) {
+        clearInterval(this.timer);
+      }
       }
     }
   },

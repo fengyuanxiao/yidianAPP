@@ -50,16 +50,16 @@
           <span>评价要求</span>
           <span>{{orderInfo.keyword_type_name}}</span>
         </p>
-        <p class="task-plan-list" style="border:none">
+        <p class="task-plan-list" v-if="orderInfo.order_status !==0">
           <span>搜索关键字</span>
           <span style="overflow:auto;word-break:keep-all">{{orderInfo.keyword}}</span>
         </p>
         <div v-if="orderInfo.is_muti_keyword">
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字1</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_two}}</span>
           </p>
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字2</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_one}}</span>
           </p>
@@ -96,11 +96,14 @@
             <template v-if="orderInfo.paychannel">
               <template v-for="item in orderInfo.paychannel">{{item}}</template>
             </template>
+            <template v-else>
+              <template>不支持优惠券、信用卡、花呗</template>
+            </template>
           </span>
         </p>
-        <p class="task-plan-list">
+        <p class="task-plan-list" v-if="orderInfo.remark !==''">
           <span>订单留言</span>
-          <span style="overflow:auto;wordBreak:keep-all">{{orderInfo.remark||""}}</span>
+          <span style="overflow:auto;wordBreak:keep-all">{{orderInfo.remark}}</span>
         </p>
       </div>
       <!-- {/* 商家要求 */} -->
@@ -123,7 +126,7 @@
         </div>
       </div>
       <div class="plan-box task-plan" style="margin:10px">
-        <h3 style="color:#c15958;">核对商家店铺名是否正确</h3>
+        <h3 style="color:#c15958;padding-bottom: 5px;">核对商家店铺名是否正确</h3>
         <!-- <div class="shop-title"> -->
           <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
         <!-- </div> -->

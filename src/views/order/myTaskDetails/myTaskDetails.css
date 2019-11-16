@@ -198,10 +198,10 @@
   justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: #e4e4e6 solid 1px;
-  padding: 1rem 1rem;
+  padding:.55rem 1rem;
 }
 .showDistance{
-  margin-top: -10px;
+  margin-top: -15px;
 }
 .taskPlanList>span {
   font-size: 1rem;

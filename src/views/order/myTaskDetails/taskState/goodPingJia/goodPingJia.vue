@@ -6,7 +6,7 @@
         <h2>注意：务必等待物流签收后再评价，否则拉入黑名单!</h2>
         <p>第一步 去{{orderInfo.platformname}}评价并截图</p>
         <div class="goodPingJia-box-child">
-          <p>文字要求(在{{orderInfo.platformname}}评价里必须按以下文字要求评价)</p>
+          <p style="padding-top: 0rem;">1. 文字要求(在{{orderInfo.platformname}}评价里必须按以下文字要求评价)</p>
 
           <img
             @click="isShow=true"
@@ -16,9 +16,9 @@
             alt="tu"
           />
 
-          <p v-else style="background-color: #fff;">自行发挥相关评价十五字以上</p>
+          <span v-else style="color: #444;padding-left: 0.5rem;">自行发挥相关评价十五字以上</span>
 
-          <p>图片要求(在{{orderInfo.platformname}}评价里必须上传以下图片)</p>
+          <p>2. 图片要求(在{{orderInfo.platformname}}评价里必须上传以下图片)</p>
           <template v-if="orderInfo.keyword_types>2">
             <img
               v-for="(item,ind) in orderInfo.pic_content"
@@ -29,13 +29,17 @@
               @click="showBigImg(item)"
             />
           </template>
-          <p v-else style="background-color: #fff">无需图片</p>
+          <span v-else style="background-color: #fff;color: #444;padding-left: 0.5rem;">无需图片</span>
         </div>
         <p>第二步 上传评价及物流截图</p>
-        <div class="upicFlex" style="margin:20px 0 10px;">
-          <div class="upic" v-for="(item,ind) in pic_uploads_box" :key="ind">
-            <div class="uadd">+</div>
-            <img v-if="item.uploadSrc" :src="item.uploadSrc" alt />
+        <div class="upicFlex" style="margin: 5px 0px 8px;text-align: center;">
+          <div class="upic"
+              v-for="(item,ind) in pic_uploads_box" 
+              :key="ind"
+              style="background:#F8F8F8;margin:10px 10px;width: 35%;"
+              >
+            <div class="uadd" style="margin:0px;background: #F8F8F8;width: 100%;font-size: 60px;color:#E5E5E5">+</div>
+            <img v-if="item.uploadSrc" :src="item.uploadSrc" alt style="width:100%;margin:0px"/>
             <!-- 图片 -->
             <input
               @change="uploadPhoto($event,item,ind)"
@@ -46,9 +50,9 @@
             />
           </div>
         </div>
-        <p>
+        <p style="padding-bottom: 10px;">
           注：请上传
-          <span style="font-weight:bold;font-size:1rem;color:red">物流图</span>和
+          <span style="font-weight:bold;font-size:1rem;color:red">物流图 </span> 和
           <span style="font-weight:bold;font-size:1rem;color:red">好评图</span>
         </p>
       </div>

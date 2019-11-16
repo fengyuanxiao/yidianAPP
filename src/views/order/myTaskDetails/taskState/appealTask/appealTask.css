@@ -1,15 +1,16 @@
-.shensu-box {
-  background-color: #d1d1d1;
+.makeAppeal{
+  border-bottom: 1px solid #E5E5E5;
 }
 
 .shensu-box-child {
-  padding-top: 0.6rem;
-  margin-bottom: 3rem;
+  margin: 10px 0;
+  background: #fff;
 }
 
 ._p {
   padding: 0.6rem 0.7rem 0.6rem 0.7rem;
   margin-bottom: 1rem;
+  color: #FF9642;
   background-color: #d1d1d1;
 }
 
