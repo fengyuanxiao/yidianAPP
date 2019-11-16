@@ -84,7 +84,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne" 
-                :style="orderInfo.order_status !== 3 && orderInfo.order_status !== 4 && orderInfo.order_status !==5? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
+                :style="orderInfo.order_status !== 1 && orderInfo.order_status !== 3 && orderInfo.order_status !== 4 && orderInfo.order_status !==5? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}
           ">2</span> 商家返款
         </b>
       </p>
@@ -118,7 +118,7 @@
       <p class="title">
         <b class="plan-title">
           <span class="firstOne"
-                :style="orderInfo.order_status !== 4&& orderInfo.order_status !==5 && orderInfo.order_status !==9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
+                :style="orderInfo.order_status !== 3 && orderInfo.order_status !== 4&& orderInfo.order_status !==5 && orderInfo.order_status !==9 ? {background: 'linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1))'} : {background: 'linear-gradient(0deg,rgba(24,144,255,1),rgba(119,190,255,1))'}"
           >3</span>
            收货好评 
         </b>
@@ -139,9 +139,9 @@
         </div>
       </div>
       <div class="taskPlanList">
-        <span class="ask-start" style="width: 70%;">此单为普通五星好评 <span v-if="showEndTime>0" style="color:#FF9642">{{cuttime}}后可收货好评</span></span>
-        <button v-if="orderInfo.order_status==3 && showEndTime<=0" style="background-color:#09BB07"> 
-          <!--  -->
+        <span class="ask-start" style="width: 70%;">此单为普通五星好评 <span v-if="showEndTime>0" style="color:#FF9642">{{Math.floor(this.Mincount/60/60/24)+"天"+Math.floor((this.Mincount/3600)%24)+"小时"+Math.floor((this.Mincount/60)%60)+"分"}}签收后评价</span></span>
+        <button v-if="orderInfo.order_status==3 " style="background-color:#09BB07"> 
+          <!-- && showEndTime<=0 -->
           <router-link
             style="color: #fff"
             :to="'/h5/order/dianfu/detail/goodPingJia/'+orderInfo.order_id"
@@ -228,9 +228,9 @@ export default {
       endTimes:"",
       nowTime:"",
       cData:{},
-      cuttime: "",
       timer: null,
-      showEndTime:""
+      showEndTime:"",
+      Mincount:"",
     };
   },
   watch: {
@@ -241,7 +241,7 @@ export default {
         let checkTime= dateFormat(new Date(this.cData.compared_time*1000), "YYYY-MM-DD HH:mm:ss")
         let nowTime= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
         let time = new Date(checkTime.replace("-","/"));
-        let minutes=1
+        let minutes=3
         let endTime=time.setMinutes(time.getMinutes() + minutes);
         let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
         this.endTimes=endTimes
@@ -250,33 +250,21 @@ export default {
       if(this.cData.order_status==3){
         let checkTime= dateFormat(new Date(this.cData.chat_pay_time*1000), "YYYY-MM-DD HH:mm:ss")
         let time = new Date(checkTime.replace("-","/"));
-        let days=1
+        let days=3
         let endTime=time.setDate(time.getDate() + days);
         let nowTime = new Date().getTime()
         let showTime=endTime-nowTime
         this.showEndTime=showTime
-          this.timer = setInterval(() => {
-          var day=0 ,
-          hour = 0,
-          minute = 0,
-          second = 0; //时间默认值
-        if (showTime > 0) {
-          day = Math.floor((showTime / 1000 / 3600) / 24);
-          hour = Math.floor((showTime / 1000 / 3600) % 24);
-          let a = Math.floor(showTime / (60 * 60));
-          minute = Math.floor(showTime / 60) - a * 60;
-          second = Math.floor(showTime) - a * 60 * 60 - minute * 60;
-        }
-        day = day;
-        if (hour <= 9) hour = "0" + hour;
-        if (minute <= 9) minute = "0" + minute;
-        if (second <= 9) second = "0" + second;
-        this.cuttime =day+"天"+ hour + "小时" + minute + "分" + second+"秒";
-        showTime--;
-      }, 1000);
-      if (showTime <= 0) {
-        clearInterval(this.timer);
-      }
+        let leftDays=Math.floor(showTime/(24*3600*1000)) //天数
+        
+        let leave1=showTime%(24*3600*1000) 
+        let hours=Math.floor(leave1/(3600*1000))  //
+        let leave2=leave1%(3600*1000)
+        let leave3=leave2%(60*1000)     
+        let seconds=Math.round(leave3/1000)
+        let endMinutes=Math.floor(leave2/(60*1000))
+        this.Mincount=leftDays*24*60*60+hours*60*60+endMinutes*60+seconds
+        this.getCodeTime()
       }
     }
   },
@@ -287,7 +275,17 @@ export default {
     },
     showMsg() {
       this.$vux.toast.text("商家会在48小时内还款！");
-    }
+    },
+    // 倒计时
+    async getCodeTime() {
+      this.timer = setInterval(_ => {
+        if (this.Mincount > 0) {
+          this.Mincount--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);        
+    },
   }
 };
 </script>

@@ -277,12 +277,8 @@ export default {
       let checkTime= dateFormat(new Date(this.orderInfo.check_shop_time*1000), "YYYY-MM-DD HH:mm:ss")
       let time = new Date(checkTime.replace("-","/"));
       let minutes=3
-      let endTime=time.setMinutes(time.getMinutes() + minutes);
-      let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")      
+      let endTime=time.setMinutes(time.getMinutes() + minutes);     
       let nowTime = new Date().getTime()
-      let nowTimes= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
-      this.nowTimes=nowTimes
-      this.endTimes=endTimes
       let showTime=endTime-nowTime
       let leave1=showTime%(24*3600*1000) 
       let leave2=leave1%(3600*1000)
@@ -349,30 +345,14 @@ export default {
           operation:"compared",
           shop_name: this.orderInfo.check_shop_name,
           image:this.appeal.images
-        });
-        if(this.orderInfo.taskInfo.is_compared ===1){
-          // if(this.appeal.images.length !==0 ){
-          //   this.showSec=true
-          //   this.showEndTime=true
-          //   this.getTime()
-          //   this.getCodeTime()
-          // }else{
-          //   setTimeout(() => {
-          //     return this.$vux.toast.text("请上传货比三家截图");
-          //   }, 1000);
-          // }
-        }else{
+        });       
           this.showSec=true
           if(this.orderInfo.check_shop_time ===0){
             this.showEndTime=true
             this.getTime()
-          }
-          
-          this.getCodeTime()
-          
-        }
-       
-        
+          }         
+            this.getCodeTime()
+ 
       } else {
         this.showIcon="cancel"
         // this.$vux.toast.text("店铺名称错误！");

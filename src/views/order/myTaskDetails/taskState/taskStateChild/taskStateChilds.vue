@@ -97,7 +97,7 @@
               <template v-for="item in orderInfo.paychannel">{{item}}</template>
             </template>
             <template v-else>
-              <template>不支持优惠券、信用卡、花呗</template>
+              <template style="color:#FF9642">不支持优惠券、信用卡、花呗</template>
             </template>
           </span>
         </p>

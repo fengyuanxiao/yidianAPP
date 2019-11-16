@@ -54,10 +54,10 @@
           <span>{{orderInfo.postsign ===0 ?'不包邮' :'包邮'}}</span>
         </p>
         <p class="task-plan-list">
-          <span style="color:#FF9642;">搜索关键字</span>
+          <span style="color:#FF9642;">{{orderInfo.is_muti_keyword ? '搜索主关键字' : '搜索关键字'}}</span>
           <span style="overflow:auto;word-break:keep-all;color:#FF9642;">{{orderInfo.keyword}}</span>
         </p>
-         <div v-if="orderInfo.is_muti_keyword">
+         <div v-if="orderInfo.is_muti_keyword &&orderInfo.order_status !==0">
           <p class="task-plan-list">
             <span>搜索关键字1</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_two}}</span>
@@ -97,7 +97,7 @@
         </p>       
         <p class="task-plan-list" >
           <span>支付方式</span>
-          <span v-if="orderInfo.taskInfo.paychannel ===0">不支持优惠券、信用卡、花呗</span>
+          <span v-if="orderInfo.taskInfo.paychannel ===0" style="color:#FF9642">不支持优惠券、信用卡、花呗</span>
           <span v-if="orderInfo.taskInfo.paychannel !==0">
             <template v-for="item in orderInfo.taskInfo.paychannel">{{item+'、'}}</template>
           </span>
