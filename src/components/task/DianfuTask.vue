@@ -1,7 +1,7 @@
 <template>
   <div class="dianfuTask" v-if="task">
     <flexbox :gutter="0">
-      <flexbox-item :span="3">
+      <flexbox-item :span="3" style="flex: 0 0 28%;">
         <img class="goodpic" :src="task.goodspic" alt />
       </flexbox-item>
       <flexbox-item :span="9">
@@ -26,7 +26,7 @@
           <span>剩{{task.residue_order}}单</span>
             </p>-->
           </flexbox-item>
-          <flexbox-item :span="4">
+          <flexbox-item :span="4" style="margin-left:0px">
             <template v-if="task.is_appeal==1">
               <x-button
                 type="primary"
@@ -140,11 +140,11 @@ export default {
   background: #fff;
   border-bottom: 1px solid #e1e1e1;
   .vux-flexbox {
-    padding: 0 15px;
+    padding: 0 15px 0 8px;
     .goodpic {
       display: block;
       width: 100%;
-      height: auto;
+      height: 90px;
       padding-right: 10px;
     }
     .tpic {

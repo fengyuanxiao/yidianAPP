@@ -10,16 +10,17 @@
 
           <img
             @click="isShow=true"
-            v-if="orderInfo.keyword_types>1"
+            v-if="orderInfo.keyword_types>1 && orderInfo.keywords_text==''"
             style="max-width: 100%"
             :src="orderInfo.keywords_pic[0]"
             alt="tu"
-          />
-
+          />         
           <span v-else style="color: #444;padding-left: 0.5rem;">自行发挥相关评价十五字以上</span>
+          <!-- <p v-if="orderInfo.keywords_text!=='' && orderInfo.keyword_types===2">{{orderInfo.keywords_text}}</p>
+          <p v-if="orderInfo.pic_text!==''&& orderInfo.keyword_types===3">{{orderInfo.pic_text}}</p> -->
 
           <p>2. 图片要求(在{{orderInfo.platformname}}评价里必须上传以下图片)</p>
-          <template v-if="orderInfo.keyword_types>2">
+          <template v-if="orderInfo.keyword_types>2 && orderInfo.pic_text ==''">
             <img
               v-for="(item,ind) in orderInfo.pic_content"
               :key="ind"
@@ -66,16 +67,16 @@
       v-if="orderInfo && orderInfo.keyword_types>1"
     >
       <div class="img-box">
-        <img class="shilitu" :src="orderInfo.keywords_pic[0]" alt="好评截图" />
+        <!-- <img class="shilitu" :src="orderInfo.keywords_pic[0]" alt="好评截图" /> -->
       </div>
       <div style="display: flex;">
         <x-button type="default" style="border-radius:0;" min @click.native="isShow=false">关闭</x-button>
-        <x-button
+        <!-- <x-button
           type="primary"
           style="border-radius:0;margin-top:0"
           min
           @click.native="$utils.tools.savePic(orderInfo.keywords_pic[0])"
-        >保存图片</x-button>
+        >保存图片</x-button> -->
       </div>
     </x-dialog>
     <!-- 图片要求 -->

@@ -11,7 +11,7 @@
         <span @click="isShow2=true">查看截图示例</span>
       </div>
       <p>① 请务必登入当前接任务的{{orderInfo.platformname}}账号:{{orderInfo.user_taobao}};</p>
-      <p style="line-height: 27px;">② 进入{{orderInfo.tasktype_itemname}}点击搜索框输入指定的关键词，根据任务提示找到目标商品； </p>
+      <p style="line-height: 27px;">② 进入{{orderInfo.tasktype_itemname =='手机天猫' ? '手机淘宝' : orderInfo.tasktype_itemname}}点击搜索框输入指定的关键词，根据任务提示找到目标商品； </p>
       <p style="line-height: 27px;">③ 按任务要求，随意浏览一个带有hot图标的产品，然后随意浏览两家 同等价位的产品1~3分钟。
         <span @click="isShow1=true" style="color:#4D97FF">什么是带有hot图标的产品？</span>
       </p>    
@@ -45,7 +45,7 @@
       <div class="shop-title">
         <x-input v-model.trim="orderInfo.check_shop_name" placeholder="请在此输入店铺名核对"></x-input>
         <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
-        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF">核对</x-button>
+        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_name !=="" ? '核对正确' :showName}}</x-button>
       </div>
 
       <!-- {{/* 第二步 浏览店铺 */}} -->
@@ -235,6 +235,7 @@ export default {
     return {
       showIcon:false,
       firstMincount:"180",
+      showName:"核对",
       Mincount:"",
       timer: null,
       showSec:false,
@@ -328,10 +329,9 @@ export default {
       return this.image.filter(e => e.length);
     },
     checkName() {
-     console.log(this.orderInfo.check_shop_name,'111')
       if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {
-        console.log(this.orderInfo.check_shop_name.replace(/\s+/g,""),'222')
         this.showIcon="success"
+        this.showName="核对正确"
         const result1 = this.axios.post("/api/task/placeOrderOperation", {
           order_id:this.orderInfo.order_id,//订单ID
           operation:"compared",
@@ -345,12 +345,20 @@ export default {
               this.getTime()
             }         
             this.getCodeTime()
+        }else if(this.orderInfo.is_compared===0){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
+            this.getCodeTime()
         }       
          
  
       } else {
         this.showIcon="cancel"
-        // this.$vux.toast.text("店铺名称错误！");
+        this.showName="核对"
+        this.$vux.toast.text("店铺名称错误！");
       }
     },
     // 倒计时

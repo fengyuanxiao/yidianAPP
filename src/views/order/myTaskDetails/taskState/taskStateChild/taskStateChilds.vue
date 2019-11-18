@@ -44,7 +44,7 @@
         </div>
         <p class="task-plan-list">
           <span>任务类型</span>
-          <span style="color:red">{{orderInfo.new_type ==1 ? '垫付任务' :orderInfo.new_type ==2?'回访任务' :orderInfo.new_type ==3 ? '图文任务' :orderInfo.new_type ==4 ?'问答任务':'浏览任务'}}({{orderInfo.tasktype_itemname}})</span>
+          <span style="color:red">{{orderInfo.new_type ==1 ? '垫付任务' :orderInfo.new_type ==2?'回访任务' :orderInfo.new_type ==3 ? '图文任务' :orderInfo.new_type ==4 ?'问答任务':'浏览任务'}}({{orderInfo.tasktype_itemname =='手机天猫' ? '手机淘宝' : orderInfo.tasktype_itemname}})</span>
         </p>
         <p class="task-plan-list">
           <span>评价要求</span>
@@ -133,7 +133,7 @@
         <div class="shop-title" style="border:none;padding-bottom:0px">
             <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
             <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
-            <x-button type="primary" @click.native="checkName" style="width:30%">核对</x-button>
+            <x-button type="primary" @click.native="checkName" style="width:30%;padding-left:0px;padding-right:0px">{{showName}}</x-button>
         </div>
       </div>
       <!-- {/* 注意事项 */} -->
@@ -228,6 +228,7 @@ export default {
     return {
       showIcon:false,
       orderInfo: null,
+      showName:"核对",
       pic_uploads_box: [
         { uploadSrc: "" },
         { uploadSrc: "" },
@@ -289,9 +290,11 @@ export default {
       if (this.waitCheckName === this.orderInfo.shop_name) {
         // this.$vux.toast.text("店铺名称正确！");
         this.showIcon="success"
+        this.showName="核对正确"
       } else {
         this.showIcon="cancel"
-        // this.$vux.toast.text("店铺名称错误！");
+        this.showName="核对"
+        this.$vux.toast.text("店铺名称错误！");
       }
     }
   }
