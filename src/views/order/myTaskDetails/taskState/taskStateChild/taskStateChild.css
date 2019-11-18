@@ -72,6 +72,9 @@
 .detailss> p {
   margin-bottom: 0.5rem;
 }
+.detailss{
+  box-shadow:none;
+}
 .detailss> p>span {
   color: red;
   display: inline;
@@ -79,6 +82,7 @@
 .detailss .con_tilte{
   color: #000;
   font-weight: bold;
+  margin-left: 4px;
 }
 .detailss .con_color{
   color: #7F7F7F;
@@ -218,4 +222,29 @@
   color: red;
   font-weight: bold;
   font-size: 12px;
+}
+/* 弹窗 */
+#mask{
+  background:rgba(0,0,0,1);
+  opacity:0.4;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.ll_mask_con{
+  width: 320px;
+  height: 320px;
+  background: url('~@/assets/img/warn.png') no-repeat top center scroll;
+  background-size:140%;
+  border-radius: 3px;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  margin: -160px 0 0 -160px; 
+}
+.showBackg{
+  background: #fff;
+  border-radius: 10px;
 }
