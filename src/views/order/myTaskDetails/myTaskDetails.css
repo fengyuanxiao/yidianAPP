@@ -159,7 +159,6 @@
 }
 
 .planBox {
-  /* padding: 1rem 1rem 0rem 1rem; */
   margin-bottom: 25px;
   background: #fff;
   border-radius: 10px;
@@ -181,7 +180,6 @@
 .firstOne{
   width: 25px;
   height: 25px;
-  /* background:linear-gradient(-30deg,rgba(115,115,115,1),rgba(151,151,151,1)); */
   border-radius: 50%;
   color: #fff;
   margin-top: 5px;
@@ -189,7 +187,6 @@
 }
 .plan-title {
   font-size: 1rem;
-  /* padding-right: 0.6rem; */
 }
 
 .taskPlanList {
@@ -218,9 +215,6 @@
   padding: 10px 10px;
   font-size: 12px;
 }
-/* .ask-start{
-
-} */
 .taskPlanList>button {
   padding: 0.5rem 0.6rem;
   background-color: #66caa8;

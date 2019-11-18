@@ -68,7 +68,6 @@
         <!-- 淘宝和京东：1和2 -->
         <div v-else style="color:#444">
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
-          <!-- <p>③返回任务商品，直接点击购买（警示：勿从购物车提交订单）</p> -->
         </div>
         <p v-if="firstMincount>0 &&orderInfo.check_shop_time ===0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.firstMincount/60)+"分"+this.firstMincount%60}}秒后才能继续操作下一步</p>
         <p v-if="this.Mincount>0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
@@ -95,8 +94,7 @@
           <div v-if="!orderInfo.is_muti_keyword && orderInfo.chatpic===1">
             <p>① 买手与客服以<span style="color:#FF9642">一问一答</span>的方式，关于产品需提出4~5个问题，严禁 未答复就下单（例：尺码、颜色、材质、包邮等问题）；</p>
             <p>② 下单前请核实目标商品件数、颜色、尺码等要求，确认下单金额与任务要求金额一致，<span style="color:#FF9642;display: inline;">下单金额与实付金额浮动在20元内，可正常下单；若浮动超过20元，请联系客服确认</span>。</p>
-          </div>         
-          <!-- <p style="color:'red', fontWeight:'bold'">.如商家备注无需聊天，聊天图上传支付宝账单替代</p> -->         
+          </div>                 
         </div> 
 
         <div v-else class="buzou-title">
@@ -113,7 +111,6 @@
           <span style="color:#444;">订单编号可在{{orderInfo.platformname}}订单详情中复制</span>
           <span v-if="orderInfo.chatpic===1"  @click="isShow4=true">查看截图示例</span>
         </div>
-        <!-- <p v-else style="color:#444;font-size: 15px;margin: 0.5rem 0px;">订单号可在订单详情中复制</p> -->
         <p style="color:#444;font-size: 15px;">应垫付金额参考:
           <span style="color:#FF9642">{{orderInfo.need_principal}}元</span>
            <!--<span style="color:#4D97FF;padding-left: 15px;">金额有误？</span> -->
@@ -297,13 +294,6 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    //  async getOrderInfo() {
-    //   const result = await this.axios.post("/api/task/operateTask", {
-    //     order_id: this.$route.params.id //订单ID
-    //   });
-    //   this.orderInfo = result.data.taskDetail || {};
-    //   this.appeal.images=this.orderInfo.taskInfo.compared_content
-    // },
     
     // 提交任务
     async subTask() {
@@ -347,13 +337,16 @@ export default {
           operation:"compared",
           shop_name: this.orderInfo.check_shop_name.replace(/\s+/g,""),
           image:this.appeal.images
-        });       
-          this.showSec=true
-          if(this.orderInfo.check_shop_time ===0){
-            this.showEndTime=true
-            this.getTime()
-          }         
+        });
+        if(this.appeal.images.length !==0){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
             this.getCodeTime()
+        }       
+         
  
       } else {
         this.showIcon="cancel"

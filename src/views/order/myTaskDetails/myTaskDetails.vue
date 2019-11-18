@@ -1,6 +1,6 @@
 <template>
   <div>
-    <user-header :title="'垫付任务详情'"></user-header>
+    <user-header :title="'任务详情'"></user-header>
     <!-- 商品成交价格、件数 -->
     <!-- <DetailsPouduct /> -->
     <details-pouduct :order-info="orderInfo.task_detail"></details-pouduct>

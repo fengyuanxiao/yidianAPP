@@ -171,15 +171,6 @@
   position: relative;
   left: -12%;
 }
-/* .checkOut{
-  display: inline-block;
-  background: rgba(77,151,255,1);
-  border-radius: 10px;
-  padding: 7px 10px;
-  width: 90px;
-  text-align: center;
-  color: #fff;
-} */
 .ant-input {
   width: 60%;
   margin: 0 8px 8px 0;

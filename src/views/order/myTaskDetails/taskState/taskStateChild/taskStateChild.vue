@@ -4,9 +4,6 @@
     <template v-if="orderInfo">
       <!-- {/* 目标商品详情介绍 */} -->
       <div class="task-plan taskPlan" style="margin:10px 10px;">
-        <!-- {/* <div class="plan-box" style="marginTop: "2rem"">
-            <p class="task-plan-list"><span>{shop_name}</span><Link to="/">如果遇到问题点击联系商家</Link></p>
-        </div> */}-->
         <section class="taskDetail-header" style="padding:0;margin: 10px 0px 0 0px;">
           <p class="taskRenw">
             <span>目标商品</span>
@@ -47,7 +44,7 @@
         </div>
         <p class="task-plan-list">
           <span>任务类型</span>
-          <span style="color:#FF9642">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
+          <span style="color:#FF9642">{{orderInfo.new_type ==1 ? '垫付任务' :orderInfo.new_type ==2?'回访任务' :orderInfo.new_type ==3 ? '图文任务' :orderInfo.new_type ==4 ?'问答任务':'浏览任务'}}({{orderInfo.tasktype_itemname}})</span>
         </p>
         <p class="task-plan-list">
           <span>是否包邮</span>
@@ -106,10 +103,6 @@
           <span>订单留言</span>
           <span style="overflow:'auto';wordBreak:'keep-all'">{{orderInfo.order_message}}</span>
         </p>
-        <!-- <p class="task-plan-list-Child">
-          <span>(查看订单留言)</span>
-          <span class="fontsi">注：如内容过长请左右拖动查看</span>
-        </p> -->
       </div>
       <!-- {/* 商家要求 */} -->
       
@@ -125,7 +118,6 @@
               <img style="max-width:100%" :src="$url+item" />
             </div>
           </template>
-          <!-- <p style="padding-top:5px" v-else>此商家没有额外要求</p> -->
         </div>
       </div>
       

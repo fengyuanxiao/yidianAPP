@@ -44,7 +44,7 @@
         </div>
         <p class="task-plan-list">
           <span>任务类型</span>
-          <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
+          <span style="color:red">{{orderInfo.new_type ==1 ? '垫付任务' :orderInfo.new_type ==2?'回访任务' :orderInfo.new_type ==3 ? '图文任务' :orderInfo.new_type ==4 ?'问答任务':'浏览任务'}}({{orderInfo.tasktype_itemname}})</span>
         </p>
         <p class="task-plan-list">
           <span>评价要求</span>
