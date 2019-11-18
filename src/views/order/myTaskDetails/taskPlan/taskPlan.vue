@@ -89,7 +89,7 @@
         </b>
       </p>
       <p class="taskPlanList showDistance">
-        <span>{{orderInfo.platformname}}订单号</span>
+        <span>{{orderInfo.platformname}}订单编号</span>
         <span>{{orderInfo.taobao_ordersn}}</span>
       </p>
       <p class="taskPlanList">
@@ -140,7 +140,7 @@
       </div>
       <div class="taskPlanList">
         <span class="ask-start" style="width: 70%;">此单为普通五星好评 <span v-if="showEndTime>0" style="color:#FF9642">{{Math.floor(this.Mincount/60/60/24)+"天"+Math.floor((this.Mincount/3600)%24)+"小时"+Math.floor((this.Mincount/60)%60)+"分"}}签收后评价</span></span>
-        <button v-if="orderInfo.order_status==3 " style="background-color:#09BB07"> 
+        <button v-if="orderInfo.order_status==3 && showEndTime<=0" style="background-color:#09BB07"> 
           <!-- && showEndTime<=0 -->
           <router-link
             style="color: #fff"

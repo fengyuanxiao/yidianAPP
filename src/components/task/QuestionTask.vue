@@ -13,32 +13,32 @@
           <p style="margin-top:10px;">接单时间：{{task.addtime}}</p>
         </div>
         <p></p>
-        <flexbox style="padding-top:10px;">
-          <flexbox-item :span="4">
-            <p>{{task.platform}}{{task.task_type_text}}</p>
-            <p class="price">￥{{task.commission}}</p>
-            <!-- <p style="color: #999999">垫付{{task.need_principal}}元{{task.refundtext}}</p>
-            <p v-if="isTimeout && !hideInfo">该任务已过期</p>-->
-            <!-- <p class="count">
-          <span>共{{task.common_orderitem_num}}单</span>
-          <span>剩{{task.residue_order}}单</span>
-            </p>-->
-          </flexbox-item>
-          <flexbox-item :span="8">
-            <!-- <x-button
-              type="primary"
-              v-if="!hideInfo"
-              @click.native="getTask()"
-              :disabled="isTimeout"
-            >{{isTimeout?'任务已过期':'待操作'}}</x-button>
-            <x-button type="primary" v-if="type==='cancel'" :disabled="true">已撤销</x-button>-->
-            <x-button
-              type="primary"
-              v-if="task.order_status==1"
-              @click.native="$router.push('/h5/order/question/detail/task/'+task.order_id)"
-            >{{task.order_status_texts}}</x-button>
-          </flexbox-item>
-        </flexbox>
+        <!-- <flexbox style="padding-top:10px;"> -->
+        <flexbox-item :span="4">
+          <p>{{task.platform}}{{task.task_type_text}}</p>
+          <p class="price">￥{{task.commission}}</p>
+          <!-- <p style="color: #999999">垫付{{task.need_principal}}元{{task.refundtext}}</p>
+          <p v-if="isTimeout && !hideInfo">该任务已过期</p>-->
+          <!-- <p class="count">
+        <span>共{{task.common_orderitem_num}}单</span>
+        <span>剩{{task.residue_order}}单</span>
+          </p>-->
+        </flexbox-item>
+        <flexbox-item :span="8">
+          <!-- <x-button
+            type="primary"
+            v-if="!hideInfo"
+            @click.native="getTask()"
+            :disabled="isTimeout"
+          >{{isTimeout?'任务已过期':'待操作'}}</x-button>
+          <x-button type="primary" v-if="type==='cancel'" :disabled="true">已撤销</x-button>-->
+          <x-button
+            type="primary"
+            v-if="task.order_status==1"
+            @click.native="$router.push('/h5/order/question/detail/task/'+task.order_id)"
+          >{{task.order_status_texts}}</x-button>
+        </flexbox-item>
+        <!-- </flexbox> -->
         <!-- <p v-if="!isTimeout" style="color:#f00;">请在{{task.limittime}}前操作</p> -->
       </flexbox-item>
     </flexbox>

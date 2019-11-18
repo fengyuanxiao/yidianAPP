@@ -9,12 +9,12 @@
           <p>
             <img class="tpic" :src="task.taskitem_pic" alt />
             <span>{{task.user_taobao}}</span>
-            <span style="display: inline-block;color: #fe905f;margin-right: 6px;font-weight: bold;float: right;margin-top: 5px;">订单号：{{task.order_id}}</span>
+            <span style="display: inline-block;color: #fe905f;margin-right: 6px;font-weight: bold;float: right;margin-top: 5px;">订单编号：{{task.order_id}}</span>
           </p>
           <p style="margin-top:10px;">接单时间：{{task.addtime}}</p>
         </div>
         <p></p>
-        <flexbox>
+        <flexbox style="padding:0px">
           <flexbox-item :span="8">
             <p>{{task.platform}}{{task.task_type_text}}</p>
             <p class="price">￥{{task.commission}}</p>

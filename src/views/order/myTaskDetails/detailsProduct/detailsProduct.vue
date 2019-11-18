@@ -17,7 +17,7 @@
       </div>    
       <div style="width: 70%;">
         <p style="line-height: 24px;">
-          编号：
+          订单编号：
           <span>{{orderInfo.order_id}}</span>
         </p>
         <p style="line-height: 24px;">

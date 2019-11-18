@@ -269,6 +269,7 @@ export default {
     if(this.orderInfo.check_shop_name !==""){
       this.showIcon="success"
     }
+    this.check_shop_name=this.check_shop_name.replace(/\s+/g,"")
     this.appeal.images=this.orderInfo.compared_content
     this.shopNameTime=this.orderInfo.check_shop_time
     this.initArr(parseInt(this.orderInfo.pic_uploads_num || 1));
@@ -337,13 +338,14 @@ export default {
       return this.image.filter(e => e.length);
     },
     checkName() {
-     
-      if (this.orderInfo.check_shop_name == this.orderInfo.shop_name) {
+     console.log(this.orderInfo.check_shop_name,'111')
+      if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {
+        console.log(this.orderInfo.check_shop_name.replace(/\s+/g,""),'222')
         this.showIcon="success"
         const result1 = this.axios.post("/api/task/placeOrderOperation", {
           order_id:this.orderInfo.order_id,//订单ID
           operation:"compared",
-          shop_name: this.orderInfo.check_shop_name,
+          shop_name: this.orderInfo.check_shop_name.replace(/\s+/g,""),
           image:this.appeal.images
         });       
           this.showSec=true
