@@ -1,6 +1,6 @@
 <template>
   <div class="addTaobaoAccount">
-    <user-header :title="'淘宝账户信息'"></user-header>
+    <user-header :title="this.addAnother?'重新编辑淘宝账户':'淘宝账户信息'"></user-header>
     <div class="addUser">
       <div class="userInfoForm">
         <!-- 账号信息 -->
@@ -277,7 +277,23 @@
         <div class="img-box showBg">
           <p style="padding: 20px 10px 15px;font-size: 15px;color: black;">该账号为可疑账号，请更换账号重新提交！如有疑问请加官方QQ：2324286706</p>
         </div>
-        <div @click="showPoint=false" style="margin: 30px 0 10px 0;">
+        <div v-if="this.addAnother" @click="gonOnCommit" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+        <div v-else  style="margin: 30px 0 10px 0;color:#fff">
+          <div @click="firstCommite" style="border-radius:5px;background:#1890ff;width:35%;display: inline-block;padding: 6px;font-size: 16px;" >确定</div>        
+          <div @click="showPoint=false" style="border-radius:5px;background:#1890ff;width:35%;display: inline-block;margin-left: 20px;padding: 6px;font-size: 16px;">取消</div>                
+        </div>
+      </x-dialog>
+      <!-- 降权号弹窗 -->
+      <x-dialog v-model.trim="showBadPoint" class="dialog_demo">
+        <group title>
+          <p style="font-size: 24px;font-weight: 600;color:rgba(0,0,0,1);">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 20px 10px 15px;font-size: 15px;color: black;">该账户为降权账号，请更换！如有疑问请加官方QQ：2324286706</p>
+        </div>
+        <div @click="showBadPoint=false" style="margin: 30px 0 10px 0;">
           <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
         </div>
       </x-dialog>
@@ -312,6 +328,7 @@ import { XAddress, ChinaAddressV4Data, Datetime  } from "vux";
 export default {
   data() {
     return {
+      addAnother:null,
       userInfo: {
         Account: "",
         alipay_name: "",
@@ -330,6 +347,7 @@ export default {
       newup:null,
       showPop: true,
       showPoint:false,
+      showBadPoint:false,
       showBank:false,
       showID:false,
       realnameStatus:null,
@@ -374,6 +392,7 @@ export default {
     Datetime 
   },
   mounted() {
+    this.addAnother=this.$route.query.id
     this.getCodeTime();
     if (this.$route.query && this.$route.query.id) {
       this.getDetail();
@@ -421,6 +440,24 @@ export default {
       this.getAccount={
         Account: temp.nickname,
       }
+    },
+    async gonOnCommit(){
+       const reuslt = await this.axios.post(
+        "/api/index/updatetb_bind",
+        Object.assign(this.userInfo, {
+          Account:this.getAccount.Account,
+          images: this.images,
+          AlipayName: this.userInfo.alipay_name
+          }
+          )
+        );
+      this.$vux.toast.show({
+          text: "提交成功，等待审核",
+          type: "success"
+        });
+        setTimeout(_ => {
+          this.$router.back();
+      }, 2000);
     },
     async bandTaobao() {
       if (this.getAccount.Account === "") {
@@ -473,24 +510,11 @@ export default {
           )
         );
         if (reuslt1.data.point>=80 || reuslt1.data.point ==0) {
-          const reuslt = await this.axios.post(
-            "/api/index/updatetb_bind",
-            Object.assign(this.userInfo, {
-              Account:this.getAccount.Account,
-              images: this.images,
-              AlipayName: this.userInfo.alipay_name
-              }
-              )
-            );
-          this.$vux.toast.show({
-              text: "提交成功，等待审核",
-              type: "success"
-            });
-            setTimeout(_ => {
-              this.$router.back();
-          }, 2000);
-        }else{
+         this.gonOnCommit()
+        }else if(reuslt1.data.point>60 && reuslt1.data.point<80){
           this.showPoint=true
+        }else{
+          this.showBadPoint=true
         }
         // 首次提交验证分数
       }else{
@@ -504,7 +528,18 @@ export default {
         );
 
         if (reuslt1.data.point>=80 || reuslt1.data.point ==0) {
-          const reuslt = await this.axios.post(
+           this.firstCommite()
+        }else if(reuslt1.data.point>60 && reuslt1.data.point<80){
+            this.showPoint=true
+        }else{
+            this.showBadPoint=true
+        }
+
+      }    
+      
+    },
+    async firstCommite(){
+       const reuslt = await this.axios.post(
             "/api/index/tbOperate",
             Object.assign(this.userInfo, {
               Account:this.getAccount.Account,
@@ -517,6 +552,7 @@ export default {
               text: "提交成功，等待审核",
               type: "success"
             });
+            this.showPoint=false
             let realname_status=reuslt.data.realname_status
             this.realnameStatus=realname_status
 
@@ -536,13 +572,6 @@ export default {
                 this.$router.back();
               }
             }, 2000);
-
-        }else{
-            this.showPoint=true
-        }
-
-      }    
-      
     },
     // 短信倒计时
     async getCodeTime() {
