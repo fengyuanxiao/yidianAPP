@@ -43,9 +43,9 @@
       </div>
       <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
       <div class="shop-title">
-        <x-input v-model.trim="orderInfo.check_shop_name" placeholder="请在此输入店铺名核对"></x-input>
+        <x-input v-model.trim="orderInfo.check_shop_name" @on-focus="showFocus" placeholder="请在此输入店铺名核对"></x-input>
         <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
-        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_name !=="" ? '核对正确' :showName}}</x-button>
+        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
       </div>
 
       <!-- {{/* 第二步 浏览店铺 */}} -->
@@ -296,6 +296,9 @@ export default {
   },
   methods: {
     
+    async showFocus(){
+      this.showName="核对"
+    },
     // 提交任务
     async subTask() {
       if (this.isEmptyArr().length !== this.image.length) {
@@ -330,6 +333,10 @@ export default {
     },
     checkName() {
       if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {
+        this.$vux.toast.show({
+          text: "店铺输入正确！",
+          time:2000,
+        });
         this.showIcon="success"
         this.showName="核对正确"
         const result1 = this.axios.post("/api/task/placeOrderOperation", {
@@ -353,12 +360,22 @@ export default {
             }         
             this.getCodeTime()
         }       
-         
+     
+    
+    
  
-      } else {
+      }else if(this.orderInfo.check_shop_name ===""){
+        this.$vux.toast.show({
+            text: "请输入店铺名称！",
+            time:2000,
+          });
+        } else {
+        this.$vux.toast.show({
+          text: "请输入正确的店铺名称",
+          time:2000,
+        });
         this.showIcon="cancel"
-        this.showName="核对"
-        this.$vux.toast.text("店铺名称错误！");
+        this.showName="核对错误"
       }
     },
     // 倒计时

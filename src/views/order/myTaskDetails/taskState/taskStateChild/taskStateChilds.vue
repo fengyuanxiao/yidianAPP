@@ -94,7 +94,7 @@
           <span>支付方式</span>
           <span>
             <template v-if="orderInfo.paychannel">
-              <template v-for="item in orderInfo.paychannel">{{item}}</template>
+              <template v-for="item in orderInfo.paychannel">使用{{item+'、'}}</template>
             </template>
             <template v-else>
               <template style="color:#FF9642">不支持优惠券、信用卡、花呗</template>
@@ -131,7 +131,7 @@
           <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
         <!-- </div> -->
         <div class="shop-title" style="border:none;padding-bottom:0px">
-            <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
+            <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对" @on-focus="showFocus" ></x-input>
             <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
             <x-button type="primary" @click.native="checkName" style="width:30%;padding-left:0px;padding-right:0px">{{showName}}</x-button>
         </div>
@@ -255,6 +255,9 @@ export default {
       });
       this.orderInfo = result.data.taskDetail || {};
     },
+    async showFocus(){
+      this.showName="核对"
+    },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
       if (url === "big") {
@@ -288,13 +291,24 @@ export default {
     },
     checkName() {
       if (this.waitCheckName === this.orderInfo.shop_name) {
-        // this.$vux.toast.text("店铺名称正确！");
+        this.$vux.toast.show({
+                  text: "店铺输入正确！",
+                  time:2000,
+                });
         this.showIcon="success"
         this.showName="核对正确"
-      } else {
+      }else if(this.waitCheckName ===""){
+        this.$vux.toast.show({
+            text: "请输入店铺名称！",
+            time:2000,
+          });
+        } else {
+        this.$vux.toast.show({
+                  text: "请输入正确的店铺名称",
+                  time:2000,
+                });
         this.showIcon="cancel"
-        this.showName="核对"
-        this.$vux.toast.text("店铺名称错误！");
+        this.showName="核对错误"
       }
     }
   }

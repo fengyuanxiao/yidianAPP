@@ -96,7 +96,7 @@
           <span>支付方式</span>
           <span v-if="orderInfo.taskInfo.paychannel ===0" style="color:#FF9642">不支持优惠券、信用卡、花呗</span>
           <span v-if="orderInfo.taskInfo.paychannel !==0">
-            <template v-for="item in orderInfo.taskInfo.paychannel">{{item+'、'}}</template>
+            <template v-for="item in orderInfo.taskInfo.paychannel">使用{{item+'、'}}</template>
           </span>
         </p>
         <p class="task-plan-list" v-if="orderInfo.order_message !==''">

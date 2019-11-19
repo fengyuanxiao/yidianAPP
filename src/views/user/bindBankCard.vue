@@ -73,7 +73,7 @@
           <selector
             placeholder="请选择银行"
             v-model.trim="userInfo.Bank"
-            title="请选择银行"
+            title="银行名称"
             name="district"
             direction="rtl"
             :options="bankNameList"
@@ -285,27 +285,9 @@ export default {
     },
     // 提交
     async bandCard() {
-     
+  
       if (this.userInfo.realName === "") {
         return this.$vux.toast.text("请输入姓名");
-      }
-      if (this.newup === "") {
-        return this.$vux.toast.text("请选择银行");
-      }
-      if (this.userInfo.provinces.length === 0) {
-        return this.$vux.toast.text("请选择开户地址");
-      }
-      if (this.userInfo.ZhiHangName === "") {
-        return this.$vux.toast.text("请输入支行名称");
-      }
-      if (this.userInfo.BankCode === "") {
-        return this.$vux.toast.text("请输入银行卡号");
-      }
-      if (this.images[0].length === 0) {
-        return this.$vux.toast.text("请输入银行卡正面截图");
-      }
-      if (this.images[1].length === 0) {
-        return this.$vux.toast.text("请输入银行卡反面截图");
       }
       if (this.userInfo.bankTel === "") {
         return this.$vux.toast.text("请输入预留手机号");
@@ -313,15 +295,31 @@ export default {
       if (this.userInfo.cardid === "") {
         return this.$vux.toast.text("请输入身份证号");
       }
-       if(this.userInfo.Bank != this.creactBank){
-         return  this.$vux.toast.show({
-                  text: "请选择正确的银行名称",
-                  time:2000,
-                });
+      if (this.userInfo.BankCode === "") {
+        return this.$vux.toast.text("请输入银行卡号");
       }
+      if (this.newup === "" || this.userInfo.Bank==="") {
+        return this.$vux.toast.text("请选择银行");
+      }
+      if (this.userInfo.provinces.length === 0) {
+        return this.$vux.toast.text("请选择开户地址");
+      }
+      if (this.userInfo.ZhiHangName === "") {
+        return this.$vux.toast.text("请输入支行名称");
+      }     
+      if (this.images[0].length === 0) {
+        return this.$vux.toast.text("请输入银行卡正面截图");
+      }
+      if (this.images[1].length === 0) {
+        return this.$vux.toast.text("请输入银行卡反面截图");
+      }
+            
        let newup =this.bankNameList.filter(item=> {
           return item.key==this.userInfo.Bank
       })
+      if(newup.length===0){
+        return this.$vux.toast.text("请选择银行");
+      }
       this.newup=newup[0].value
 
       const saveParams = Object.assign(this.userInfo, { images: this.images,Bank:this.newup });
@@ -329,10 +327,28 @@ export default {
         "/api/index/bankcardcommit",
         saveParams
       );
-      this.$vux.toast.show({
-        text: "提交成功，等待审核",
-        type: "success"
-      });
+       let newups =this.bankNameList.filter(item=> {
+          return item.key==this.creactBank
+      })
+      this.creactBank=newups[0].value
+
+      if((this.userInfo.Bank ||this.newup) !== this.creactBank){
+          this.$vux.toast.show({
+                  text: "请认真核对银行卡号和名称",
+                  // time:2000,
+                });
+          setTimeout(_ => {  
+              this.$vux.toast.show({
+                text: "提交成功，等待审核",
+                type: "success"
+              });
+             }, 2100); 
+      }else{
+          this.$vux.toast.show({
+            text: "提交成功，等待审核",
+            type: "success"
+          });
+      }
 
       // 绑定淘宝页面验证是否绑定身份证
       setTimeout(_ => {
@@ -343,7 +359,7 @@ export default {
         }else{
           this.$router.back();
         }
-      }, 1500);
+      }, 3500);
     }
   }
 };
