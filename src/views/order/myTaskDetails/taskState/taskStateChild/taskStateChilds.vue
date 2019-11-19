@@ -3,7 +3,7 @@
     <user-header :title="'多关键词操作任务'"></user-header>
     <template v-if="orderInfo">
       <!-- {/* 目标商品详情介绍 */} -->
-      <div class="task-plan" style="margin:0">
+      <div class="task-plan" style="margin:10px">
         <!-- {/* <div class="plan-box" style="marginTop: "2rem"">
             <p class="task-plan-list"><span>{shop_name}</span><Link to="/">如果遇到问题点击联系商家</Link></p>
         </div> */}-->
@@ -36,37 +36,34 @@
         </section>
       </div>
       <!-- {/* 任务要求 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>任务要求</span>
-      </div>
+      
       <div class="plan-box task-plan" style="margin-bottom:0">
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>任务要求</span>
+        </div>
         <p class="task-plan-list">
           <span>任务类型</span>
-          <span style="color:red">{{orderInfo.tasktype_name}}({{orderInfo.tasktype_itemname}})</span>
+          <span style="color:red">{{orderInfo.new_type ==1 ? '垫付任务' :orderInfo.new_type ==2?'回访任务' :orderInfo.new_type ==3 ? '图文任务' :orderInfo.new_type ==4 ?'问答任务':'浏览任务'}}({{orderInfo.tasktype_itemname =='手机天猫' ? '手机淘宝' : orderInfo.tasktype_itemname}})</span>
         </p>
         <p class="task-plan-list">
           <span>评价要求</span>
           <span>{{orderInfo.keyword_type_name}}</span>
         </p>
-        <p class="task-plan-list" style="border:none">
+        <p class="task-plan-list" v-if="orderInfo.order_status !==0">
           <span>搜索关键字</span>
           <span style="overflow:auto;word-break:keep-all">{{orderInfo.keyword}}</span>
         </p>
         <div v-if="orderInfo.is_muti_keyword">
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字1</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_two}}</span>
           </p>
-          <p class="task-plan-list" style="border:none">
+          <p class="task-plan-list">
             <span>搜索关键字2</span>
             <span style="overflow:auto;word-break:keep-all">{{orderInfo.charset_one}}</span>
           </p>
         </div>
-        <p class="task-plan-list-Child">
-          <span>(打开{{orderInfo.platformname}}搜索关键词)</span>
-          <span class="fontsi">注：如有关键字过长请左右拖动查看</span>
-        </p>
         <p class="task-plan-list">
           <span>购买数量</span>
           <span>目标商品{{orderInfo.itemnum}}件</span>
@@ -97,65 +94,56 @@
           <span>支付方式</span>
           <span>
             <template v-if="orderInfo.paychannel">
-              <template v-for="item in orderInfo.paychannel">{{item}}</template>
+              <template v-for="item in orderInfo.paychannel">使用{{item+'、'}}</template>
+            </template>
+            <template v-else>
+              <template style="color:#FF9642">不支持优惠券、信用卡、花呗</template>
             </template>
           </span>
         </p>
-        <p class="task-plan-list">
+        <p class="task-plan-list" v-if="orderInfo.remark !==''">
           <span>订单留言</span>
-          <span style="overflow:auto;wordBreak:keep-all">{{orderInfo.remark||""}}</span>
-        </p>
-        <p class="task-plan-list-Child">
-          <span>(查看订单留言)</span>
-          <span class="fontsi">注：如内容过长请左右拖动查看</span>
+          <span style="overflow:auto;wordBreak:keep-all">{{orderInfo.remark}}</span>
         </p>
       </div>
       <!-- {/* 商家要求 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="pushpin" theme="outlined" /> -->
-        <span>商家要求</span>
-      </div>
-      <div class="plan-box task-plan" style="margin:10px;">
-        <div class="task-plan-list">
-          <!-- <span style="color:red">商家要求：</span> -->
-          <!-- {/* <span style="width: '70%',textAlign:'initial'}}>{this.props.location}</span> */} -->
+      
+      <div v-if="orderInfo.remark_pic.length && orderInfo.remark_pic[0].length" class="plan-box task-plan" style="margin:10px;">
+        <div class="taskRenw">
+          <!-- <Icon type="pushpin" theme="outlined" /> -->
+          <span>商家要求</span>
         </div>
+
         <div>
-          <template v-if="orderInfo.remark_pic.length && orderInfo.remark_pic[0].length">
+          <template >
             <img
               style="max-width:100%"
               v-for="(item,index) in orderInfo.remark_pic"
               :key="index"
-              v-if="item.length"
               :src="$url+item"
             />
           </template>
-          <p v-else>此商家没有额外要求</p>
         </div>
       </div>
-      <div style="margin:10px">
-        <h3 style="color:#c15958; margin-top:1.5rem">核对商家店铺名是否正确</h3>
-        <div class="shop-title">
-          <span>1</span>
-          <span>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</span>
-        </div>
-        <div class="shop-title">
-          <!-- <span>2</span> -->
-          <group>
-            <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对"></x-input>
-          </group>
-          <group>
-            <x-button type="primary" @click.native="checkName">核对</x-button>
-          </group>
+      <div class="plan-box task-plan" style="margin:10px">
+        <h3 style="color:#c15958;padding-bottom: 5px;">核对商家店铺名是否正确</h3>
+        <!-- <div class="shop-title"> -->
+          <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
+        <!-- </div> -->
+        <div class="shop-title" style="border:none;padding-bottom:0px">
+            <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对" @on-focus="showFocus" ></x-input>
+            <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
+            <x-button type="primary" @click.native="checkName" style="width:30%;padding-left:0px;padding-right:0px">{{showName}}</x-button>
         </div>
       </div>
       <!-- {/* 注意事项 */} -->
       <!-- {/* 任务步骤 */} -->
-      <div class="taskRenw">
-        <!-- <Icon type="edit" theme="outlined" /> -->
-        <span>任务步骤</span>
-      </div>
-      <div class="task-plan buzhou" style="margin-bottom: 0">
+     
+      <div class="task-plan buzhou" style="margin:10px">
+        <div class="taskRenw">
+          <!-- <Icon type="edit" theme="outlined" /> -->
+          <span>任务步骤</span>
+        </div>
         <div class="buzou-title">
           <span>第一步 货比三家</span>
           <span @click="isShow=true">点击查看示例</span>
@@ -195,26 +183,30 @@
         <x-button @click.native="subTask" type="primary" class="login-form-x-button">提交任务</x-button>
       </group>
     </template>
-    <x-dialog v-model.trim="isShowInfo" class="demoDialog">
-      <div class="img-box showBg">
-        <div
-          v-if="orderInfo"
-          class="task-plan detailss"
-          style="margin-bottom:0;text-align: left;height: 100%;overflow: auto;padding: 10px 15px;"
-        >
-          <p class="con_tilte">一点挣钱中接手任务的账号和{{orderInfo.platformname}}上实际下单的账号必须一致，下单<span style="color:red">不可代付</span>，如果发现直接封号</p>
-          <p class="con_color"><span>•</span> 要求至少和商家客服有4个问题互动，不得一次性复制4个问题给客服，如果客服不在线，等待时间超过10分钟可以留言“先下单了，如果有什么问题可以电话联系”然后直接下单</p>
-          <p class="con_color"><span>•</span> 严禁和卖家旺旺聊天提<span style="color:red">“刷单”、“信誉”、“一点挣钱任务”</span>等敏感词</p>
-          <p class="con_color"><span>•</span> 淘宝上实际下单的地址必须和一点挣钱接任务的<span style="color:red">淘宝账号绑定的地址一致</span>，如收货信息有变更请先更改信息后再接任务</p>
-          <p class="con_color"><span>•</span> 一点挣钱所有订单<span style="color:red">不允许使用淘宝客、返利红包、积分等</span>优惠方式下单，出现将会从本金里面扣除返利佣金，两次以上永久封号</p>
-          <p class="con_color"><span>•</span> 不允许使用<span style="color:red">信用卡、花呗等任何信用类</span>方式付款，不允许使用<span style="color:red">集分宝、淘金币、天猫积分等</span>积分抵扣付款金额，否则将会从本金扣除购物金额的1%的手续费或与积分对应的金额</p>
-          <p class="con_color"><span>•</span> 一点挣钱的任务不参与好评返现，如果商家在任务中有要求使用店铺优惠券的可按商家要求领取抵扣的优惠券，返款只返实际支付的金额，一定要快递真实签收后才能确认收货并按照任务的评价要求给予5星好评</p>
-        </div>
+    <!-- {/* 注意事项 */} -->
+    <div id="ll_mask" v-if="isShowInfo">
+      <div id="mask"></div>
+      <div class="ll_mask_con">
+        <div class="showBackg">
+          <div
+            v-if="orderInfo"
+            class="task-plan detailss"
+            style="margin-bottom:5px;text-align: left;height:340px;overflow: auto;padding: 10px 16px;margin-top: 140px;"
+          >
+            <p class="con_tilte">一点挣钱中接手任务的账号和{{orderInfo.platformname}}上实际下单的账号必须一致，下单<span style="color:red">不可代付</span>，如果发现直接封号</p>
+            <p class="con_color"><span>•</span> 要求至少和商家客服有4个问题互动，不得一次性复制4个问题给客服，如果客服不在线，等待时间超过10分钟可以留言“先下单了，如果有什么问题可以电话联系”然后直接下单</p>
+            <p class="con_color"><span>•</span> 严禁和卖家旺旺聊天提<span style="color:red">“刷单”、“信誉”、“一点挣钱任务”</span>等敏感词</p>
+            <p class="con_color"><span>•</span> 淘宝上实际下单的地址必须和一点挣钱接任务的<span style="color:red">淘宝账号绑定的地址一致</span>，如收货信息有变更请先更改信息后再接任务</p>
+            <p class="con_color"><span>•</span> 一点挣钱所有订单<span style="color:red">不允许使用淘宝客、返利红包、积分等</span>优惠方式下单，出现将会从本金里面扣除返利佣金，两次以上永久封号</p>
+            <p class="con_color"><span>•</span> 不允许使用<span style="color:red">信用卡、花呗等任何信用类</span>方式付款，不允许使用<span style="color:red">集分宝、淘金币、天猫积分等</span>积分抵扣付款金额，否则将会从本金扣除购物金额的1%的手续费或与积分对应的金额</p>
+            <p class="con_color"><span>•</span> 一点挣钱的任务不参与好评返现，如果商家在任务中有要求使用店铺优惠券的可按商家要求领取抵扣的优惠券，返款只返实际支付的金额，一定要快递真实签收后才能确认收货并按照任务的评价要求给予5星好评</p>           
+          </div>
+          <div @click="isShowInfo=false">
+            <x-button type="primary" style="border-radius:5px;background:#FF2741;height: 45px;" min>知道了</x-button>
+          </div>
+        </div>         
       </div>
-      <div @click="isShowInfo=false">
-        <x-button type="primary" style="border-radius:5px;background:#FF2741" min>知道了</x-button>
-      </div>
-    </x-dialog>
+    </div>
     <!-- {/* 第一步货比三家的图片示例 */} -->
     <x-dialog v-model.trim="isShow" class="demoDialog">
       <div class="img-box">
@@ -227,10 +219,16 @@
   </div>
 </template>
 <script>
+import { Icon } from 'vux';
 export default {
+  components: {
+    Icon
+  },
   data() {
     return {
+      showIcon:false,
       orderInfo: null,
+      showName:"核对",
       pic_uploads_box: [
         { uploadSrc: "" },
         { uploadSrc: "" },
@@ -256,6 +254,9 @@ export default {
         order_id: this.$route.params.id //订单ID
       });
       this.orderInfo = result.data.taskDetail || {};
+    },
+    async showFocus(){
+      this.showName="核对"
     },
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
@@ -290,9 +291,24 @@ export default {
     },
     checkName() {
       if (this.waitCheckName === this.orderInfo.shop_name) {
-        this.$vux.toast.text("店铺名称正确！");
-      } else {
-        this.$vux.toast.text("店铺名称错误！");
+        this.$vux.toast.show({
+                  text: "店铺输入正确！",
+                  time:2000,
+                });
+        this.showIcon="success"
+        this.showName="核对正确"
+      }else if(this.waitCheckName ===""){
+        this.$vux.toast.show({
+            text: "请输入店铺名称！",
+            time:2000,
+          });
+        } else {
+        this.$vux.toast.show({
+                  text: "请输入正确的店铺名称",
+                  time:2000,
+                });
+        this.showIcon="cancel"
+        this.showName="核对错误"
       }
     }
   }

@@ -39,10 +39,11 @@
       <img src="@/assets/img/inviteinfo.png" class="top-img" />
       <div class="inviteUrl invitepeople cricleBox">
         <h2>奖励说明</h2>
+        <h4>活动时间：11月1日0点-12月1日0点</h4>
         <div>
           <p>1、徒弟注册完成首单，您将还能获得1~5元现金红包</p>
-          <p>2、徒弟每完成一单任务后，您最低能获得10%的佣金提成</p>
-          <p>3、徒孙每完成一单任务后，您最低能获得5%的佣金提成</p>
+          <p>2、徒弟每完成一单任务后，您最低能获得1元的佣金提成</p>
+          <p>3、徒孙每完成一单任务后，您最低能获得0.5元的佣金提成</p>
         </div>
         <img src="@/assets/img/invitation_relationship.png" class="top-img" />
       </div>

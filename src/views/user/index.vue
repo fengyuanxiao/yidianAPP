@@ -344,7 +344,7 @@ export default {
   .weui-grid:before{
     border: none !important;
   }
-  .weui-grids:before{
+  .weui-grids:nth-child(1):before{
     border:none !important;
   }
   .weui-grids:after{

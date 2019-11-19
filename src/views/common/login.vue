@@ -20,8 +20,10 @@
       <x-button type="primary" @click.native="login" class="loginbtn">登录</x-button>
       <div class="goInfo">
         <router-link to="/h5/forgetpsw" class="go">忘记密码？</router-link>
-        <span>|</span>
+        <span style="padding-right: 3px;">|</span>
         <router-link to="/h5/register" class="go">免费注册</router-link>
+        <span style="padding: 0px 4px;">|</span>
+        <span><a style="color: #1890ff" target="_blank" rel="noopener noreferrer" href="http://wpa.qq.com/msgrd?v=3&uin=2324286706&site=qq&menu=yes">联系客服</a></span>
       </div>
       
       <!-- <x-button @click.native="$router.push('/h5/register')" class="loginbtn">免费注册</x-button> -->

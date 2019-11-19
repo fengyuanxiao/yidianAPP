@@ -1,20 +1,45 @@
 .taskStateChild-box {
-  background-color: #e9ebea;
+  background-color: #F5F5F5;
 }
 
 .taskStateChild-box .weui-input {
-  border: 1px solid #909399;
-  padding-left: 5px !important;
+  border:1px solid rgba(229,229,229,1);
+  border-radius:10px;
+  padding-left: 8px !important;
+  color: #888;
+  font-size: 15px;
 }
-
+.weui-cell__ft {
+  display: inline-block;
+}
 .taskStateChild-box .taskDetail-header-button {
   display: flex;
+  justify-content: space-between;
   margin-top: 10px;
-  padding: 5px 0 5px 10px;
+  padding: 5px 0px 0px 0px;
 }
-
+.makeNum {
+  color: #FF9642;
+  font-size: 16px;
+}
+.taskDetail-header{
+  background-color: #fff !important;
+  
+}
+.taskPlan{
+  box-shadow: 0px 8px 12px 0px rgba(236,236,236,1);
+  border-radius: 20px;
+}
+.task-plan{
+  padding: .7rem 0.8rem 1rem .8rem;
+  background: #fff;
+  box-shadow: 0px 8px 12px 0px rgba(236,236,236,1);
+  border-radius: 20px;
+}
+.plan-box{
+  margin: 0px 10px 10px 10px;
+}
 .task-plan-list-Child {
-  font-size: 0.3rem;
   display: flex;
   justify-content: space-between;
   border-bottom: #e4e4e6 solid 1px;
@@ -22,23 +47,33 @@
 }
 
 .taskRenw {
-  background-color: #d1d1d1;
-  padding: .5rem .7rem;
+  background-color: #fff;
+  padding: 0rem .7rem .5rem 0px;
   font-size: 1.1rem;
+  border-bottom: 1px solid #E5E5E5;
 }
 
 .task-plan-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom:1px solid#e4e4e6  ;
+  padding:0.55rem 0;
   width: 100%;
+  color: #888;
 }
 
 .task-plan-list>span:last-child {
-  width: 60%;
+  width: 58%;
   text-align: right;
-  color: #0156B1;
+  color:#444;
 }
 
 .detailss> p {
   margin-bottom: 0.5rem;
+}
+.detailss{
+  box-shadow:none;
 }
 .detailss> p>span {
   color: red;
@@ -47,6 +82,7 @@
 .detailss .con_tilte{
   color: #000;
   font-weight: bold;
+  margin-left: 4px;
 }
 .detailss .con_color{
   color: #7F7F7F;
@@ -58,45 +94,83 @@
   width: 85%;
 }
 
-
 .buzou-title {
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
+  margin-bottom: 6px;
 }
 
 .buzou-title>span:first-child {
-  color: #63bb95;
+  color: #FF9642;
+  font-size: 15px;
+  padding-bottom: 4px;
 }
 
 .buzou-title>span:last-child {
-  color: #007aff;
+  color: #4D97FF;
+  font-size: 15px;
 }
 
 .buzhou {
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem .8rem 0.5rem .8rem;
 }
 
 .buzhou>p {
-  padding: 0.3rem 0;
+  padding: 0.07rem 0;
+  font-size: 14px;
+  color: #444;
 }
-
+.commiteTsak{
+  width: 50%;
+  display: inline-block;
+  border-radius: 0px;
+  height: 55px;
+  background: #3187FF;
+  text-align: center;
+  line-height: 55px;
+  color: #FFF;
+  font-size: 15px;
+}
+.currentNum{
+  width: 50%;
+  float: left;
+  border-radius: 0px;
+  height: 55px;
+  background:#66A6FF;
+  text-align: center;
+  color: #FFF;
+  font-size: 15px;
+}
+.weui-btn{
+  line-height: 2 !important;
+}
 .shilitu {
   width: 100%;
 }
 
-.shop-title>span:first-child {
-  padding: 1px 8px;
-  display: inline-block;
-  background-color: #a6c7d8;
+.shop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0px;
+  border-bottom: 1px solid #E5E5E5;
+  padding-bottom: 20px;
+}
+.showState{
+  width: 25px;
+  height: 25px;
+  background:green;
   border-radius: 50%;
   color: #fff;
-  margin-right: 0.7rem;
-  margin-bottom: 0.4rem;
-  margin-top: 0.3rem;
+  margin-top: 5px;
+  font-size: 25px;
+  line-height: 25px;
+  text-align: center;
+  position: relative;
+  left: -12%;
 }
-
 .ant-input {
   width: 60%;
   margin: 0 8px 8px 0;
@@ -126,18 +200,42 @@
 }
 
 .charsets {
-  color: red;
+  color: #FF9642;
 }
 
-.liaotian {
-  font-size: 1rem;
-  padding: 0.7rem 0;
-  color: red;
+.chatPicture {
+  color: #FF9642;
   font-weight: bold;
+  padding: 0.1rem 0;
 }
 
 .fontsi {
   color: red;
   font-weight: bold;
   font-size: 12px;
+}
+/* 弹窗 */
+#mask{
+  background:rgba(0,0,0,1);
+  opacity:0.4;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.ll_mask_con{
+  width: 320px;
+  height: 320px;
+  background: url('~@/assets/img/warn.png') no-repeat top center scroll;
+  background-size:140%;
+  border-radius: 3px;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  margin: -160px 0 0 -160px; 
+}
+.showBackg{
+  background: #fff;
+  border-radius: 10px;
 }

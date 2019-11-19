@@ -1,15 +1,15 @@
 <template>
   <section class="taskDetail-state" v-if="order && orderInfo">
-    <img :src="order.tasktype_pic" alt="taobaoImg" />
-    <span style="font-size: 1rem ">任务状态：{{order.ordertatusText}}</span>
-    <span style="color: red ">
+    <!-- <img :src="order.tasktype_pic" alt="taobaoImg" /> -->
+    <span style="font-size: 15px">任务状态：<span style="color:red">{{order.ordertatusText}}</span></span>
+    <span style="font-size: 15px;padding-top: 5px;">接受任务：{{orderInfo.addtime}}</span>
+    <span style="color:#FF9642;font-size:15px;padding-top: 5px;">
       <span v-if="!orderInfo.order_status">
-        提交倒计时：
+      <span style="color:#444">提交倒计时：</span>
         <b>{{cuttime}}</b>(未在截止时间之前提交将扣1元手续费)
       </span>
     </span>
-    <p>商家要求：</p>
-    <div>
+    <div v-if="orderInfo.remark_pic.length !==0" style="display: inline-block;margin-top: 5px;">商家要求：
       <img
         style="max-width:100%;margin-bottom:0.3rem"
         v-for="(item,index) in orderInfo.remark_pic"
@@ -17,13 +17,11 @@
         :src="item"
         alt="要求图"
       />
-      <p v-if="orderInfo.remark_pic.length===0">此商家没有额外要求</p>
     </div>
-    <p>订单要求：{{orderInfo.order_message||'暂无'}}</p>
+    <p v-if="orderInfo.order_message !==''" style="margin-top: 5px;">订单要求：{{orderInfo.order_message}}</p>
     <div class="start-task-btn">
       <button class="tasktn" @click="cancelTask">取消任务</button>
       <template v-if="!orderInfo.order_status && order.is_appeal!=1">
-        <!-- 参数为：remark_pic -->
         <button v-if="orderInfo.shop_around_time" class="stateBtns">
           <router-link :to="'/h5/order/dianfu/detail/taskStateChild/'+orderInfo.order_id">操作任务</router-link>
         </button>
@@ -33,7 +31,9 @@
           >操作任务</router-link>
         </button>
       </template>
-      <button class="tasktn" style="background:#F56C6C;">
+      <button v-if="orderInfo.order_status ===6" class="tasktn" style="background:linear-gradient(0deg,rgba(255,122,70,1),rgba(255,187,160,1));">
+        <p style="padding: 0px 7px;" @click="popUp">待审核</p></button>
+      <button v-if="orderInfo.order_status !==0" class="tasktn" style="background:linear-gradient(0deg,rgba(255,150,66,1),rgba(255,195,75,1));">
         <router-link :to="'/h5/shensu/appealTask?id='+orderInfo.order_id">申诉任务</router-link>
       </button>
     </div>
@@ -88,6 +88,11 @@ export default {
   methods: {
     cancelTask() {
       this.showCancel = true;
+    },
+    popUp(){
+      this.$vux.toast.show({
+          text: "任务审核中请耐心等待",
+        });
     },
     async sureCancel(key, item) {
       if (key !== "cancel") {

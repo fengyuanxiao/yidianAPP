@@ -1,11 +1,9 @@
 <template>
   <div>
     <user-header :title="'发起申诉'"></user-header>
-    <div>
-      <div class="shensu-box">
-        <p class="_p" style="margin-bottom: 0">发起申诉</p>
-      </div>
+    <div> 
       <div class="shensu-box-child">
+        <!-- <p class="makeAppeal">发起申诉</p> -->
         <p class="_p" style="margin-bottom: 1rem">选择投诉类型</p>
         <group>
           <selector title placeholder="请选择类型" v-model.trim="appeal.complain_type" :options="options"></selector>
