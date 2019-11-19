@@ -240,7 +240,7 @@ export default {
       if(this.cData.compared_time !==0){
         let checkTime= dateFormat(new Date(this.cData.compared_time*1000), "YYYY-MM-DD HH:mm:ss")
         let nowTime= dateFormat(new Date(), "YYYY-MM-DD HH:mm:ss")
-        let time = new Date(checkTime.replace("-","/"));
+        let time = new Date(checkTime.replace(/-/g, "/"));
         let minutes=3
         let endTime=time.setMinutes(time.getMinutes() + minutes);
         let endTimes= dateFormat(new Date(endTime), "YYYY-MM-DD HH:mm:ss")
@@ -248,8 +248,13 @@ export default {
         this.nowTime=nowTime   
       }
       if(this.cData.order_status==3){
-        let checkTime= dateFormat(new Date(this.cData.chat_pay_time*1000), "YYYY-MM-DD HH:mm:ss")
-        let time = new Date(checkTime.replace("-","/"));
+        if(this.cData.chat_pay_time ===0){
+          var checkTime=this.cData.addtime
+        }else{
+          var checkTime= dateFormat(new Date(this.cData.chat_pay_time*1000), "YYYY-MM-DD HH:mm:ss")
+        }
+        
+        let time = new Date(checkTime.replace(/-/g, "/"));
         let days=3
         let endTime=time.setDate(time.getDate() + days);
         let nowTime = new Date().getTime()

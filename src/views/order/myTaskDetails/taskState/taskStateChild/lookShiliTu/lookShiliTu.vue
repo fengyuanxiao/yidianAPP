@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- {{/* 第一步货比三家 */}} -->
-    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 65px 10px;">
+    <div class="task-plan buzhou" v-if="orderInfo" style="margin:0 10px 15px 10px;">
       <div class="taskRenw">
         <!-- <Icon type="edit" theme="outlined" /> -->
         <span>任务步骤</span>
@@ -69,9 +69,8 @@
         <div v-else style="color:#444">
           <p>② 进入店铺，随机浏览2~3个产品（务必从页头至页尾进行浏览，各1 分钟以上）</p>
         </div>
-        <p v-if="firstMincount>0 &&orderInfo.check_shop_time ===0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.firstMincount/60)+"分"+this.firstMincount%60}}秒后才能继续操作下一步</p>
+        <p v-if="this.firstMincount>0 &&orderInfo.check_shop_time ===0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.firstMincount/60)+"分"+this.firstMincount%60}}秒后才能继续操作下一步</p>
         <p v-if="this.Mincount>0" style="color:red;padding-top: 10px;font-size: 16px;">注：{{Math.floor(this.Mincount/60)+"分"+this.Mincount%60}}秒后才能继续操作下一步</p>
-        
       </div>
       <!-- 第三步 聊天下单支付 -->
       <div v-if="(Mincount<=0 && orderInfo.check_shop_time !==0) ||firstMincount<=0" style="color:#444">
@@ -152,6 +151,7 @@
               v-model.trim="orderForm.pay_money"
               placeholder="请输入实际付款金额"
               class="jineInput"
+              @on-blur="showMoney"
             ></x-input>
           </group>
           <group>
@@ -165,7 +165,8 @@
       </div>
       </div>     
     </div>
-    <div style="position:fixed;bottom:0px;width: 100%;z-index: 999;">
+    <div >
+      <!-- style="position:fixed;bottom:0px;width: 100%;z-index: 999;" -->
       <div class="currentNum">
         <p style="padding-top: 5px;">您当前的买号为:</p>
         <span>{{orderInfo.user_taobao}}</span>
@@ -217,6 +218,18 @@
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
+    <!-- 金额核对弹窗 -->
+    <x-dialog v-model.trim="showTip" class="dialog_demo">
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">下单金额与实付金额已超过20元，请联系客服QQ：2324286706</p>
+        </div>
+        <div @click="showTip=false" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -233,6 +246,7 @@ export default {
   },
   data() {
     return {
+      showTip:false,
       showIcon:false,
       firstMincount:"180",
       showName:"核对",
@@ -274,18 +288,18 @@ export default {
     if(this.orderInfo.check_shop_time){
       this.showSec=true
       let checkTime= dateFormat(new Date(this.orderInfo.check_shop_time*1000), "YYYY-MM-DD HH:mm:ss")
-      let time = new Date(checkTime.replace("-","/"));
+      let time = new Date(checkTime.replace(/-/g, "/"));
       let minutes=3
-      let endTime=time.setMinutes(time.getMinutes() + minutes);     
+      let endTime=time.setMinutes(time.getMinutes() + minutes);
       let nowTime = new Date().getTime()
       let showTime=endTime-nowTime
       let leave1=showTime%(24*3600*1000) 
       let leave2=leave1%(3600*1000)
-      let leave3=leave2%(60*1000)     
+      let leave3=leave2%(60*1000)    
       let seconds=Math.round(leave3/1000)
       let endMinutes=Math.floor(leave2/(60*1000))
-      this.Mincount=endMinutes*60+seconds  
-      if(this.Mincount>0 ||this.orderInfo.check_shop_name == this.orderInfo.shop_name){
+      this.Mincount=endMinutes*60+seconds 
+      if(this.Mincount>0 ||(this.orderInfo.check_shop_name == this.orderInfo.shop_name)){
         this.getCodeTime()
       }
     }
@@ -295,14 +309,29 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    
+    async showMoney(){
+      if((this.orderInfo.need_principal-this.orderForm.pay_money)>20){
+        this.showTip=true
+        // return this.$vux.toast.text("下单金额与实付金额已超过20元，请联系客服QQ：2324286706");
+      }
+      
+    },
     async showFocus(){
       this.showName="核对"
     },
     // 提交任务
     async subTask() {
+      if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
+        return this.$vux.toast.text("请上传足迹截图");
+      }
+      if(this.orderInfo.check_shop_name ===""){
+        return this.$vux.toast.text("请核对店铺名称");
+      }
+      if((this.firstMincount>0 &&this.orderInfo.check_shop_time ===0)||this.Mincount>0){
+        return this.$vux.toast.text("浏览时间不够，请认真浏览");
+      }
       if (this.isEmptyArr().length !== this.image.length) {
-        return this.$vux.toast.text("所有的截图都必须上传");
+        return this.$vux.toast.text("请上传"+orderInfo.pic_desc);
       }
       if (!this.orderForm.pay_money.length) {
         return this.$vux.toast.text("请输入实际付款金额");
@@ -345,7 +374,7 @@ export default {
           shop_name: this.orderInfo.check_shop_name.replace(/\s+/g,""),
           image:this.appeal.images
         });
-        if(this.appeal.images.length !==0){
+        if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
             this.showSec=true
             if(this.orderInfo.check_shop_time ===0){
               this.showEndTime=true

@@ -94,7 +94,7 @@
           <span>支付方式</span>
           <span>
             <template v-if="orderInfo.paychannel">
-              <template v-for="item in orderInfo.paychannel">使用{{item+'、'}}</template>
+              <template v-for="item in orderInfo.paychannel">可以使用{{item+'、'}}</template>
             </template>
             <template v-else>
               <template style="color:#FF9642">不支持优惠券、信用卡、花呗</template>

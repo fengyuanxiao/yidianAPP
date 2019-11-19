@@ -214,6 +214,11 @@
   font-weight: bold;
   font-size: 12px;
 }
+.showAttention{
+  font-size: 24px;
+  font-weight: 600;
+  color:rgba(0,0,0,1);
+}
 /* 弹窗 */
 #mask{
   background:rgba(0,0,0,1);
