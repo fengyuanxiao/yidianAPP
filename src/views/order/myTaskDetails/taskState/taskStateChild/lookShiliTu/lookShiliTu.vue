@@ -38,24 +38,28 @@
         </div>
       </div>
       <!-- 核对店铺名 -->
-      <div class="buzou-title">
-        <span style="color:#FF9642">核对商家店铺名是否正确</span>
-      </div>
-      <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
-      <div class="shop-title">
-        <x-input v-model.trim="orderInfo.check_shop_name" @on-focus="showFocus" placeholder="请在此输入店铺名核对"></x-input>
-        <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
-        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
+      <div v-if="isShop">
+        <div class="buzou-title">
+          <span style="color:#FF9642">核对商家店铺名是否正确</span>
+        </div>
+        <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
+        <div class="shop-title">
+          <x-input v-model.trim="orderInfo.check_shop_name" @on-focus="showFocus" placeholder="请在此输入店铺名核对"></x-input>
+          <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
+          <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
+        </div>
       </div>
       <!-- 验证淘口令 -->
-      <div>
-        <span style="color:#FF9642;">验证商品淘口令是否正确</span>
-        <span @click="showAmbushPop=true" style="color:#4D97FF;padding-left: 15px;">如何复制淘口令？</span>
-      </div>
-      <div class="shop-title" style="border:none;padding-bottom:0px">
-        <x-input v-model.trim="waitcheckAmbush" placeholder="请在此输入商品淘口令" @on-focus="AmbushFocus" ></x-input>
-        <icon :type="showAmbushIcon" style="margin-right:25px" v-if="showAmbushIcon"></icon>
-        <x-button type="primary" @click.native="checkAmbush" style="width:30%;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
+      <div v-if="isAmbush" class="isAmbush">
+        <div>
+          <span style="color:#FF9642;">验证商品淘口令是否正确</span>
+          <span @click="showAmbushPop=true" style="color:#4D97FF;padding-left: 15px;">如何复制淘口令？</span>
+        </div>
+        <div class="shop-title" style="border:none;padding-bottom:0px">
+          <x-input v-model.trim="orderInfo.taokouling" placeholder="请在此输入商品淘口令" @on-focus="AmbushFocus" ></x-input>
+          <icon :type="showAmbushIcon" style="margin-right:25px" v-if="showAmbushIcon"></icon>
+          <x-button type="primary" @click.native="checkAmbush" style="width:30%;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
+        </div>
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
       <div v-if="showSec" style="border-bottom: 1px solid #E5E5E5;padding-bottom: 20px;">
@@ -265,13 +269,15 @@ export default {
   data() {
     return {
       showTip:false,
+      isShop:false,  //店铺显示
+      isAmbush:false, //淘口令显示
+      taokouling:"",
       showIcon:false,
       firstMincount:"180",
       showName:"核对",
       showAmbush:"核对",
       showAmbushPop:false,
       showAmbushIcon:false,
-      waitcheckAmbush:"",  //淘口令
       Mincount:"",
       timer: null,
       showSec:false,
@@ -302,6 +308,11 @@ export default {
   mounted() {
     if(this.orderInfo.check_shop_name !==""){
       this.showIcon="success"
+    }
+    if(this.orderInfo.check_store_type ===1){
+      this.isAmbush=true
+    }else{
+      this.isShop=true
     }
     this.check_shop_name=this.check_shop_name.replace(/\s+/g,"")
     this.appeal.images=this.orderInfo.compared_content
@@ -340,7 +351,7 @@ export default {
     async showFocus(){
       this.showName="核对"
     },
-     async AmbushFocus(){
+    async AmbushFocus(){
       this.showAmbush="核对"
     },
     // 提交任务
@@ -385,18 +396,17 @@ export default {
       return this.image.filter(e => e.length);
     },
     // 验证淘口令
-    checkAmbush() {
-      // if (this.waitcheckAmbush === this.orderInfo.shop_name) {
+    async checkAmbush() {
         
-         if(this.waitcheckAmbush ===""){
+         if(this.orderInfo.taokouling ===""){
         this.$vux.toast.show({
             text: "请输入淘口令！",
             time:2000,
           });
         }else{
-          const result1 = this.axios.post("/api/App/check_tao", {
+          const result1 =await this.axios.post("/api/app/check_tao", {
               order_id:this.orderInfo.order_id,//订单ID
-              tao_text:this.waitcheckAmbush,
+              tao_text:this.orderInfo.taokouling,
               task_id:this.orderInfo.task_id
             });
          if(result1.status===true){
@@ -406,14 +416,44 @@ export default {
                 });
           this.showAmbushIcon="success"
           this.showAmbush="核对正确"
-        }else {
-        this.$vux.toast.show({
-                  text: "请输入正确的淘口令",
+          this.commomSuccess() //成功显示第二步
+
+        }else if(result1.status===false && result1.data.code ==201 ){
+          this.$vux.toast.text(result1.msg);
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+        }else if(result1.status===false && result1.data.code ==202 ){
+          this.$vux.toast.text(result1.msg);
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+        }else if(result1.status===false && result1.data.code ==203 ){
+          this.$vux.toast.text(result1.msg);
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+        }else if(result1.status===false && result1.data.code ==102 ){
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+          this.$vux.toast.show({
+                  text: "淘口令核对失败，请核对店铺",
                   time:2000,
                 });
-        this.showAmbushIcon="cancel"
-        this.showAmbush="核对错误"
-      }
+          this.isAmbush=false
+          this.isShop=true
+        }else if(result1.status===false && result1.data.code ==101 ){
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+          this.$vux.toast.show({
+                  text: "淘口令核对失败，请核对店铺",
+                  time:2000,
+                });
+          
+          this.isAmbush=false
+          this.isShop=true
+        }else if(result1.status===false && result1.data.code ==204 ){
+          this.$vux.toast.text(result1.msg);
+          this.showAmbushIcon="cancel"
+          this.showAmbush="核对错误"
+        }
       }
     },
     checkName() {
@@ -430,24 +470,7 @@ export default {
           shop_name: this.orderInfo.check_shop_name.replace(/\s+/g,""),
           image:this.appeal.images
         });
-        if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
-            this.showSec=true
-            if(this.orderInfo.check_shop_time ===0){
-              this.showEndTime=true
-              this.getTime()
-            }         
-            this.getCodeTime()
-        }else if(this.orderInfo.is_compared===0){
-            this.showSec=true
-            if(this.orderInfo.check_shop_time ===0){
-              this.showEndTime=true
-              this.getTime()
-            }         
-            this.getCodeTime()
-        }       
-     
-    
-    
+        this.commomSuccess()
  
       }else if(this.orderInfo.check_shop_name ===""){
         this.$vux.toast.show({
@@ -462,6 +485,23 @@ export default {
         this.showIcon="cancel"
         this.showName="核对错误"
       }
+    },
+    commomSuccess(){
+      if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
+            this.getCodeTime()
+        }else if(this.orderInfo.is_compared===0){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
+            this.getCodeTime()
+        }
     },
     // 倒计时
     async getCodeTime() {

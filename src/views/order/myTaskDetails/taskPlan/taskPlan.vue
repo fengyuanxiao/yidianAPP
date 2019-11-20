@@ -126,7 +126,7 @@
       </p>
       <div class="taskPlanList showDistance">
         <span>物流截图，五星好评</span>
-        <div class="task-plan-list-img">
+        <div class="task-plan-list-img" v-if="receive_evaluate_content">
           <!-- {/* 循环出物流截图和好评截图显示 */} -->
 
           <img
@@ -168,7 +168,7 @@
 
           <img
             v-if="orderInfo.addition_pic"
-            @click="this.showsShilia"
+            @click="showAddImg()"
             :src="orderInfo.addition_pic"
             alt="物流截图"
           />
@@ -204,11 +204,21 @@
         >获得佣金</button>
       </div>
     </div>
+    <!-- 收货好评实例 -->
     <x-dialog v-model.trim="isShow" class="demoDialog">
       <div class="img-box">
         <img class="shilitu" :src="showSrc" alt="实例" />
       </div>
       <div @click="isShow=false">
+        <span class="vux-close">X</span>
+      </div>
+    </x-dialog>
+    <!-- 追加好评实例 -->
+    <x-dialog v-model.trim="isAddShow" class="demoDialog">
+      <div class="img-box">
+        <img class="shilitu" :src="orderInfo.addition_pic" alt="实例" />
+      </div>
+      <div @click="isAddShow=false">
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
@@ -224,7 +234,9 @@ export default {
   data() {
     return {
       isShow: false,
+      isAddShow:false,
       showSrc: "",
+      showAddSrc:"",
       endTimes:"",
       nowTime:"",
       cData:{},
@@ -277,6 +289,9 @@ export default {
     showImg(img) {
       this.showSrc = img;
       this.isShow = true;
+    },
+    showAddImg() {
+      this.isAddShow = true;
     },
     showMsg() {
       this.$vux.toast.text("商家会在48小时内还款！");

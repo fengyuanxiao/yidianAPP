@@ -17,9 +17,9 @@
                 alt="文字图片"
               />
             </template>
-            <p v-if="orderInfo.additional_text !==null">2222</p>
+            <p v-if="orderInfo.additional_text !==null">{{orderInfo.additional_text}}</p>
           </div>
-          <p >2.追评图片</p>
+          <p>2.追评图片</p>
           <p>
             <template v-if="orderInfo.additional_pic">
               <img
