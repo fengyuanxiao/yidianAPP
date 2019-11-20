@@ -321,7 +321,7 @@ export default {
     },
     // 提交任务
     async subTask() {
-      if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
+      if(this.appeal.images.length ===0 &&this.orderInfo.is_compared===1){
         return this.$vux.toast.text("请上传足迹截图");
       }
       if(this.orderInfo.check_shop_name ===""){
@@ -331,7 +331,7 @@ export default {
         return this.$vux.toast.text("浏览时间不够，请认真浏览");
       }
       if (this.isEmptyArr().length !== this.image.length) {
-        return this.$vux.toast.text("请上传"+orderInfo.pic_desc);
+        return this.$vux.toast.text("请上传"+this.orderInfo.pic_desc);
       }
       if (!this.orderForm.pay_money.length) {
         return this.$vux.toast.text("请输入实际付款金额");
