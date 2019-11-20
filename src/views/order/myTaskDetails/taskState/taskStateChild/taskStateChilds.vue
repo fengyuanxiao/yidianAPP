@@ -92,12 +92,12 @@
         </p>
         <p class="task-plan-list">
           <span>支付方式</span>
-          <span>
+          <span style="color:#FF9642">
             <template v-if="orderInfo.paychannel">
               <template v-for="item in orderInfo.paychannel">可以使用{{item+'、'}}</template>
             </template>
             <template v-else>
-              <template style="color:#FF9642">不支持优惠券、信用卡、花呗</template>
+              <template >不支持优惠券、信用卡、花呗</template>
             </template>
           </span>
         </p>
@@ -134,7 +134,7 @@
             <x-input v-model.trim="waitCheckName" placeholder="请在此输入店铺名核对" @on-focus="showFocus" ></x-input>
             <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
             <x-button type="primary" @click.native="checkName" style="width:30%;padding-left:0px;padding-right:0px">{{showName}}</x-button>
-        </div>
+        </div>        
       </div>
       <!-- {/* 注意事项 */} -->
       <!-- {/* 任务步骤 */} -->
@@ -216,6 +216,7 @@
         <span class="vux-close">X</span>
       </div>
     </x-dialog>
+    
   </div>
 </template>
 <script>
@@ -237,7 +238,7 @@ export default {
       ],
       isShowInfo: false,
       isShow: false,
-      waitCheckName: "",
+      waitCheckName: "",   //店铺名
       chat_pay_content: ["", "", "", ""]
     };
   },
@@ -258,6 +259,7 @@ export default {
     async showFocus(){
       this.showName="核对"
     },
+   
     async uploadPhoto(e, item, ind) {
       const url = await this.$utils.tools.base64Img(e);
       if (url === "big") {

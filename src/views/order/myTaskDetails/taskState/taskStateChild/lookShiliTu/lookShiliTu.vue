@@ -47,7 +47,16 @@
         <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
         <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
       </div>
-
+      <!-- 验证淘口令 -->
+      <div>
+        <span style="color:#FF9642;">验证商品淘口令是否正确</span>
+        <span @click="showAmbushPop=true" style="color:#4D97FF;padding-left: 15px;">如何复制淘口令？</span>
+      </div>
+      <div class="shop-title" style="border:none;padding-bottom:0px">
+        <x-input v-model.trim="waitcheckAmbush" placeholder="请在此输入商品淘口令" @on-focus="AmbushFocus" ></x-input>
+        <icon :type="showAmbushIcon" style="margin-right:25px" v-if="showAmbushIcon"></icon>
+        <x-button type="primary" @click.native="checkAmbush" style="width:30%;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
+      </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
       <div v-if="showSec" style="border-bottom: 1px solid #E5E5E5;padding-bottom: 20px;">
         <div  class="buzou-title" >
@@ -220,16 +229,25 @@
     </x-dialog>
     <!-- 金额核对弹窗 -->
     <x-dialog v-model.trim="showTip" class="dialog_demo">
-        <group title>
-          <p class="showAttention">提示</p>
-        </group>
-        <div class="img-box showBg">
-          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">下单金额与实付金额已超过20元，请联系客服QQ：2324286706</p>
-        </div>
-        <div @click="showTip=false" style="margin: 30px 0 10px 0;">
-          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
-        </div>
-      </x-dialog>
+      <group title>
+        <p class="showAttention">提示</p>
+      </group>
+      <div class="img-box showBg">
+        <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">下单金额与实付金额已超过20元，请联系客服QQ：2324286706</p>
+      </div>
+      <div @click="showTip=false" style="margin: 30px 0 10px 0;">
+        <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+      </div>
+    </x-dialog>
+    <!-- {/* 第一步淘口令的图片示例 */} -->
+    <x-dialog v-model.trim="showAmbushPop" class="demoDialog">
+      <div class="img-box">
+        <img class="shilitu" src="@/assets/img/showAmbush.png" alt="淘口令" />
+      </div>
+      <div @click="showAmbushPop=false">
+        <span class="vux-close">X</span>
+      </div>
+    </x-dialog>
   </div>
 </template>
 <script>
@@ -250,6 +268,10 @@ export default {
       showIcon:false,
       firstMincount:"180",
       showName:"核对",
+      showAmbush:"核对",
+      showAmbushPop:false,
+      showAmbushIcon:false,
+      waitcheckAmbush:"",  //淘口令
       Mincount:"",
       timer: null,
       showSec:false,
@@ -312,12 +334,14 @@ export default {
     async showMoney(){
       if((this.orderInfo.need_principal-this.orderForm.pay_money)>20){
         this.showTip=true
-        // return this.$vux.toast.text("下单金额与实付金额已超过20元，请联系客服QQ：2324286706");
       }
       
     },
     async showFocus(){
       this.showName="核对"
+    },
+     async AmbushFocus(){
+      this.showAmbush="核对"
     },
     // 提交任务
     async subTask() {
@@ -359,6 +383,38 @@ export default {
     // 判断数组元素是否有为空的情况
     isEmptyArr() {
       return this.image.filter(e => e.length);
+    },
+    // 验证淘口令
+    checkAmbush() {
+      // if (this.waitcheckAmbush === this.orderInfo.shop_name) {
+        
+         if(this.waitcheckAmbush ===""){
+        this.$vux.toast.show({
+            text: "请输入淘口令！",
+            time:2000,
+          });
+        }else{
+          const result1 = this.axios.post("/api/App/check_tao", {
+              order_id:this.orderInfo.order_id,//订单ID
+              tao_text:this.waitcheckAmbush,
+              task_id:this.orderInfo.task_id
+            });
+         if(result1.status===true){
+          this.$vux.toast.show({
+                  text: "淘口令正确！",
+                  time:2000,
+                });
+          this.showAmbushIcon="success"
+          this.showAmbush="核对正确"
+        }else {
+        this.$vux.toast.show({
+                  text: "请输入正确的淘口令",
+                  time:2000,
+                });
+        this.showAmbushIcon="cancel"
+        this.showAmbush="核对错误"
+      }
+      }
     },
     checkName() {
       if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {

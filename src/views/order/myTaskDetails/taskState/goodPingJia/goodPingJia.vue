@@ -17,7 +17,7 @@
           />      
           <p v-if="orderInfo.keywords_text!=='' && orderInfo.keyword_types===2">{{orderInfo.keywords_text}}</p>
           <p v-if="orderInfo.pic_text!==''&& orderInfo.keyword_types===3">{{orderInfo.pic_text}}</p>   
-          <span v-if="(orderInfo.keywords_text==='' && orderInfo.keyword_types===2) ||(orderInfo.pic_text===''&& orderInfo.keyword_types===3)" style="color: #444;padding-left: 0.5rem;">自行发挥相关评价十五字以上</span>         
+          <span v-if="(orderInfo.keywords_text==='' && orderInfo.keyword_types===1) ||(orderInfo.pic_text===''&& orderInfo.keyword_types !==3)" style="color: #444;padding-left: 0.5rem;">自行发挥相关评价十五字以上</span>         
 
           <p>2. 图片要求(在{{orderInfo.platformname}}评价里必须上传以下图片)</p>
           <template v-if="orderInfo.keyword_types>2 && orderInfo.pic_text ==''">
