@@ -55,10 +55,10 @@
           <span style="color:#FF9642;">验证商品淘口令是否正确</span>
           <span @click="showAmbushPop=true" style="color:#4D97FF;padding-left: 15px;">如何复制淘口令？</span>
         </div>
-        <div class="shop-title" style="border:none;padding-bottom:0px">
+        <div class="shop-title">
           <x-input v-model.trim="orderInfo.taokouling" placeholder="请在此输入商品淘口令" @on-focus="AmbushFocus" ></x-input>
           <icon :type="showAmbushIcon" style="margin-right:25px" v-if="showAmbushIcon"></icon>
-          <x-button type="primary" @click.native="checkAmbush" style="width:30%;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
+          <x-button type="primary" @click.native="checkAmbush" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
         </div>
       </div>
       <!-- {{/* 第二步 浏览店铺 */}} -->
@@ -308,6 +308,10 @@ export default {
   mounted() {
     if(this.orderInfo.check_shop_name !==""){
       this.showIcon="success"
+      
+    }
+    if(this.orderInfo.taokouling !==""){
+      this.showAmbushIcon="success"
     }
     if(this.orderInfo.check_store_type ===1){
       this.isAmbush=true
@@ -332,7 +336,7 @@ export default {
       let seconds=Math.round(leave3/1000)
       let endMinutes=Math.floor(leave2/(60*1000))
       this.Mincount=endMinutes*60+seconds 
-      if(this.Mincount>0 ||(this.orderInfo.check_shop_name == this.orderInfo.shop_name)){
+      if(this.Mincount>0 ||(this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name)){
         this.getCodeTime()
       }
     }
@@ -345,14 +349,13 @@ export default {
     async showMoney(){
       if((this.orderInfo.need_principal-this.orderForm.pay_money)>20){
         this.showTip=true
-      }
-      
+      }     
     },
     async showFocus(){
-      this.showName="核对"
+        this.showName="核对"     
     },
     async AmbushFocus(){
-      this.showAmbush="核对"
+        this.showAmbush="核对"
     },
     // 提交任务
     async subTask() {
@@ -398,63 +401,60 @@ export default {
     // 验证淘口令
     async checkAmbush() {
         
-         if(this.orderInfo.taokouling ===""){
-        this.$vux.toast.show({
-            text: "请输入淘口令！",
-            time:2000,
-          });
+        if(this.orderInfo.taokouling ===""){
+          this.$vux.toast.show({
+              text: "请输入淘口令！",
+              time:2000,
+            });
         }else{
           const result1 =await this.axios.post("/api/app/check_tao", {
               order_id:this.orderInfo.order_id,//订单ID
               tao_text:this.orderInfo.taokouling,
-              task_id:this.orderInfo.task_id
+              task_id:this.orderInfo.task_id,
+              image:this.appeal.images
             });
-         if(result1.status===true){
-          this.$vux.toast.show({
-                  text: "淘口令正确！",
-                  time:2000,
-                });
-          this.showAmbushIcon="success"
-          this.showAmbush="核对正确"
-          this.commomSuccess() //成功显示第二步
+          if(result1.status===true){
+            this.$vux.toast.show({
+                    text: "淘口令正确！",
+                    time:2000,
+                  });
+            this.showAmbushIcon="success"
+            this.showAmbush="核对正确"
+            this.commomSuccess() //成功显示第二步
 
-        }else if(result1.status===false && result1.data.code ==201 ){
-          this.$vux.toast.text(result1.msg);
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-        }else if(result1.status===false && result1.data.code ==202 ){
-          this.$vux.toast.text(result1.msg);
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-        }else if(result1.status===false && result1.data.code ==203 ){
-          this.$vux.toast.text(result1.msg);
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-        }else if(result1.status===false && result1.data.code ==102 ){
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-          this.$vux.toast.show({
-                  text: "淘口令核对失败，请核对店铺",
-                  time:2000,
-                });
-          this.isAmbush=false
-          this.isShop=true
-        }else if(result1.status===false && result1.data.code ==101 ){
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-          this.$vux.toast.show({
-                  text: "淘口令核对失败，请核对店铺",
-                  time:2000,
-                });
-          
-          this.isAmbush=false
-          this.isShop=true
-        }else if(result1.status===false && result1.data.code ==204 ){
-          this.$vux.toast.text(result1.msg);
-          this.showAmbushIcon="cancel"
-          this.showAmbush="核对错误"
-        }
-      }
+          }else if(result1.status===false && result1.data.code ==201 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.$vux.toast.text(result1.msg);
+            
+          }else if(result1.status===false && result1.data.code ==202 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.$vux.toast.text(result1.msg);
+            
+          }else if(result1.status===false && result1.data.code ==203 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.$vux.toast.text(result1.msg);
+            
+          }else if(result1.status===false && result1.data.code ==102 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.isAmbush=false
+            this.isShop=true
+            this.$vux.toast.text(result1.msg);
+          }else if(result1.status===false && result1.data.code ==101 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.isAmbush=false
+            this.isShop=true
+            this.$vux.toast.text(result1.msg);
+          }else if(result1.status===false && result1.data.code ==204 ){
+            this.showAmbushIcon="cancel"
+            this.showAmbush="核对错误"
+            this.$vux.toast.text(result1.msg);          
+          }
+       }
     },
     checkName() {
       if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {
