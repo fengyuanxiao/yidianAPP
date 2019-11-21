@@ -414,12 +414,13 @@ export default {
               image:this.appeal.images
             });
           if(result1.status===true){
+            this.showAmbushIcon="success"
+            this.showAmbush="核对正确"
             this.$vux.toast.show({
                     text: "淘口令正确！",
                     time:2000,
                   });
-            this.showAmbushIcon="success"
-            this.showAmbush="核对正确"
+            
             this.commomSuccess() //成功显示第二步
 
           }else if(result1.status===false && result1.data.code ==201 ){
