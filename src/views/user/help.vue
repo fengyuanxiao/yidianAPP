@@ -25,7 +25,7 @@
           <img
             slot="content"
             style="width:100% "
-            src="@/assets/img/shiming.jpg"
+            src="@/assets/img/shiming.png"
             alt="shiming"
           />
         </Panel>
