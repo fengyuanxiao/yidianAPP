@@ -38,29 +38,16 @@
         </div>
       </div>
       <!-- 核对店铺名 -->
-      <div v-if="isShop">
-        <div class="buzou-title">
-          <span style="color:#FF9642">核对商家店铺名是否正确</span>
-        </div>
-        <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
-        <div class="shop-title">
-          <x-input v-model.trim="orderInfo.check_shop_name" @on-focus="showFocus" placeholder="请在此输入店铺名核对"></x-input>
-          <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
-          <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
-        </div>
+      <div class="buzou-title">
+        <span style="color:#FF9642">核对商家店铺名是否正确</span>
       </div>
-      <!-- 验证淘口令 -->
-      <div v-if="isAmbush" class="isAmbush">
-        <div>
-          <span style="color:#FF9642;">验证商品淘口令是否正确</span>
-          <span @click="showAmbushPop=true" style="color:#4D97FF;padding-left: 15px;">如何复制淘口令？</span>
-        </div>
-        <div class="shop-title">
-          <x-input v-model.trim="orderInfo.taokouling" placeholder="请在此输入商品淘口令" @on-focus="AmbushFocus" ></x-input>
-          <icon :type="showAmbushIcon" style="margin-right:25px" v-if="showAmbushIcon"></icon>
-          <x-button type="primary" @click.native="checkAmbush" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{showAmbush}}</x-button>
-        </div>
+      <p>商家店铺名称:{{orderInfo.shop_name.substring(0,2)+'***'}}</p>
+      <div class="shop-title">
+        <x-input v-model.trim="orderInfo.check_shop_name" @on-focus="showFocus" placeholder="请在此输入店铺名核对"></x-input>
+        <icon :type="showIcon" style="margin-right:25px" v-if="showIcon"></icon>
+        <x-button type="primary" @click.native="checkName" style="width:30%;background:#4D97FF;padding-left:0px;padding-right:0px">{{orderInfo.check_shop_time !==0 ? '核对正确' :showName}}</x-button>
       </div>
+
       <!-- {{/* 第二步 浏览店铺 */}} -->
       <div v-if="showSec" style="border-bottom: 1px solid #E5E5E5;padding-bottom: 20px;">
         <div  class="buzou-title" >
@@ -233,25 +220,16 @@
     </x-dialog>
     <!-- 金额核对弹窗 -->
     <x-dialog v-model.trim="showTip" class="dialog_demo">
-      <group title>
-        <p class="showAttention">提示</p>
-      </group>
-      <div class="img-box showBg">
-        <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">下单金额与实付金额已超过20元，请联系客服QQ：2324286706</p>
-      </div>
-      <div @click="showTip=false" style="margin: 30px 0 10px 0;">
-        <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
-      </div>
-    </x-dialog>
-    <!-- {/* 第一步淘口令的图片示例 */} -->
-    <x-dialog v-model.trim="showAmbushPop" class="demoDialog">
-      <div class="img-box">
-        <img class="shilitu" src="@/assets/img/showAmbush.png" alt="淘口令" />
-      </div>
-      <div @click="showAmbushPop=false">
-        <span class="vux-close">X</span>
-      </div>
-    </x-dialog>
+        <group title>
+          <p class="showAttention">提示</p>
+        </group>
+        <div class="img-box showBg">
+          <p style="padding: 25px 20px 15px;font-size: 17px;color: black;">下单金额与实付金额已超过20元，请联系客服QQ：2324286706</p>
+        </div>
+        <div @click="showTip=false" style="margin: 30px 0 10px 0;">
+          <x-button type="primary" style="border-radius:5px;background:#1890ff;width:35%;" min>确定</x-button>
+        </div>
+      </x-dialog>
   </div>
 </template>
 <script>
@@ -269,15 +247,9 @@ export default {
   data() {
     return {
       showTip:false,
-      isShop:false,  //店铺显示
-      isAmbush:false, //淘口令显示
-      taokouling:"",
       showIcon:false,
       firstMincount:"180",
       showName:"核对",
-      showAmbush:"核对",
-      showAmbushPop:false,
-      showAmbushIcon:false,
       Mincount:"",
       timer: null,
       showSec:false,
@@ -308,15 +280,6 @@ export default {
   mounted() {
     if(this.orderInfo.check_shop_name !==""){
       this.showIcon="success"
-      
-    }
-    if(this.orderInfo.taokouling !==""){
-      this.showAmbushIcon="success"
-    }
-    if(this.orderInfo.check_store_type ===1){
-      this.isAmbush=true
-    }else{
-      this.isShop=true
     }
     this.check_shop_name=this.check_shop_name.replace(/\s+/g,"")
     this.appeal.images=this.orderInfo.compared_content
@@ -336,7 +299,7 @@ export default {
       let seconds=Math.round(leave3/1000)
       let endMinutes=Math.floor(leave2/(60*1000))
       this.Mincount=endMinutes*60+seconds 
-      if(this.Mincount>0 ||(this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name)){
+      if(this.Mincount>0 ||(this.orderInfo.check_shop_name == this.orderInfo.shop_name)){
         this.getCodeTime()
       }
     }
@@ -349,13 +312,12 @@ export default {
     async showMoney(){
       if((this.orderInfo.need_principal-this.orderForm.pay_money)>20){
         this.showTip=true
-      }     
+        // return this.$vux.toast.text("下单金额与实付金额已超过20元，请联系客服QQ：2324286706");
+      }
+      
     },
     async showFocus(){
-        this.showName="核对"     
-    },
-    async AmbushFocus(){
-        this.showAmbush="核对"
+      this.showName="核对"
     },
     // 提交任务
     async subTask() {
@@ -398,65 +360,6 @@ export default {
     isEmptyArr() {
       return this.image.filter(e => e.length);
     },
-    // 验证淘口令
-    async checkAmbush() {
-        
-        if(this.orderInfo.taokouling ===""){
-          this.$vux.toast.show({
-              text: "请输入淘口令！",
-              time:2000,
-            });
-        }else{
-          const result1 =await this.axios.post("/api/app/check_tao", {
-              order_id:this.orderInfo.order_id,//订单ID
-              tao_text:this.orderInfo.taokouling,
-              task_id:this.orderInfo.task_id,
-              image:this.appeal.images
-            });
-          if(result1.status===true){
-            this.showAmbushIcon="success"
-            this.showAmbush="核对正确"
-            this.$vux.toast.show({
-                    text: "淘口令正确！",
-                    time:2000,
-                  });
-            
-            this.commomSuccess() //成功显示第二步
-
-          }else if(result1.status===false && result1.data.code ==201 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.$vux.toast.text(result1.msg);
-            
-          }else if(result1.status===false && result1.data.code ==202 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.$vux.toast.text(result1.msg);
-            
-          }else if(result1.status===false && result1.data.code ==203 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.$vux.toast.text(result1.msg);
-            
-          }else if(result1.status===false && result1.data.code ==102 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.isAmbush=false
-            this.isShop=true
-            this.$vux.toast.text(result1.msg);
-          }else if(result1.status===false && result1.data.code ==101 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.isAmbush=false
-            this.isShop=true
-            this.$vux.toast.text(result1.msg);
-          }else if(result1.status===false && result1.data.code ==204 ){
-            this.showAmbushIcon="cancel"
-            this.showAmbush="核对错误"
-            this.$vux.toast.text(result1.msg);          
-          }
-       }
-    },
     checkName() {
       if (this.orderInfo.check_shop_name.replace(/\s+/g,"") == this.orderInfo.shop_name) {
         this.$vux.toast.show({
@@ -471,7 +374,24 @@ export default {
           shop_name: this.orderInfo.check_shop_name.replace(/\s+/g,""),
           image:this.appeal.images
         });
-        this.commomSuccess()
+        if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
+            this.getCodeTime()
+        }else if(this.orderInfo.is_compared===0){
+            this.showSec=true
+            if(this.orderInfo.check_shop_time ===0){
+              this.showEndTime=true
+              this.getTime()
+            }         
+            this.getCodeTime()
+        }       
+     
+    
+    
  
       }else if(this.orderInfo.check_shop_name ===""){
         this.$vux.toast.show({
@@ -486,23 +406,6 @@ export default {
         this.showIcon="cancel"
         this.showName="核对错误"
       }
-    },
-    commomSuccess(){
-      if(this.appeal.images.length !==0 &&this.orderInfo.is_compared===1){
-            this.showSec=true
-            if(this.orderInfo.check_shop_time ===0){
-              this.showEndTime=true
-              this.getTime()
-            }         
-            this.getCodeTime()
-        }else if(this.orderInfo.is_compared===0){
-            this.showSec=true
-            if(this.orderInfo.check_shop_time ===0){
-              this.showEndTime=true
-              this.getTime()
-            }         
-            this.getCodeTime()
-        }
     },
     // 倒计时
     async getCodeTime() {

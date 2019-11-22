@@ -6,9 +6,9 @@
         <h2>注意：务必按照商家要求追加评论!</h2>
         <p>商家要求的追评内容</p>
         <div class="goodPingJia-box-child">
-          <p>1.追评文字{{orderInfo.additional_text !==null ? '' :'图片'}}</p>
-          <div>
-            <template v-if="orderInfo.template_pic && orderInfo.additional_text ==null">
+          <p>追评文字图片</p>
+          <p>
+            <template v-if="orderInfo.template_pic">
               <img
                 v-for="(item,ind) in orderInfo.template_pic"
                 :key="ind"
@@ -17,9 +17,8 @@
                 alt="文字图片"
               />
             </template>
-            <p v-if="orderInfo.additional_text !==null">{{orderInfo.additional_text}}</p>
-          </div>
-          <p>2.追评图片</p>
+          </p>
+          <p>追评图片</p>
           <p>
             <template v-if="orderInfo.additional_pic">
               <img
