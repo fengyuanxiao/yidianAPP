@@ -10,7 +10,7 @@
 
           <img
             @click="isShow=true"
-            v-if="orderInfo.keyword_types>1 && orderInfo.keywords_text==''"
+            v-if="orderInfo.keyword_types>1 && orderInfo.keywords_text=='' && orderInfo.pic_text ==''"
             style="max-width: 100%"
             :src="orderInfo.keywords_pic[0]"
             alt="tu"
@@ -20,7 +20,7 @@
           <span v-if="(orderInfo.keywords_text==='' && orderInfo.keyword_types===1) ||(orderInfo.keywords_text==='' && orderInfo.keyword_types===2) ||(orderInfo.pic_text===''&& orderInfo.keyword_types ===3)" style="color: #444;padding-left: 0.5rem;">自行发挥相关评价十五字以上</span>         
 
           <p>2. 图片要求(在{{orderInfo.platformname}}评价里必须上传以下图片)</p>
-          <template v-if="orderInfo.keyword_types>2 && orderInfo.pic_text ==''">
+          <template v-if="orderInfo.keyword_types>2">
             <img
               v-for="(item,ind) in orderInfo.pic_content"
               :key="ind"
@@ -64,7 +64,7 @@
     <x-dialog
       v-model.trim="isShow"
       class="demoDialog"
-      v-if="orderInfo && orderInfo.keyword_types>1&& orderInfo.keywords_text==''"
+      v-if="orderInfo && orderInfo.keyword_types>1 && orderInfo.keywords_text=='' && orderInfo.pic_text ==''"
     >
       <div class="img-box">
         <img class="shilitu" :src="orderInfo.keywords_pic[0]" alt="好评截图" />
@@ -83,7 +83,7 @@
      <x-dialog
       v-model.trim="isImgShow"
       class="demoDialog"
-      v-if="orderInfo && orderInfo.keyword_types>2 && orderInfo.pic_text =='' && orderInfo.pic_content.length"
+      v-if="orderInfo && orderInfo.keyword_types>2 "
     >
       <div class="img-box">
         <img class="shilitu" :src="isImgShowSrc" alt="好评截图" />
