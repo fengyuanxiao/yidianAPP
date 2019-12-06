@@ -174,9 +174,9 @@ export default {
   methods: {
     async withdrawMoney() {
       var moneyNum = parseInt(this.userCenterInfo.withdraw_account);
-      if (moneyNum < 50) {
+      if (moneyNum < 10) {
         this.$vux.toast.show({
-          text: "您的余额不足50元，不能提现",
+          text: "您的余额不足10元，不能提现",
           type: "warn"
         });
       } else {
@@ -206,8 +206,8 @@ export default {
             type: "success"
           });
         }
-          
-       
+
+
       }
     },
     // 短信倒计时
@@ -236,7 +236,7 @@ export default {
           this.showID=false
       }
       if((this.userCenterInfo.bank_status==1 && this.userCenterInfo.realname_status==2) || (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==1)|| (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==2) || (this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==3)){
-          this.showPop=true 
+          this.showPop=true
       }
       if((this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==2) ||(this.userCenterInfo.bank_status==2 && this.userCenterInfo.realname_status==3) ||(this.userCenterInfo.bank_status==1 && this.userCenterInfo.realname_status==3) || (this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==3) || (this.userCenterInfo.bank_status==3 && this.userCenterInfo.realname_status==1)){
           this.showTip=true
